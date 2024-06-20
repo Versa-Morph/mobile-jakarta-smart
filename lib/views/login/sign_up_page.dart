@@ -3,10 +3,24 @@ import 'package:smart_jakarta/views/login/widgets/content_header.dart';
 import 'package:smart_jakarta/views/login/widgets/custom_button.dart';
 import 'package:smart_jakarta/views/login/widgets/custom_divider.dart';
 import 'package:smart_jakarta/views/login/widgets/custom_textfield.dart';
+import 'package:smart_jakarta/views/login/widgets/sign_up_menu_button.dart';
 import 'package:smart_jakarta/views/login/widgets/social_button.dart';
 
-class SignInPage extends StatelessWidget {
-  const SignInPage({super.key});
+class SignUpPage extends StatefulWidget {
+  const SignUpPage({super.key});
+
+  @override
+  State<SignUpPage> createState() => _SignUpPageState();
+}
+
+class _SignUpPageState extends State<SignUpPage> {
+  bool isEmailSelected = true;
+
+  void toggleMenu() {
+    setState(() {
+      isEmailSelected = !isEmailSelected;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -18,9 +32,10 @@ class SignInPage extends StatelessWidget {
             // Header
             const ContentHeader(),
             const SizedBox(height: 40),
+
             // Header text
             const Text(
-              'Welcome abroad',
+              'Sign Up',
               style: TextStyle(
                 fontSize: 24,
                 fontWeight: FontWeight.w700,
@@ -30,60 +45,57 @@ class SignInPage extends StatelessWidget {
             const SizedBox(height: 15),
 
             const Text(
-              'Please sign in to your account',
+              'Please register to your account',
               style: TextStyle(
                 color: Color(0xff6C6C6C),
                 fontSize: 12,
                 fontWeight: FontWeight.w400,
               ),
             ),
+            const SizedBox(height: 20),
 
-            const SizedBox(height: 25),
-
-            // Textfield
-            const CustomTextfield(
-              controller: null, // TODO: ASSIGN CONTROLLER
-              hintText: 'Username/Email',
-              prefixImgPath: 'assets/icons/email_icon.png',
-            ),
-
-            const SizedBox(height: 15),
-
-            const CustomTextfield(
-              controller: null, // TODO: ASSIGN CONTROLLER
-              hintText: 'Password',
-              prefixImgPath: 'assets/icons/pass_icon.png',
-              obscureText: true,
-            ),
-
-            const SizedBox(height: 18),
-
-            // Forgot Pass Text
+            // Row Menu
             Padding(
-              padding: const EdgeInsets.only(right: 55),
+              padding: const EdgeInsets.symmetric(horizontal: 40),
               child: Row(
-                mainAxisAlignment: MainAxisAlignment.end,
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
-                  GestureDetector(
-                    onTap: () {
-                      // TODO: IMPLEMENT ONTAP FUNCTION
-                    },
-                    child: const Text(
-                      'Forgot your password?',
-                      style: TextStyle(
-                        color: Color(0xffD99022),
-                        fontWeight: FontWeight.w400,
-                        fontSize: 12,
-                      ),
-                    ),
-                  )
+                  SignUpMenuButton(
+                    btnText: 'Email',
+                    onTap: () => toggleMenu(),
+                    borderColor: isEmailSelected
+                        ? const Color(0xffD99022)
+                        : const Color(0xffFAFAFA),
+                    textColor: isEmailSelected
+                        ? const Color(0xffD99022)
+                        : const Color(0xff6C6C6C),
+                  ),
+                  SignUpMenuButton(
+                    btnText: 'Phone',
+                    onTap: () => toggleMenu(),
+                    borderColor: isEmailSelected
+                        ? const Color(0xffFAFAFA)
+                        : const Color(0xffD99022),
+                    textColor: isEmailSelected
+                        ? const Color(0xff6C6C6C)
+                        : const Color(0xffD99022),
+                  ),
                 ],
               ),
             ),
+            const SizedBox(height: 20),
+            // Textfield
+            CustomTextfield(
+              controller: null, // TODO: ASSIGN CONTROLLER
+              hintText: isEmailSelected ? 'Email' : 'Phone number',
+              prefixImgPath: isEmailSelected
+                  ? 'assets/icons/email_icon.png'
+                  : 'assets/icons/phone_icon.png',
+            ),
 
             const SizedBox(height: 15),
 
-            // Button Signin
+            // Button Signup
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 60),
               child: CustomButton(
@@ -97,7 +109,6 @@ class SignInPage extends StatelessWidget {
             ),
 
             const SizedBox(height: 15),
-
             // Divider
             const Padding(
                 padding: EdgeInsets.symmetric(horizontal: 60),
@@ -134,7 +145,7 @@ class SignInPage extends StatelessWidget {
 
             // Sign Up Text
             const Text(
-              'Don\'t have an account?',
+              'Have an account?',
               style: TextStyle(
                 color: Color(0xff6C6C6C),
                 fontSize: 10,
@@ -146,7 +157,7 @@ class SignInPage extends StatelessWidget {
                 // TODO: IMPLEMENT ONTAP
               },
               child: const Text(
-                'Register',
+                'Sign in',
                 style: TextStyle(
                   color: Color(0xffD99022),
                   fontSize: 10,

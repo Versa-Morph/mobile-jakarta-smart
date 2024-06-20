@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:smart_jakarta/views/login/sign_in_page.dart';
+import 'package:smart_jakarta/views/login/sign_up_page.dart';
 import 'package:smart_jakarta/views/welcome/welcome_page.dart';
 
 void main() {
@@ -19,7 +20,7 @@ class MyApp extends StatelessWidget {
         useMaterial3: true,
       ),
       debugShowCheckedModeBanner: false,
-      home: const SignInPage(),
+      home: const SignUpPage(),
     );
   }
 }
