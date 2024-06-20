@@ -120,18 +120,24 @@ class WelcomePage extends StatelessWidget {
               const SizedBox(height: 60),
 
               // SignIn/Up Button
-              const Row(
+              Row(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
                   LoginButon(
                     text: 'Login',
-                    textColor: Color(0xffffffff),
-                    bgColor: Color(0xffD99022),
+                    textColor: const Color(0xffffffff),
+                    bgColor: const Color(0xffD99022),
+                    onTap: () {
+                      // TODO: IMPLEMENT ONTAP
+                    },
                   ),
                   LoginButon(
                     text: 'Sign up',
-                    textColor: Color(0xffD99022),
-                    bgColor: Color(0xffffffff),
+                    textColor: const Color(0xffD99022),
+                    bgColor: const Color(0xffffffff),
+                    onTap: () {
+                      // TODO: IMPLEMENT ONTAP
+                    },
                   )
                 ],
               )

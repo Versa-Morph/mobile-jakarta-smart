@@ -155,7 +155,7 @@ class _TypewriterTextState extends State<TypewriterText> {
       children: spanList,
       //! Edit this to style the whole text span
       style: const TextStyle(
-          color: Color(0xff2C2828), fontSize: 50, fontWeight: FontWeight.w300),
+          color: Color(0xff2C2828), fontSize: 54, fontWeight: FontWeight.w300),
     );
   }
 
