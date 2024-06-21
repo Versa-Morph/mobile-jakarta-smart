@@ -20,7 +20,7 @@ class WelcomePage extends StatelessWidget {
               // Header Text
               Container(
                 padding: const EdgeInsets.symmetric(horizontal: 20),
-                height: 200,
+                height: 190,
                 child: const TypewriterText(),
               ),
 
@@ -128,7 +128,7 @@ class WelcomePage extends StatelessWidget {
                     textColor: const Color(0xffffffff),
                     bgColor: const Color(0xffD99022),
                     onTap: () {
-                      // TODO: IMPLEMENT ONTAP
+                      Navigator.pushNamed(context, '/signIn');
                     },
                   ),
                   LoginButon(
@@ -136,7 +136,7 @@ class WelcomePage extends StatelessWidget {
                     textColor: const Color(0xffD99022),
                     bgColor: const Color(0xffffffff),
                     onTap: () {
-                      // TODO: IMPLEMENT ONTAP
+                      Navigator.pushNamed(context, '/signUp');
                     },
                   )
                 ],

@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:smart_jakarta/views/login/sign_in_page.dart';
-import 'package:smart_jakarta/views/login/sign_up_page.dart';
-import 'package:smart_jakarta/views/welcome/welcome_page.dart';
+import 'package:smart_jakarta/core/routes.dart';
 
 void main() {
   runApp(const MyApp());
@@ -10,7 +8,6 @@ void main() {
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -20,7 +17,8 @@ class MyApp extends StatelessWidget {
         useMaterial3: true,
       ),
       debugShowCheckedModeBanner: false,
-      home: const SignUpPage(),
+      initialRoute: '/',
+      onGenerateRoute: AppRoutes.onGenerateRoutes,
     );
   }
 }
