@@ -99,11 +99,12 @@ class _SignUpPageState extends State<SignUpPage> {
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 60),
               child: CustomButton(
-                text: 'Sign In',
+                text: 'Sign Up',
                 textColor: Colors.white,
                 bgColor: const Color(0xFFD99022),
                 onTap: () {
                   // TODO: IMPLEMENT ONTAP
+                  Navigator.pushNamed(context, '/termOfUse');
                 },
               ),
             ),

@@ -6,11 +6,14 @@ class CustomButton extends StatelessWidget {
     required this.text,
     required this.textColor,
     required this.bgColor,
+    this.borderColor,
     this.onTap,
   });
   final String text;
   final Color bgColor;
+  final Color? borderColor;
   final Color textColor;
+
   final Function()? onTap;
 
   @override
@@ -19,11 +22,12 @@ class CustomButton extends StatelessWidget {
       height: 35,
       width: MediaQuery.of(context).size.width,
       child: ElevatedButton(
-        onPressed: onTap ?? () {},
+        onPressed: onTap,
         style: ElevatedButton.styleFrom(
+          disabledBackgroundColor: Color(0xffC7C7C7),
           backgroundColor: bgColor,
-          side: const BorderSide(
-            color: Color(0xffD99022),
+          side: BorderSide(
+            color: borderColor ?? const Color(0xffD99022),
           ),
         ),
         child: Text(
