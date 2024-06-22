@@ -14,7 +14,7 @@ class WelcomeAppBar extends StatelessWidget implements PreferredSizeWidget {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Image.asset(
-              'assets/icons/app_logo.png',
+              'assets/images/app_logo.png',
               fit: BoxFit.contain,
             ),
             SizedBox(

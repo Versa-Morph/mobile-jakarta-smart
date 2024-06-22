@@ -143,7 +143,7 @@ class SignInPage extends StatelessWidget {
             ),
             GestureDetector(
               onTap: () {
-                // TODO: IMPLEMENT ONTAP
+                Navigator.pushReplacementNamed(context, '/signUp');
               },
               child: const Text(
                 'Register',

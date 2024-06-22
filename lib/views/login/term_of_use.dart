@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:smart_jakarta/views/login/widgets/content_header.dart';
 import 'package:smart_jakarta/constant/constant.dart' as constant;
 import 'package:smart_jakarta/views/login/widgets/custom_button.dart';
@@ -112,7 +111,12 @@ class _TermOfUsePageState extends State<TermOfUsePage> {
                 textColor: isChecked ? Colors.white : Colors.grey,
                 bgColor: const Color(0xFFD99022),
                 borderColor: isChecked ? const Color(0xFFD99022) : Colors.white,
-                onTap: isChecked ? () {} : null,
+                onTap: isChecked
+                    ? () {
+                        // TODO: IMPLEMENT ONTAP
+                        Navigator.pushNamed(context, '/home');
+                      }
+                    : null,
               ),
             ),
           ],

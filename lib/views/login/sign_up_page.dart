@@ -155,7 +155,7 @@ class _SignUpPageState extends State<SignUpPage> {
             ),
             GestureDetector(
               onTap: () {
-                // TODO: IMPLEMENT ONTAP
+                Navigator.pushReplacementNamed(context, '/signIn');
               },
               child: const Text(
                 'Sign in',

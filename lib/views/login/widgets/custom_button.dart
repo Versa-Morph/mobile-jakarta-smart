@@ -24,7 +24,7 @@ class CustomButton extends StatelessWidget {
       child: ElevatedButton(
         onPressed: onTap,
         style: ElevatedButton.styleFrom(
-          disabledBackgroundColor: Color(0xffC7C7C7),
+          disabledBackgroundColor: const Color(0xffC7C7C7),
           backgroundColor: bgColor,
           side: BorderSide(
             color: borderColor ?? const Color(0xffD99022),

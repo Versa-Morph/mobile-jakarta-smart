@@ -15,7 +15,7 @@ class ContentHeader extends StatelessWidget {
       ),
       child: Center(
         child: Image.asset(
-          'assets/icons/app_logo_large.png',
+          'assets/images/app_logo_large.png',
         ),
       ),
     );

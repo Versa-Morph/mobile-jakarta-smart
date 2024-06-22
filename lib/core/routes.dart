@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:smart_jakarta/views/home/home_page.dart';
 import 'package:smart_jakarta/views/login/sign_in_page.dart';
 import 'package:smart_jakarta/views/login/sign_up_page.dart';
 import 'package:smart_jakarta/views/login/term_of_use.dart';
@@ -23,6 +24,10 @@ class AppRoutes {
       case '/termOfUse':
         return MaterialPageRoute(
           builder: (context) => const TermOfUsePage(),
+        );
+      case '/home':
+        return MaterialPageRoute(
+          builder: (context) => const HomePageWrapper(),
         );
       default:
         return MaterialPageRoute(
