@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:smart_jakarta/views/home/contact/contact_page.dart';
 import 'package:smart_jakarta/views/home/cubit/home_navigation_cubit.dart';
+import 'package:smart_jakarta/views/home/landing/landing_page.dart';
+import 'package:smart_jakarta/views/home/maps/maps_page.dart';
+import 'package:smart_jakarta/views/home/profile/user_profile_page.dart';
 
 final List<BottomNavigationBarItem> _bottomNavItem = [
   const BottomNavigationBarItem(
@@ -37,12 +41,12 @@ final List<BottomNavigationBarItem> _bottomNavItem = [
   ),
 ];
 
-// TODO: TEMPORARY SCREEN
-final List<Widget> _bottomNavScreen = [
-  const Center(child: Text('Landing Page')),
-  const Center(child: Text('Map Page')),
-  const Center(child: Text('Contact Page')),
-  const Center(child: Text('Profile Page'))
+// Screen List
+final List<Widget> _screenList = [
+  const LandingPage(),
+  const MapsPage(),
+  const ContactPage(),
+  const UserProfilePage(),
 ];
 
 class HomePageWrapper extends StatelessWidget {
@@ -89,7 +93,7 @@ class _HomePageState extends State<HomePage> {
             onPageChanged: (value) {
               context.read<HomeNavigationCubit>().changeTab(value);
             },
-            children: _bottomNavScreen,
+            children: _screenList,
           ),
           bottomNavigationBar: BottomNavigationBar(
             items: _bottomNavItem,
