@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:smart_jakarta/components/welcome_appbar.dart';
 import 'package:smart_jakarta/views/welcome/widgets/content_feature.dart';
 import 'package:smart_jakarta/views/welcome/widgets/login_button.dart';
@@ -10,7 +11,6 @@ class WelcomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xffFAFAFA),
       appBar: const WelcomeAppBar(),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(25),
@@ -117,7 +117,8 @@ class WelcomePage extends StatelessWidget {
                 ],
               ),
 
-              const SizedBox(height: 60),
+              SizedBox(height: MediaQuery.of(context).size.height / 4.4),
+              // SizedBox(height: 60),
 
               // SignIn/Up Button
               Row(

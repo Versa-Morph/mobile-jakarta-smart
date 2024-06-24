@@ -26,7 +26,10 @@ class CustomTextfield extends StatelessWidget {
           controller: controller,
           obscureText: obscureText ?? false,
           decoration: InputDecoration(
-            prefixIcon: Image.asset(prefixImgPath),
+            prefixIcon: Image.asset(
+              prefixImgPath,
+              color: const Color(0xffD99022),
+            ),
             contentPadding: const EdgeInsets.all(10),
             hintText: hintText,
             hintStyle: const TextStyle(

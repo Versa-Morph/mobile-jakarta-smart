@@ -11,7 +11,6 @@ class SignInPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xfffafafa),
       body: SingleChildScrollView(
         child: Column(
           children: [
@@ -85,7 +84,7 @@ class SignInPage extends StatelessWidget {
 
             // Button Signin
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 60),
+              padding: const EdgeInsets.symmetric(horizontal: 50),
               child: CustomButton(
                 text: 'Sign In',
                 textColor: Colors.white,

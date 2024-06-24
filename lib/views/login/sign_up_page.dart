@@ -25,7 +25,6 @@ class _SignUpPageState extends State<SignUpPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xfffafafa),
       body: SingleChildScrollView(
         child: Column(
           children: [
@@ -84,7 +83,7 @@ class _SignUpPageState extends State<SignUpPage> {
               ),
             ),
             const SizedBox(height: 20),
-            // Textfield
+            // Textfield Email
             CustomTextfield(
               controller: null, // TODO: ASSIGN CONTROLLER
               hintText: isEmailSelected ? 'Email' : 'Phone number',
@@ -95,9 +94,35 @@ class _SignUpPageState extends State<SignUpPage> {
 
             const SizedBox(height: 15),
 
+            isEmailSelected
+                ? const Column(
+                    children: [
+                      // Textfield Password
+                      CustomTextfield(
+                        controller: null, // TODO: ASSIGN CONTROLLER
+                        hintText: 'Password',
+                        prefixImgPath: 'assets/icons/pass_icon.png',
+                        obscureText: true,
+                      ),
+
+                      SizedBox(height: 15),
+
+                      // Textfield Password
+                      CustomTextfield(
+                        controller: null, // TODO: ASSIGN CONTROLLER
+                        hintText: 'Re-Type Password',
+                        prefixImgPath: 'assets/icons/pass_icon.png',
+                        obscureText: true,
+                      ),
+                    ],
+                  )
+                : const SizedBox(),
+
+            const SizedBox(height: 15),
+
             // Button Signup
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 60),
+              padding: const EdgeInsets.symmetric(horizontal: 50),
               child: CustomButton(
                 text: 'Sign Up',
                 textColor: Colors.white,
@@ -144,7 +169,7 @@ class _SignUpPageState extends State<SignUpPage> {
 
             const SizedBox(height: 120),
 
-            // Sign Up Text
+            // Sign In Text
             const Text(
               'Have an account?',
               style: TextStyle(

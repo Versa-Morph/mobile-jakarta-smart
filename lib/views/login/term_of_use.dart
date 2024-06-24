@@ -68,7 +68,11 @@ class _TermOfUsePageState extends State<TermOfUsePage> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Checkbox(value: isChecked, onChanged: toggleCheck),
+                  Checkbox(
+                    value: isChecked,
+                    onChanged: toggleCheck,
+                    activeColor: const Color(0xffD99022),
+                  ),
                   Expanded(
                     child: RichText(
                       text: const TextSpan(
@@ -105,7 +109,7 @@ class _TermOfUsePageState extends State<TermOfUsePage> {
             // Continue Button
 
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 60),
+              padding: const EdgeInsets.symmetric(horizontal: 40),
               child: CustomButton(
                 text: 'Continue',
                 textColor: isChecked ? Colors.white : Colors.grey,

@@ -15,7 +15,9 @@ class ContentHeader extends StatelessWidget {
       ),
       child: Center(
         child: Image.asset(
-          'assets/images/app_logo_large.png',
+          Theme.of(context).brightness == Brightness.dark
+              ? 'assets/images/app_logo_white_large.png'
+              : 'assets/images/app_logo_large.png',
         ),
       ),
     );
