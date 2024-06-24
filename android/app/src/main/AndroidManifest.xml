@@ -3,6 +3,8 @@
         android:label="smart_jakarta"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
+        <meta-data android:name="com.google.android.geo.API_KEY"
+               android:value="AIzaSyCuwl0w-B0XTUTRTngBrYlANeLlNzRS2Bw"/>
         <activity
             android:name=".MainActivity"
             android:exported="true"
