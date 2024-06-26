@@ -1,11 +1,32 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:pulsator/pulsator.dart';
 import 'package:smart_jakarta/components/home_appbar.dart';
+import 'package:smart_jakarta/views/home/landing/cubit/emergency_page_cubit.dart';
+import 'package:smart_jakarta/views/home/landing/widgets/emergency_button.dart';
+import 'package:smart_jakarta/views/home/landing/widgets/service_type_button.dart';
 
-class LandingPage extends StatelessWidget {
+class LandingPageWrapper extends StatelessWidget {
+  const LandingPageWrapper({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocProvider(
+      create: (context) => EmergencyPageCubit(),
+      child: const LandingPage(),
+    );
+  }
+}
+
+class LandingPage extends StatefulWidget {
   const LandingPage({super.key});
 
+  @override
+  State<LandingPage> createState() => _LandingPageState();
+}
+
+class _LandingPageState extends State<LandingPage> {
+  int _serviceIndex = 0;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -27,16 +48,20 @@ class LandingPage extends StatelessWidget {
               decoration: const BoxDecoration(
                 color: Color(0xffffffff),
               ),
-              child: const Row(
+              child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Expanded(
-                      child: Text(
-                    'Hello, ',
-                    style: TextStyle(
-                      fontWeight: FontWeight.w500,
+                    child: Text(
+                      'Hello, ',
+                      style: TextStyle(
+                        fontWeight: FontWeight.w500,
+                        color: Theme.of(context).brightness == Brightness.dark
+                            ? const Color(0xff2C2828)
+                            : const Color(0xff2C2828),
+                      ),
                     ),
-                  )),
+                  ),
                   Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.end,
@@ -45,10 +70,13 @@ class LandingPage extends StatelessWidget {
                           child: Text(
                         'Your Location',
                         style: TextStyle(
-                          fontWeight: FontWeight.w500,
-                        ),
+                            fontWeight: FontWeight.w500,
+                            color:
+                                Theme.of(context).brightness == Brightness.dark
+                                    ? const Color(0xff2C2828)
+                                    : const Color(0xff2C2828)),
                       )),
-                      Expanded(
+                      const Expanded(
                         child: Text(
                           'Senayan, Jakarta Selatan',
                           style: TextStyle(
@@ -65,24 +93,122 @@ class LandingPage extends StatelessWidget {
             // Header Text
             const SizedBox(height: 25),
 
-            const Text(
+            Text(
               'An Emergency?',
               style: TextStyle(
                 fontSize: 24,
                 fontWeight: FontWeight.w500,
-                color: Color(0xff36393C),
+                color: Theme.of(context).brightness == Brightness.dark
+                    ? Colors.white
+                    : const Color(0xff36393C),
               ),
             ),
             const SizedBox(height: 10),
 
-            const Text(
+            Text(
               'Just hold the button to call',
               style: TextStyle(
                 fontSize: 14,
                 fontWeight: FontWeight.w400,
-                color: Color(0xffa39e9e),
+                color: Theme.of(context).brightness == Brightness.dark
+                    ? Colors.white
+                    : const Color(0xffa39e9e),
               ),
             ),
+
+            // Emergency Button
+            BlocBuilder<EmergencyPageCubit, EmergencyPageState>(
+              builder: (context, state) {
+                return SizedBox(
+                  height: MediaQuery.of(context).size.height / 2,
+                  child: state is EmergencyState
+                      ? Pulsator(
+                          style: const PulseStyle(
+                            color: Color(0xffD99022),
+                            startSize: 0.3,
+                          ),
+                          child: EmergencyButton(
+                            onTap: () {
+                              context
+                                  .read<EmergencyPageCubit>()
+                                  .stopEmergency(_serviceIndex);
+                            },
+                          ),
+                        )
+                      : EmergencyButton(
+                          onTap: () {
+                            context
+                                .read<EmergencyPageCubit>()
+                                .emergencyOccured(_serviceIndex);
+                          },
+                        ),
+                );
+              },
+            ),
+
+            const SizedBox(height: 20),
+
+            const Text(
+              'Choose a service',
+              style: TextStyle(
+                color: Color(0xffA39E9E),
+                fontWeight: FontWeight.w400,
+              ),
+            ),
+
+            const SizedBox(height: 12),
+
+            // Service Type
+            BlocBuilder<EmergencyPageCubit, EmergencyPageState>(
+              builder: (context, state) {
+                return Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: [
+                    ServiceTypeButton(
+                      index: _serviceIndex,
+                      title: 'There\'s a fire',
+                      serviceImagePath: 'assets/icons/service_icon.png',
+                      isActive: _serviceIndex == 0,
+                      onTap: state is EmergencyState
+                          ? null
+                          : () {
+                              return setState(() {
+                                _serviceIndex = 0;
+                              });
+                            },
+                    ),
+                    ServiceTypeButton(
+                      index: _serviceIndex,
+                      title: 'There\'s an accident',
+                      serviceImagePath: 'assets/icons/service_icon2.png',
+                      isActive: _serviceIndex == 1,
+                      onTap: state is EmergencyState
+                          ? null
+                          : () {
+                              return setState(() {
+                                _serviceIndex = 1;
+                              });
+                            },
+                    ),
+                    ServiceTypeButton(
+                      index: _serviceIndex,
+                      title: 'There\'s a crime',
+                      serviceImagePath: 'assets/icons/service_icon3.png',
+                      isActive: _serviceIndex == 2,
+                      onTap: state is EmergencyState
+                          ? null
+                          : () {
+                              return setState(() {
+                                _serviceIndex = 2;
+                              });
+                            },
+                    )
+                  ],
+                );
+              },
+            ),
+
+            const SizedBox(height: 20),
           ],
         ),
       ),

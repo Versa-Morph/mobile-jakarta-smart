@@ -43,7 +43,7 @@ final List<BottomNavigationBarItem> _bottomNavItem = [
 
 // Screen List
 final List<Widget> _screenList = [
-  const LandingPage(),
+  const LandingPageWrapper(),
   const MapsPage(),
   const ContactPage(),
   const UserProfilePage(),

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:smart_jakarta/components/welcome_appbar.dart';
 import 'package:smart_jakarta/views/welcome/widgets/content_feature.dart';
 import 'package:smart_jakarta/views/welcome/widgets/login_button.dart';
