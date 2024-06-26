@@ -15,9 +15,8 @@ class ContentFeature extends StatelessWidget {
       height: 70,
       padding: const EdgeInsets.fromLTRB(15, 10, 15, 15),
       decoration: BoxDecoration(
-        // color: const Color(0xffFAFAFA),
         color: Theme.of(context).brightness == Brightness.dark
-            ? Colors.white
+            ? const Color(0xffFFFFFF)
             : Colors.black12,
         borderRadius: BorderRadius.circular(35),
       ),

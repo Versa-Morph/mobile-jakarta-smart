@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:smart_jakarta/bloc/cubit/theme_cubit.dart';
+import 'package:smart_jakarta/theme/app_theme.dart';
 
 class WelcomeAppBar extends StatelessWidget implements PreferredSizeWidget {
   const WelcomeAppBar({super.key});
@@ -10,6 +11,7 @@ class WelcomeAppBar extends StatelessWidget implements PreferredSizeWidget {
   @override
   Widget build(BuildContext context) {
     return AppBar(
+        scrolledUnderElevation: 0.0,
         title: BlocBuilder<ThemeCubit, ThemeState>(
           builder: (context, state) {
             return Padding(
@@ -18,7 +20,7 @@ class WelcomeAppBar extends StatelessWidget implements PreferredSizeWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Image.asset(
-                    state.themeData == ThemeData.dark()
+                    state.themeData == AppTheme.darkTheme
                         ? 'assets/images/app_logo_white.png'
                         : 'assets/images/app_logo.png',
                     fit: BoxFit.contain,
