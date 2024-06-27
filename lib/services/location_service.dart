@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:geolocator/geolocator.dart';
 
-class StreamLocationService {
+class LocationService {
   static Function(bool) locationPermissionHandler = (permission) {};
 
   Future<bool> _handleLocationPermission() async {

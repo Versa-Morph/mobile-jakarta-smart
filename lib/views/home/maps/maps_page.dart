@@ -4,6 +4,7 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:smart_jakarta/components/home_appbar.dart';
+import 'package:smart_jakarta/services/location_service.dart';
 
 class MapsPage extends StatefulWidget {
   const MapsPage({super.key});
@@ -14,7 +15,32 @@ class MapsPage extends StatefulWidget {
 
 class _MapsPageState extends State<MapsPage>
     with AutomaticKeepAliveClientMixin {
+  final Completer<GoogleMapController> _controller = Completer();
   final List<Marker> myMarker = [];
+
+  void getUserCurrentPosition() async {
+    LocationService locationService = LocationService();
+
+    final userPosition = await locationService.getCurrentPosition();
+    myMarker.add(
+      Marker(
+        markerId: const MarkerId('UserMark'),
+        position: LatLng(userPosition!.latitude, userPosition.longitude),
+        infoWindow: const InfoWindow(title: 'Location'),
+      ),
+    );
+
+    CameraPosition cameraPosition = CameraPosition(
+      target: LatLng(userPosition.latitude, userPosition.longitude),
+      zoom: 18,
+    );
+
+    final GoogleMapController controller = await _controller.future;
+    controller.animateCamera(CameraUpdate.newCameraPosition(cameraPosition));
+    setState(() {});
+  }
+
+//* TEMP DATA
   final List<Marker> markerList = [
     const Marker(
       markerId: MarkerId('myLocation'),
@@ -25,7 +51,6 @@ class _MapsPageState extends State<MapsPage>
       infoWindow: InfoWindow(title: 'MyLocation'),
     )
   ];
-  final Completer<GoogleMapController> _controller = Completer();
   static const CameraPosition _initialPosition = CameraPosition(
     target: LatLng(
       -6.203581902710393,
@@ -41,6 +66,7 @@ class _MapsPageState extends State<MapsPage>
   void initState() {
     super.initState();
     myMarker.addAll(markerList);
+    // getUserCurrentPosition();
   }
 
   @override
