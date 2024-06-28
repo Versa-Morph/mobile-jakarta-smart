@@ -17,6 +17,7 @@ class LocationService {
     }
 
     // Asking user for the permission
+    await Geolocator.requestPermission();
     locationPermission = await Geolocator.checkPermission();
     if (locationPermission == LocationPermission.denied) {
       locationPermissionHandler(false);
