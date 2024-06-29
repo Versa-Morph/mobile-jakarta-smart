@@ -1,7 +1,7 @@
 import 'dart:convert';
 
-PlacesAutocomplete placesAutocompleteFromJson(String str) =>
-    PlacesAutocomplete.fromJson(json.decode(str));
+PlacesAutocomplete placesAutocompleteFromJson(String responseBody) =>
+    PlacesAutocomplete.fromJson(json.decode(responseBody));
 
 class PlacesAutocomplete {
   List<Suggestion> suggestions;
@@ -59,7 +59,7 @@ class PlacePrediction {
 
 class StructuredFormat {
   PlacesText mainText;
-  PlacesText secondaryText;
+  PlacesText? secondaryText;
 
   StructuredFormat({
     required this.mainText,
@@ -69,7 +69,9 @@ class StructuredFormat {
   factory StructuredFormat.fromJson(Map<String, dynamic> json) =>
       StructuredFormat(
         mainText: PlacesText.fromJson(json["mainText"]),
-        secondaryText: PlacesText.fromJson(json["secondaryText"]),
+        secondaryText: json['secondaryText'] != null
+            ? PlacesText.fromJson(json["secondaryText"])
+            : null,
       );
 }
 

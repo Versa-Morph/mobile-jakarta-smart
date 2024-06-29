@@ -3,15 +3,15 @@ import 'dart:convert';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:smart_jakarta/bloc/cubit/theme_cubit.dart';
 import 'package:smart_jakarta/components/home_appbar.dart';
 import 'package:smart_jakarta/models/place_autocomplete.dart';
 import 'package:smart_jakarta/services/location_service.dart';
 import 'package:http/http.dart' as http;
 import 'package:smart_jakarta/constant/constant.dart' as constant;
+import 'package:smart_jakarta/views/home/maps/widgets/custom_search_bar.dart';
+import 'package:smart_jakarta/views/home/maps/widgets/search_result.dart';
 
 class MapsPage extends StatefulWidget {
   const MapsPage({super.key});
@@ -23,10 +23,12 @@ class MapsPage extends StatefulWidget {
 class _MapsPageState extends State<MapsPage>
     with AutomaticKeepAliveClientMixin {
   final Completer<GoogleMapController> _controller = Completer();
+  final TextEditingController _searchController = TextEditingController();
   final List<Marker> myMarker = [];
-  List placesPrediction = [];
+  List<Suggestion> places = [];
+  bool isResultVisible = false;
 
-  Future<PlacesAutocomplete?> placeAutoComplete(String query) async {
+  Future<PlacesAutocomplete?> searchAutoComplete(String query) async {
     const url = 'https://places.googleapis.com/v1/places:autocomplete';
 
     final response = await http.post(
@@ -45,15 +47,12 @@ class _MapsPageState extends State<MapsPage>
     );
 
     if (response.statusCode == 200) {
-      final data = jsonDecode(response.body);
-      final result = placesAutocompleteFromJson(data);
-      if (result.suggestions != null) {
-        setState(() {
-          placesPrediction = result.suggestions;
-        });
-      }
-    } else {
-      print('null data');
+      // final data = jsonDecode(response.body);
+      final result = placesAutocompleteFromJson(response.body);
+
+      setState(() {
+        places = result.suggestions;
+      });
     }
     return null;
   }
@@ -115,6 +114,14 @@ class _MapsPageState extends State<MapsPage>
     super.initState();
     // myMarker.addAll(markerList);
     pointUserLocation();
+
+    setState(() {
+      if (places.isEmpty) {
+        isResultVisible = false;
+      } else {
+        isResultVisible = true;
+      }
+    });
   }
 
   @override
@@ -143,53 +150,46 @@ class _MapsPageState extends State<MapsPage>
             top: 10,
             right: 15,
             left: 15,
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20),
-              child: Container(
-                decoration: const BoxDecoration(
-                  color: Color(0xffffffff),
-                ),
-                child: TextField(
-                  // TODO: ADD CONTROLLER
-                  style: TextStyle(
-                    color: context.read<ThemeCubit>().state.themeData ==
-                            ThemeData.dark()
-                        ? Colors.white
-                        : Colors.black,
-                  ),
-                  decoration: InputDecoration(
-                    contentPadding: const EdgeInsets.symmetric(
-                      horizontal: 20,
-                      vertical: 10,
-                    ),
-                    hintText: 'What do you want to find?',
-                    hintStyle: TextStyle(
-                      color: context.read<ThemeCubit>().state.themeData ==
-                              ThemeData.dark()
-                          ? Colors.white
-                          : const Color(0xffA39E9E),
-                    ),
-                    suffixIcon: const Icon(
-                      Icons.search,
-                      size: 30,
-                    ),
-                    suffixIconColor:
-                        context.read<ThemeCubit>().state.themeData ==
-                                ThemeData.dark()
-                            ? Colors.white
-                            : const Color(0xffA39E9E),
-                    border: InputBorder.none,
-                  ),
-                ),
-              ),
+            child: CustomSearchBar(
+              // TODO: ADD CONTROLLER
+              controller: _searchController,
+              onChanged: (query) => searchAutoComplete(query),
             ),
           ),
+          SearchResult(
+            isVisible: isResultVisible,
+            child: ListView.builder(
+              shrinkWrap: true,
+              itemCount: places.length,
+              itemBuilder: (context, index) {
+                final placesTitle = places[index]
+                    .placePrediction
+                    .structuredFormat
+                    .mainText
+                    .text;
+                final placesSubTitle = places[index]
+                    .placePrediction
+                    .structuredFormat
+                    .secondaryText
+                    ?.text;
+
+                return ListTile(
+                  onTap: () {},
+                  title: Text(placesTitle),
+                  subtitle: Text(placesSubTitle ?? ''),
+                );
+              },
+            ),
+          )
         ],
       ),
       floatingActionButton: FloatingActionButton(
         // onPressed: () async => goToUserLocation(),
         // onPressed: () async => placeAutoComplete('polisi'),
-        onPressed: () => print(placesPrediction),
+        onPressed: () async {
+          searchAutoComplete(_searchController.text);
+          print(isResultVisible);
+        },
         child: const Icon(Icons.location_searching_sharp),
       ),
     );
