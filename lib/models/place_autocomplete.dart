@@ -4,7 +4,7 @@ PlacesAutocomplete placesAutocompleteFromJson(String responseBody) =>
     PlacesAutocomplete.fromJson(json.decode(responseBody));
 
 class PlacesAutocomplete {
-  List<Suggestion> suggestions;
+  List<Suggestion>? suggestions;
 
   PlacesAutocomplete({
     required this.suggestions,
@@ -12,11 +12,13 @@ class PlacesAutocomplete {
 
   factory PlacesAutocomplete.fromJson(Map<String, dynamic> json) =>
       PlacesAutocomplete(
-        suggestions: List<Suggestion>.from(
-          json["suggestions"].map(
-            (value) => Suggestion.fromJson(value),
-          ),
-        ),
+        suggestions: json["suggestions"] != null
+            ? List<Suggestion>.from(
+                json["suggestions"].map(
+                  (value) => Suggestion.fromJson(value),
+                ),
+              )
+            : null,
       );
 }
 

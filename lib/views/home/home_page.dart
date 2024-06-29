@@ -44,7 +44,7 @@ final List<BottomNavigationBarItem> _bottomNavItem = [
 // Screen List
 final List<Widget> _screenList = [
   const LandingPageWrapper(),
-  const MapsPage(),
+  const MapsPageWrapper(),
   const ContactPage(),
   const UserProfilePage(),
 ];
@@ -88,6 +88,7 @@ class _HomePageState extends State<HomePage> {
     return BlocBuilder<HomeNavigationCubit, HomeNavigationState>(
       builder: (context, state) {
         return Scaffold(
+          resizeToAvoidBottomInset: false,
           body: PageView(
             controller: _pageController,
             onPageChanged: (value) {
