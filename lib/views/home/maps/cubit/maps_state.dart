@@ -5,20 +5,17 @@ class MapsState extends Equatable {
     required this.markers,
     required this.placesSuggestions,
     required this.isSearchResultVisible,
-    required this.initialPosition,
   });
 
   final List<Marker> markers;
   final List<Suggestion> placesSuggestions;
   final bool isSearchResultVisible;
-  final CameraPosition initialPosition;
 
   @override
   List<Object> get props => [
         markers,
         placesSuggestions,
         isSearchResultVisible,
-        initialPosition,
       ];
 
   MapsState copyWith(
@@ -31,7 +28,14 @@ class MapsState extends Equatable {
       placesSuggestions: placesSuggestions ?? this.placesSuggestions,
       isSearchResultVisible:
           isSearchResultVisible ?? this.isSearchResultVisible,
-      initialPosition: initialPosition ?? this.initialPosition,
+    );
+  }
+
+  factory MapsState.initial() {
+    return const MapsState(
+      markers: [],
+      placesSuggestions: [],
+      isSearchResultVisible: false,
     );
   }
 }

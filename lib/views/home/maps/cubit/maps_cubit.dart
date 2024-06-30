@@ -12,26 +12,15 @@ import 'package:smart_jakarta/services/location_service.dart';
 part 'maps_state.dart';
 
 class MapsCubit extends Cubit<MapsState> {
-  MapsCubit()
-      : super(
-          const MapsState(
-            initialPosition: CameraPosition(
-              target: LatLng(
-                -6.203581902710393,
-                107.00458244057064,
-              ),
-              zoom: 18,
-            ),
-            markers: [],
-            placesSuggestions: [],
-            isSearchResultVisible: false,
-          ),
-        );
+  MapsCubit() : super(MapsState.initial()) {
+    goToUserLocation();
+    _pointUserLocation();
+  }
 
   final Completer<GoogleMapController> _mapsController = Completer();
 
   /// Autocomplete search places
-  Future<void> searchPlacesAutoComplete(String query) async {
+  Future<void> searchPlacesAutoComplete(String? query) async {
     const url = 'https://places.googleapis.com/v1/places:autocomplete';
 
     final response = await http.post(
@@ -45,26 +34,23 @@ class MapsCubit extends Cubit<MapsState> {
       body: jsonEncode(
         {
           "input": query,
+          "includedRegionCodes": ["id"],
         },
       ),
     );
 
     if (response.statusCode == 200) {
+      print(response.body);
       final result = placesAutocompleteFromJson(response.body);
-
-      if (result.suggestions != null) {
-        emit(state.copyWith(
-          placesSuggestions: result.suggestions,
-          isSearchResultVisible: true,
-        ));
-      } else {
-        emit(
-          state.copyWith(
-            placesSuggestions: [],
-            isSearchResultVisible: false,
-          ),
-        );
-      }
+      emit(state.copyWith(
+        placesSuggestions: result.suggestions,
+        isSearchResultVisible: true,
+      ));
+    } else {
+      emit(state.copyWith(
+        placesSuggestions: [],
+        isSearchResultVisible: false,
+      ));
     }
   }
 
@@ -75,7 +61,7 @@ class MapsCubit extends Cubit<MapsState> {
   }
 
 // Point user location
-  Future<void> pointUserLocation() async {
+  Future<void> _pointUserLocation() async {
     final userLocation = await getUserLocation();
     if (userLocation != null) {
       final marker = Marker(

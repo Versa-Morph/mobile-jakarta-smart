@@ -46,7 +46,8 @@ class _MapsPageState extends State<MapsPage>
           BlocBuilder<MapsCubit, MapsState>(
             builder: (context, state) {
               return GoogleMap(
-                initialCameraPosition: state.initialPosition,
+                initialCameraPosition:
+                    const CameraPosition(target: LatLng(0, 0), zoom: 18),
                 markers: Set<Marker>.of(state.markers),
                 gestureRecognizers: {
                   /// to make the swipe only in maps
@@ -73,34 +74,55 @@ class _MapsPageState extends State<MapsPage>
                   context.read<MapsCubit>().searchPlacesAutoComplete(query),
             ),
           ),
-          BlocBuilder<MapsCubit, MapsState>(
-            builder: (context, state) {
-              return SearchResult(
-                isVisible: state.isSearchResultVisible,
-                child: ListView.builder(
-                  shrinkWrap: true,
-                  itemCount: state.placesSuggestions.length,
-                  itemBuilder: (context, index) {
-                    final placesTitle = state.placesSuggestions[index]
-                        .placePrediction.structuredFormat.mainText.text;
-                    final placesSubTitle = state.placesSuggestions[index]
-                        .placePrediction.structuredFormat.secondaryText?.text;
+          Positioned(
+            top: 48,
+            right: 15,
+            left: 15,
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 10),
+              child: BlocBuilder<MapsCubit, MapsState>(
+                builder: (context, state) {
+                  return SearchResult(
+                    isVisible: state.isSearchResultVisible,
+                    child: ListView.builder(
+                      shrinkWrap: true,
+                      itemCount: state.placesSuggestions.length,
+                      itemBuilder: (context, index) {
+                        final placesTitle = state.placesSuggestions[index]
+                            .placePrediction.structuredFormat.mainText.text;
+                        final placesSubTitle = state
+                            .placesSuggestions[index]
+                            .placePrediction
+                            .structuredFormat
+                            .secondaryText
+                            ?.text;
 
-                    return ListTile(
-                      onTap: () {},
-                      title: Text(placesTitle),
-                      subtitle: Text(placesSubTitle ?? ''),
-                    );
-                  },
-                ),
-              );
-            },
+                        return ListTile(
+                          onTap: () {
+                            print(placesTitle);
+                          },
+                          title: Text(placesTitle),
+                          subtitle: Text(placesSubTitle ?? ''),
+                        );
+                      },
+                    ),
+                  );
+                },
+              ),
+            ),
           ),
         ],
       ),
       floatingActionButton: BlocBuilder<MapsCubit, MapsState>(
         builder: (context, state) {
-          return FloatingActionButton(onPressed: () => print(state));
+          return FloatingActionButton(
+            onPressed: () {
+              context.read<MapsCubit>().goToUserLocation();
+            },
+            child: const Icon(
+              Icons.location_searching_outlined,
+            ),
+          );
         },
       ),
     );
