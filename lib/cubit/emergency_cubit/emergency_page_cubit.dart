@@ -3,8 +3,8 @@ import 'package:meta/meta.dart';
 
 part 'emergency_page_state.dart';
 
-class EmergencyPageCubit extends Cubit<EmergencyPageState> {
-  EmergencyPageCubit() : super(const NotEmergencyState(index: 0));
+class EmergencySituationCubit extends Cubit<EmergencySituationState> {
+  EmergencySituationCubit() : super(const NotEmergencyState(index: 0));
 
   void emergencyOccured(int index) {
     emit(EmergencyState(index: index));

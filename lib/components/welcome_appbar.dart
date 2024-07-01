@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:smart_jakarta/bloc/cubit/theme_cubit.dart';
+import 'package:smart_jakarta/cubit/theme_cubit/theme_cubit.dart';
 import 'package:smart_jakarta/theme/app_theme.dart';
 
 class WelcomeAppBar extends StatelessWidget implements PreferredSizeWidget {

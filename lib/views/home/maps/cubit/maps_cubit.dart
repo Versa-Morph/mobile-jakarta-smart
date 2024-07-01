@@ -1,46 +1,23 @@
 import 'dart:async';
-import 'dart:convert';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:geolocator/geolocator.dart';
-import 'package:smart_jakarta/constant/constant.dart' as constant;
-import 'package:http/http.dart' as http;
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:smart_jakarta/models/place_autocomplete.dart';
+import 'package:smart_jakarta/services/apis_service.dart';
 import 'package:smart_jakarta/services/location_service.dart';
 
 part 'maps_state.dart';
 
 class MapsCubit extends Cubit<MapsState> {
-  MapsCubit() : super(MapsState.initial()) {
-    goToUserLocation();
-    _pointUserLocation();
-  }
+  MapsCubit() : super(MapsState.initial());
 
   final Completer<GoogleMapController> _mapsController = Completer();
 
   /// Autocomplete search places
   Future<void> searchPlacesAutoComplete(String? query) async {
-    const url = 'https://places.googleapis.com/v1/places:autocomplete';
-
-    final response = await http.post(
-      Uri.parse(url),
-      headers: {
-        "X-Android-Package": "com.smartjkt.smart_jakarta",
-        "X-Android-Cert": "ED7C244053751E346B05BD4C02C9E4DC876407C2",
-        'Content-Type': 'application/json',
-        'X-Goog-Api-Key': constant.API_KEY,
-      },
-      body: jsonEncode(
-        {
-          "input": query,
-          "includedRegionCodes": ["id"],
-        },
-      ),
-    );
-
+    final response = await ApiService.placesAutocomplete(query);
     if (response.statusCode == 200) {
-      print(response.body);
       final result = placesAutocompleteFromJson(response.body);
       emit(state.copyWith(
         placesSuggestions: result.suggestions,
@@ -57,11 +34,14 @@ class MapsCubit extends Cubit<MapsState> {
 // Get user location
   Future<Position?> getUserLocation() async {
     LocationService locationService = LocationService();
-    return await locationService.getCurrentPosition();
+
+    final userLocation = await locationService.getCurrentPosition();
+
+    return userLocation;
   }
 
 // Point user location
-  Future<void> _pointUserLocation() async {
+  Future<void> pointUserLocation() async {
     final userLocation = await getUserLocation();
     if (userLocation != null) {
       final marker = Marker(

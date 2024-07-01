@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:smart_jakarta/components/welcome_appbar.dart';
+import 'package:smart_jakarta/cubit/location_cubit/location_cubit.dart';
 import 'package:smart_jakarta/views/welcome/widgets/content_feature.dart';
 import 'package:smart_jakarta/views/welcome/widgets/login_button.dart';
 import 'package:smart_jakarta/views/welcome/widgets/typewriter_text.dart';
@@ -16,6 +18,12 @@ class WelcomePage extends StatelessWidget {
         child: Center(
           child: Column(
             children: [
+              BlocBuilder<LocationCubit, LocationState>(
+                builder: (context, state) {
+                  return Text(
+                      '${state.userPosition!.latitude}${state.userPosition!.longitude}');
+                },
+              ),
               // Header Text
               Container(
                 padding: const EdgeInsets.symmetric(horizontal: 20),

@@ -12,17 +12,18 @@ class MapsState extends Equatable {
   final bool isSearchResultVisible;
 
   @override
-  List<Object> get props => [
+  List<Object?> get props => [
         markers,
         placesSuggestions,
         isSearchResultVisible,
       ];
 
-  MapsState copyWith(
-      {List<Marker>? markers,
-      List<Suggestion>? placesSuggestions,
-      bool? isSearchResultVisible,
-      CameraPosition? initialPosition}) {
+  MapsState copyWith({
+    List<Marker>? markers,
+    List<Suggestion>? placesSuggestions,
+    bool? isSearchResultVisible,
+    Position? userPosition,
+  }) {
     return MapsState(
       markers: markers ?? this.markers,
       placesSuggestions: placesSuggestions ?? this.placesSuggestions,

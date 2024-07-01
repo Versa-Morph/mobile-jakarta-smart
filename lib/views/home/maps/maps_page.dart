@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:smart_jakarta/components/home_appbar.dart';
+import 'package:smart_jakarta/cubit/location_cubit/location_cubit.dart';
 import 'package:smart_jakarta/views/home/maps/cubit/maps_cubit.dart';
 import 'package:smart_jakarta/views/home/maps/widgets/custom_search_bar.dart';
 import 'package:smart_jakarta/views/home/maps/widgets/search_result.dart';
@@ -14,7 +15,10 @@ class MapsPageWrapper extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => MapsCubit(),
+      create: (context) => MapsCubit()
+        ..getUserLocation()
+        ..goToUserLocation()
+        ..pointUserLocation(),
       child: const MapsPage(),
     );
   }
@@ -43,25 +47,29 @@ class _MapsPageState extends State<MapsPage>
       ),
       body: Stack(
         children: [
-          BlocBuilder<MapsCubit, MapsState>(
-            builder: (context, state) {
-              return GoogleMap(
-                initialCameraPosition:
-                    const CameraPosition(target: LatLng(0, 0), zoom: 18),
-                markers: Set<Marker>.of(state.markers),
-                gestureRecognizers: {
-                  /// to make the swipe only in maps
-                  Factory<EagerGestureRecognizer>(
-                      () => EagerGestureRecognizer()),
+          BlocBuilder<LocationCubit, LocationState>(
+            builder: (context, locationState) {
+              return BlocBuilder<MapsCubit, MapsState>(
+                builder: (context, state) {
+                  return GoogleMap(
+                    initialCameraPosition:
+                        const CameraPosition(target: LatLng(0, 0), zoom: 18),
+                    markers: Set<Marker>.of(state.markers),
+                    gestureRecognizers: {
+                      /// to make the swipe only in maps
+                      Factory<EagerGestureRecognizer>(
+                          () => EagerGestureRecognizer()),
+                    },
+                    onMapCreated: (controller) {
+                      context.read<MapsCubit>().setController(controller);
+                    },
+                    myLocationButtonEnabled: true,
+                    myLocationEnabled: true,
+                    compassEnabled: true,
+                    zoomControlsEnabled: false,
+                    trafficEnabled: true,
+                  );
                 },
-                onMapCreated: (controller) {
-                  context.read<MapsCubit>().setController(controller);
-                },
-                myLocationButtonEnabled: true,
-                myLocationEnabled: true,
-                compassEnabled: true,
-                zoomControlsEnabled: false,
-                trafficEnabled: true,
               );
             },
           ),

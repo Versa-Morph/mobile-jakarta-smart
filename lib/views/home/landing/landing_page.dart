@@ -2,21 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pulsator/pulsator.dart';
 import 'package:smart_jakarta/components/home_appbar.dart';
-import 'package:smart_jakarta/views/home/landing/cubit/emergency_page_cubit.dart';
+import 'package:smart_jakarta/cubit/emergency_cubit/emergency_page_cubit.dart';
 import 'package:smart_jakarta/views/home/landing/widgets/emergency_button.dart';
 import 'package:smart_jakarta/views/home/landing/widgets/service_type_button.dart';
-
-class LandingPageWrapper extends StatelessWidget {
-  const LandingPageWrapper({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) => EmergencyPageCubit(),
-      child: const LandingPage(),
-    );
-  }
-}
 
 class LandingPage extends StatefulWidget {
   const LandingPage({super.key});
@@ -117,7 +105,7 @@ class _LandingPageState extends State<LandingPage> {
             ),
 
             // Emergency Button
-            BlocBuilder<EmergencyPageCubit, EmergencyPageState>(
+            BlocBuilder<EmergencySituationCubit, EmergencySituationState>(
               builder: (context, state) {
                 return SizedBox(
                   height: MediaQuery.of(context).size.height / 2,
@@ -130,7 +118,7 @@ class _LandingPageState extends State<LandingPage> {
                           child: EmergencyButton(
                             onTap: () {
                               context
-                                  .read<EmergencyPageCubit>()
+                                  .read<EmergencySituationCubit>()
                                   .stopEmergency(_serviceIndex);
                             },
                           ),
@@ -138,7 +126,7 @@ class _LandingPageState extends State<LandingPage> {
                       : EmergencyButton(
                           onTap: () {
                             context
-                                .read<EmergencyPageCubit>()
+                                .read<EmergencySituationCubit>()
                                 .emergencyOccured(_serviceIndex);
                           },
                         ),
@@ -159,7 +147,7 @@ class _LandingPageState extends State<LandingPage> {
             const SizedBox(height: 12),
 
             // Service Type
-            BlocBuilder<EmergencyPageCubit, EmergencyPageState>(
+            BlocBuilder<EmergencySituationCubit, EmergencySituationState>(
               builder: (context, state) {
                 return Row(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,

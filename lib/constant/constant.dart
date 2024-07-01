@@ -1,7 +1,6 @@
 const String API_KEY = 'AIzaSyCuwl0w-B0XTUTRTngBrYlANeLlNzRS2Bw';
 
-const String AUTOCOMPLETE_PLACE_URL =
-    'https://places.googleapis.com/v1/places:autocomplete';
+const String PLACES_URL = 'https://places.googleapis.com/v1/places:';
 
 const String AGGREMENT_MESSAGE = '''
 Syarat dan Ketentuan Penggunaan Aplikasi Jakarta Smart
