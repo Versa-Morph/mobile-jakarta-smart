@@ -7,7 +7,8 @@ import 'package:smart_jakarta/views/home/landing/widgets/emergency_button.dart';
 import 'package:smart_jakarta/views/home/landing/widgets/service_type_button.dart';
 
 class LandingPage extends StatefulWidget {
-  const LandingPage({super.key});
+  const LandingPage({super.key, this.navigateToMaps});
+  final Function(int)? navigateToMaps;
 
   @override
   State<LandingPage> createState() => _LandingPageState();
@@ -94,7 +95,7 @@ class _LandingPageState extends State<LandingPage> {
             const SizedBox(height: 10),
 
             Text(
-              'Just hold the button to call',
+              'Just press the button to call',
               style: TextStyle(
                 fontSize: 14,
                 fontWeight: FontWeight.w400,
@@ -128,6 +129,9 @@ class _LandingPageState extends State<LandingPage> {
                             context
                                 .read<EmergencySituationCubit>()
                                 .emergencyOccured(_serviceIndex);
+
+                            Future.delayed(const Duration(seconds: 2),
+                                () => widget.navigateToMaps!(1));
                           },
                         ),
                 );

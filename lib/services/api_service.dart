@@ -33,18 +33,19 @@ class ApiService {
           "X-Android-Cert": "ED7C244053751E346B05BD4C02C9E4DC876407C2",
           'Content-Type': 'application/json',
           'X-Goog-Api-Key': constant.API_KEY,
-          'X-Goog-FieldMask': 'places.displayName,places.formattedAddress',
+          'X-Goog-FieldMask':
+              'places.formattedAddress,places.displayName,places.location',
         },
         body: jsonEncode(
           {
-            'includedTypes': ['police', 'fire_station'],
+            'includedPrimaryTypes': ['police', 'fire_station'],
             'locationRestriction': {
               'circle': {
                 'center': {
                   'latitude': currentPosition!.latitude,
                   'longitude': currentPosition.longitude,
                 },
-                'radius': 1000,
+                'radius': 2000,
               }
             }
           },

@@ -10,14 +10,15 @@ import 'package:smart_jakarta/views/home/maps/widgets/custom_search_bar.dart';
 import 'package:smart_jakarta/views/home/maps/widgets/search_result.dart';
 
 class MapsPageWrapper extends StatelessWidget {
-  const MapsPageWrapper({super.key});
+  const MapsPageWrapper({super.key, this.markerList});
+  final List<Marker>? markerList;
 
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) => MapsCubit(
         locationCubit: context.read<LocationCubit>(),
-      )..pointUserLocation(),
+      ),
       child: const MapsPage(),
     );
   }
@@ -131,6 +132,7 @@ class _MapsPageState extends State<MapsPage>
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           context.read<MapsCubit>().goToUserLocation();
+          context.read<MapsCubit>().nearbyPlaces();
         },
         child: const Icon(
           Icons.location_searching_outlined,

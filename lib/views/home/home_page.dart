@@ -41,13 +41,13 @@ final List<BottomNavigationBarItem> _bottomNavItem = [
   ),
 ];
 
-// Screen List
-final List<Widget> _screenList = [
-  const LandingPage(),
-  const MapsPageWrapper(),
-  const ContactPage(),
-  const UserProfilePage(),
-];
+// // Screen List
+// final List<Widget> _screenList = [
+//   LandingPage(),
+//   const MapsPageWrapper(),
+//   const ContactPage(),
+//   const UserProfilePage(),
+// ];
 
 class HomePageWrapper extends StatelessWidget {
   const HomePageWrapper({super.key});
@@ -94,7 +94,20 @@ class _HomePageState extends State<HomePage> {
             onPageChanged: (value) {
               context.read<HomeNavigationCubit>().changeTab(value);
             },
-            children: _screenList,
+            children: [
+              LandingPage(
+                navigateToMaps: (index) {
+                  return _pageController.animateToPage(
+                    index,
+                    duration: const Duration(milliseconds: 1500),
+                    curve: Curves.fastOutSlowIn,
+                  );
+                },
+              ),
+              const MapsPageWrapper(),
+              const ContactPage(),
+              const UserProfilePage(),
+            ],
           ),
           bottomNavigationBar: BottomNavigationBar(
             items: _bottomNavItem,
