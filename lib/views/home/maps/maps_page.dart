@@ -5,13 +5,15 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:smart_jakarta/components/home_appbar.dart';
 import 'package:smart_jakarta/cubit/location_cubit/location_cubit.dart';
+import 'package:smart_jakarta/views/home/cubit/home_page_cubit.dart';
 import 'package:smart_jakarta/views/home/maps/cubit/maps_cubit.dart';
 import 'package:smart_jakarta/views/home/maps/widgets/custom_search_bar.dart';
 import 'package:smart_jakarta/views/home/maps/widgets/search_result.dart';
 
 class MapsPageWrapper extends StatelessWidget {
-  const MapsPageWrapper({super.key, this.markerList});
-  final List<Marker>? markerList;
+  const MapsPageWrapper({
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -48,7 +50,7 @@ class _MapsPageState extends State<MapsPage>
       body: Stack(
         children: [
           Builder(builder: (context) {
-            final mapState = context.watch<MapsCubit>().state;
+            final homePageState = context.watch<HomePageCubit>().state;
             final locationState = context.watch<LocationCubit>().state;
 
             if (locationState is LocationLoading) {
@@ -63,14 +65,14 @@ class _MapsPageState extends State<MapsPage>
                       locationState.userLocation.longitude,
                     ),
                     zoom: 18),
-                markers: Set<Marker>.of(mapState.markers),
+                markers: Set<Marker>.of(homePageState.markers),
                 gestureRecognizers: {
                   /// to make the swipe only in maps
                   Factory<EagerGestureRecognizer>(
                       () => EagerGestureRecognizer()),
                 },
                 onMapCreated: (controller) {
-                  context.read<MapsCubit>().setController(controller);
+                  context.read<HomePageCubit>().setController(controller);
                 },
                 myLocationEnabled: true,
                 compassEnabled: true,
@@ -132,7 +134,8 @@ class _MapsPageState extends State<MapsPage>
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           context.read<MapsCubit>().goToUserLocation();
-          context.read<MapsCubit>().nearbyPlaces();
+          context.read<HomePageCubit>().nearbyPlaces();
+          print(context.read<HomePageCubit>().state.markers);
         },
         child: const Icon(
           Icons.location_searching_outlined,

@@ -1,29 +1,25 @@
-part of 'maps_cubit.dart';
+part of 'home_page_cubit.dart';
 
-class MapsState extends Equatable {
-  const MapsState({
+class HomePageState extends Equatable {
+  const HomePageState({
+    required this.tabIndex,
     required this.markers,
     required this.placesSuggestions,
     required this.isSearchResultVisible,
   });
-
+  final int tabIndex;
   final List<Marker> markers;
   final List<Suggestion> placesSuggestions;
   final bool isSearchResultVisible;
 
-  @override
-  List<Object?> get props => [
-        markers,
-        placesSuggestions,
-        isSearchResultVisible,
-      ];
-
-  MapsState copyWith({
+  HomePageState copyWith({
+    int? tabIndex,
     List<Marker>? markers,
     List<Suggestion>? placesSuggestions,
     bool? isSearchResultVisible,
   }) {
-    return MapsState(
+    return HomePageState(
+      tabIndex: tabIndex ?? this.tabIndex,
       markers: markers ?? this.markers,
       placesSuggestions: placesSuggestions ?? this.placesSuggestions,
       isSearchResultVisible:
@@ -31,11 +27,20 @@ class MapsState extends Equatable {
     );
   }
 
-  factory MapsState.initial() {
-    return const MapsState(
+  factory HomePageState.initial() {
+    return const HomePageState(
+      tabIndex: 0,
       markers: [],
       placesSuggestions: [],
       isSearchResultVisible: false,
     );
   }
+
+  @override
+  List<Object?> get props => [
+        tabIndex,
+        markers,
+        placesSuggestions,
+        isSearchResultVisible,
+      ];
 }

@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:smart_jakarta/cubit/location_cubit/location_cubit.dart';
 import 'package:smart_jakarta/views/home/contact/contact_page.dart';
-import 'package:smart_jakarta/views/home/cubit/home_navigation_cubit.dart';
+import 'package:smart_jakarta/views/home/cubit/home_page_cubit.dart';
 import 'package:smart_jakarta/views/home/landing/landing_page.dart';
 import 'package:smart_jakarta/views/home/maps/maps_page.dart';
 import 'package:smart_jakarta/views/home/profile/user_profile_page.dart';
@@ -55,7 +56,9 @@ class HomePageWrapper extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => HomeNavigationCubit(),
+      create: (context) => HomePageCubit(
+        locationCubit: context.read<LocationCubit>(),
+      ),
       child: const HomePage(),
     );
   }
@@ -69,39 +72,28 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  late PageController _pageController;
-
-  @override
-  void initState() {
-    super.initState();
-    _pageController = PageController();
-  }
-
-  @override
-  void dispose() {
-    super.dispose();
-    _pageController.dispose();
-  }
-
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<HomeNavigationCubit, HomeNavigationState>(
+    return BlocBuilder<HomePageCubit, HomePageState>(
       builder: (context, state) {
         return Scaffold(
           resizeToAvoidBottomInset: false,
           body: PageView(
-            controller: _pageController,
+            controller: context.read<HomePageCubit>().pageController,
             onPageChanged: (value) {
-              context.read<HomeNavigationCubit>().changeTab(value);
+              context.read<HomePageCubit>().changeTab(value);
             },
             children: [
               LandingPage(
                 navigateToMaps: (index) {
-                  return _pageController.animateToPage(
-                    index,
-                    duration: const Duration(milliseconds: 1500),
-                    curve: Curves.fastOutSlowIn,
-                  );
+                  return context
+                      .read<HomePageCubit>()
+                      .pageController
+                      .animateToPage(
+                        index,
+                        duration: const Duration(milliseconds: 1500),
+                        curve: Curves.fastOutSlowIn,
+                      );
                 },
               ),
               const MapsPageWrapper(),
@@ -117,7 +109,7 @@ class _HomePageState extends State<HomePage> {
             selectedItemColor: const Color(0xffD99022),
             unselectedItemColor: const Color(0xffA39E9E),
             onTap: (value) {
-              _pageController.jumpToPage(value);
+              context.read<HomePageCubit>().pageController.jumpToPage(value);
             },
           ),
         );

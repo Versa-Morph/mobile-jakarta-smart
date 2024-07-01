@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pulsator/pulsator.dart';
 import 'package:smart_jakarta/components/home_appbar.dart';
 import 'package:smart_jakarta/cubit/emergency_cubit/emergency_page_cubit.dart';
+import 'package:smart_jakarta/views/home/cubit/home_page_cubit.dart';
 import 'package:smart_jakarta/views/home/landing/widgets/emergency_button.dart';
 import 'package:smart_jakarta/views/home/landing/widgets/service_type_button.dart';
 
@@ -118,6 +119,8 @@ class _LandingPageState extends State<LandingPage> {
                           ),
                           child: EmergencyButton(
                             onTap: () {
+                              context.read<HomePageCubit>().clear();
+
                               context
                                   .read<EmergencySituationCubit>()
                                   .stopEmergency(_serviceIndex);
@@ -129,6 +132,8 @@ class _LandingPageState extends State<LandingPage> {
                             context
                                 .read<EmergencySituationCubit>()
                                 .emergencyOccured(_serviceIndex);
+
+                            context.read<HomePageCubit>().nearbyPlaces();
 
                             Future.delayed(const Duration(seconds: 2),
                                 () => widget.navigateToMaps!(1));
