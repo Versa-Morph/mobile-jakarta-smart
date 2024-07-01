@@ -3,16 +3,18 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:smart_jakarta/cubit/location_cubit/location_cubit.dart';
 import 'package:smart_jakarta/models/place_autocomplete.dart';
 import 'package:smart_jakarta/services/apis_service.dart';
-import 'package:smart_jakarta/services/location_service.dart';
 
 part 'maps_state.dart';
 
 class MapsCubit extends Cubit<MapsState> {
-  MapsCubit() : super(MapsState.initial());
-
+  MapsCubit({required this.locationCubit}) : super(MapsState.initial());
+  final LocationCubit locationCubit;
   final Completer<GoogleMapController> _mapsController = Completer();
+
+  LocationState get locationState => locationCubit.state;
 
   /// Autocomplete search places
   Future<void> searchPlacesAutoComplete(String? query) async {
@@ -31,19 +33,12 @@ class MapsCubit extends Cubit<MapsState> {
     }
   }
 
-// Get user location
-  Future<Position?> getUserLocation() async {
-    LocationService locationService = LocationService();
-
-    final userLocation = await locationService.getCurrentPosition();
-
-    return userLocation;
-  }
-
 // Point user location
   Future<void> pointUserLocation() async {
-    final userLocation = await getUserLocation();
-    if (userLocation != null) {
+    final currentState = locationState;
+    if (currentState is LocationAcquired) {
+      final userLocation = currentState.userLocation;
+
       final marker = Marker(
         markerId: const MarkerId('UserMark'),
         position: LatLng(userLocation.latitude, userLocation.longitude),
@@ -52,22 +47,15 @@ class MapsCubit extends Cubit<MapsState> {
 
       final newMarkers = List<Marker>.from(state.markers)..add(marker);
 
-      final cameraPosition = CameraPosition(
-        target: LatLng(userLocation.latitude, userLocation.longitude),
-        zoom: 18,
-      );
-
-      final GoogleMapController controller = await _mapsController.future;
-      controller.animateCamera(CameraUpdate.newCameraPosition(cameraPosition));
-
       emit(state.copyWith(markers: newMarkers));
     }
   }
 
   /// Go to user location
   Future<void> goToUserLocation() async {
-    final userLocation = await getUserLocation();
-    if (userLocation != null) {
+    final currentState = locationState;
+    if (currentState is LocationAcquired) {
+      final userLocation = currentState.userLocation;
       final cameraPosition = CameraPosition(
         target: LatLng(userLocation.latitude, userLocation.longitude),
         zoom: 18,

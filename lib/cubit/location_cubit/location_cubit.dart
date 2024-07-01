@@ -8,11 +8,12 @@ part 'location_state.dart';
 class LocationCubit extends Cubit<LocationState> {
   LocationCubit() : super(const LocationState());
 
-  // Get user location
   Future<void> getUserLocation() async {
+    emit(const LocationLoading());
     LocationService locationService = LocationService();
-
     final userLocation = await locationService.getCurrentPosition();
-    emit(state.copyWith(userPosition: userLocation));
+    if (userLocation != null) {
+      emit(LocationAcquired(userLocation));
+    }
   }
 }

@@ -15,10 +15,9 @@ class MapsPageWrapper extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => MapsCubit()
-        ..getUserLocation()
-        ..goToUserLocation()
-        ..pointUserLocation(),
+      create: (context) => MapsCubit(
+        locationCubit: context.read<LocationCubit>(),
+      )..pointUserLocation(),
       child: const MapsPage(),
     );
   }
@@ -47,32 +46,40 @@ class _MapsPageState extends State<MapsPage>
       ),
       body: Stack(
         children: [
-          BlocBuilder<LocationCubit, LocationState>(
-            builder: (context, locationState) {
-              return BlocBuilder<MapsCubit, MapsState>(
-                builder: (context, state) {
-                  return GoogleMap(
-                    initialCameraPosition:
-                        const CameraPosition(target: LatLng(0, 0), zoom: 18),
-                    markers: Set<Marker>.of(state.markers),
-                    gestureRecognizers: {
-                      /// to make the swipe only in maps
-                      Factory<EagerGestureRecognizer>(
-                          () => EagerGestureRecognizer()),
-                    },
-                    onMapCreated: (controller) {
-                      context.read<MapsCubit>().setController(controller);
-                    },
-                    myLocationButtonEnabled: true,
-                    myLocationEnabled: true,
-                    compassEnabled: true,
-                    zoomControlsEnabled: false,
-                    trafficEnabled: true,
-                  );
-                },
+          Builder(builder: (context) {
+            final mapState = context.watch<MapsCubit>().state;
+            final locationState = context.watch<LocationCubit>().state;
+
+            if (locationState is LocationLoading) {
+              return const Center(
+                child: CircularProgressIndicator(),
               );
-            },
-          ),
+            } else if (locationState is LocationAcquired) {
+              return GoogleMap(
+                initialCameraPosition: CameraPosition(
+                    target: LatLng(
+                      locationState.userLocation.latitude,
+                      locationState.userLocation.longitude,
+                    ),
+                    zoom: 18),
+                markers: Set<Marker>.of(mapState.markers),
+                gestureRecognizers: {
+                  /// to make the swipe only in maps
+                  Factory<EagerGestureRecognizer>(
+                      () => EagerGestureRecognizer()),
+                },
+                onMapCreated: (controller) {
+                  context.read<MapsCubit>().setController(controller);
+                },
+                myLocationEnabled: true,
+                compassEnabled: true,
+                zoomControlsEnabled: false,
+                trafficEnabled: true,
+              );
+            } else {
+              return const SizedBox();
+            }
+          }),
           Positioned(
             top: 10,
             right: 15,
@@ -121,17 +128,13 @@ class _MapsPageState extends State<MapsPage>
           ),
         ],
       ),
-      floatingActionButton: BlocBuilder<MapsCubit, MapsState>(
-        builder: (context, state) {
-          return FloatingActionButton(
-            onPressed: () {
-              context.read<MapsCubit>().goToUserLocation();
-            },
-            child: const Icon(
-              Icons.location_searching_outlined,
-            ),
-          );
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          context.read<MapsCubit>().goToUserLocation();
         },
+        child: const Icon(
+          Icons.location_searching_outlined,
+        ),
       ),
     );
   }
