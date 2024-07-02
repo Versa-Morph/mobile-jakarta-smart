@@ -35,7 +35,7 @@ class HomePageCubit extends Cubit<HomePageState> {
       ];
 
       final userLocation = currentState.userLocation;
-      final response = await ApiService.placesNearby(userLocation);
+      final response = await MapsApiService.placesNearby(userLocation);
 
       if (response.statusCode == 200) {
         final result = nearbyPlacesFromJson(response.body);

@@ -16,7 +16,7 @@ class MapsCubit extends Cubit<MapsState> {
 
   /// Autocomplete search places
   Future<void> searchPlacesAutoComplete(String? query) async {
-    final response = await ApiService.placesAutocomplete(query);
+    final response = await MapsApiService.placesAutocomplete(query);
     if (response.statusCode == 200) {
       final result = placesAutocompleteFromJson(response.body);
       emit(state.copyWith(

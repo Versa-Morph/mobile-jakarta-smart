@@ -31,8 +31,9 @@ dependencies:
   geolocator: ^12.0.0
   pulsator: ^1.0.0+2
   flutter_polyline_points: ^2.0.1
-  http: ^1.2.1 
+  http: ^1.2.1
   equatable: ^2.0.5
+  shared_preferences: ^2.2.3
 
 dev_dependencies:
   flutter_test:

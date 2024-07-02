@@ -89,10 +89,10 @@ class _HomePageState extends State<HomePage> {
                   return context
                       .read<HomePageCubit>()
                       .pageController
-                      .animateToPage(
+                      .jumpToPage(
                         index,
-                        duration: const Duration(milliseconds: 1500),
-                        curve: Curves.fastOutSlowIn,
+                        // duration: const Duration(milliseconds: 1500),
+                        // curve: Curves.fastOutSlowIn,
                       );
                 },
               ),
