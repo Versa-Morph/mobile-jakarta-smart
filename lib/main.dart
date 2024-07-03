@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:smart_jakarta/cubit/emergency_cubit/emergency_page_cubit.dart';
+import 'package:smart_jakarta/cubit/emergency_cubit/emergency_situation_cubit.dart';
 import 'package:smart_jakarta/cubit/location_cubit/location_cubit.dart';
 import 'package:smart_jakarta/cubit/theme_cubit/theme_cubit.dart';
 import 'package:smart_jakarta/core/routes.dart';

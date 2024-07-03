@@ -3,14 +3,14 @@ import 'package:flutter/material.dart';
 class EmergencyButton extends StatelessWidget {
   const EmergencyButton({
     super.key,
-    this.onTap,
+    this.onLongPress,
   });
-  final Function()? onTap;
+  final Function()? onLongPress;
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: onTap ?? () {},
+      onLongPress: onLongPress ?? () {},
       child: Container(
         height: 125,
         width: 125,

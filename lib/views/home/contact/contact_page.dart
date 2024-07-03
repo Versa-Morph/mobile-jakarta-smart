@@ -13,9 +13,9 @@ class ContactPage extends StatelessWidget {
           userPictPath: 'assets/images/user_img_placeholder.png'),
       body: Center(
         child: ElevatedButton(
-          onPressed: () async {
+          onPressed: () {
             LaunchCall launchCall = LaunchCall();
-            await launchCall.makeCall('123');
+            launchCall.makeCall('123');
           },
           child: const Icon(Icons.abc),
         ),

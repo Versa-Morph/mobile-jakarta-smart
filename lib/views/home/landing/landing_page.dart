@@ -2,8 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pulsator/pulsator.dart';
 import 'package:smart_jakarta/components/home_appbar.dart';
-import 'package:smart_jakarta/cubit/emergency_cubit/emergency_page_cubit.dart';
-import 'package:smart_jakarta/views/home/cubit/home_page_cubit.dart';
+import 'package:smart_jakarta/cubit/emergency_cubit/emergency_situation_cubit.dart';
 import 'package:smart_jakarta/views/home/landing/widgets/emergency_button.dart';
 import 'package:smart_jakarta/views/home/landing/widgets/service_type_button.dart';
 
@@ -116,9 +115,7 @@ class _LandingPageState extends State<LandingPage> {
                             startSize: 0.3,
                           ),
                           child: EmergencyButton(
-                            onTap: () {
-                              context.read<HomePageCubit>().clear();
-
+                            onLongPress: () {
                               context
                                   .read<EmergencySituationCubit>()
                                   .stopEmergency();
@@ -126,7 +123,7 @@ class _LandingPageState extends State<LandingPage> {
                           ),
                         )
                       : EmergencyButton(
-                          onTap: () {
+                          onLongPress: () {
                             context
                                 .read<EmergencySituationCubit>()
                                 .emergencyOccured();

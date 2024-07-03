@@ -1,4 +1,4 @@
-part of 'emergency_page_cubit.dart';
+part of 'emergency_situation_cubit.dart';
 
 class EmergencySituationState {
   const EmergencySituationState();
