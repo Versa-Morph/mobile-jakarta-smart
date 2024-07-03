@@ -4,10 +4,12 @@ import 'package:smart_jakarta/exception/auth_exception.dart';
 import 'package:smart_jakarta/network/api.dart';
 
 class AuthServices {
+  final Network _network = Network();
+
   /// Login with email and password
-  static Future<bool> login(String email, String password) async {
+  Future<bool> login(String email, String password) async {
     try {
-      final response = await Network().auth(
+      final response = await _network.auth(
         {
           'email': email,
           'password': password,
@@ -20,7 +22,7 @@ class AuthServices {
         final token = resBody['data']['access_token']['token'];
         final expiresIn = resBody['data']['access_token']['expires_in'];
 
-        Network.storeToken(token, expiresIn);
+        _network.storeToken(token, expiresIn);
 
         return true;
       }
@@ -32,7 +34,7 @@ class AuthServices {
   }
 
   /// Register with username, email and password
-  static Future<bool> register(
+  Future<bool> register(
     String username,
     String email,
     String password,
@@ -54,7 +56,7 @@ class AuthServices {
         final token = resBody['data']['access_token']['token'];
         final expiresIn = resBody['data']['access_token']['expires_in'];
 
-        Network.storeToken(token, expiresIn);
+        _network.storeToken(token, expiresIn);
 
         return true;
       } else if (resBody['data']['email'] != null) {
@@ -72,7 +74,7 @@ class AuthServices {
   /// Check token from local storage
   /// if token exist mean user is authenticated
   /// checking the expiration time
-  static Future<bool> isAuthenticated() async {
+  Future<bool> isAuthenticated() async {
     SharedPreferences localStorage = await SharedPreferences.getInstance();
     String? tokenString = localStorage.getString('token');
 
@@ -84,14 +86,14 @@ class AuthServices {
       if (currentTime < expirationTime) {
         return true;
       } else {
-        await logout(); // Remove Expired Token
+        await logout(); // remove the token
       }
     }
     return false;
   }
 
   /// Log user out, remove token from local storage
-  static Future<void> logout() async {
+  Future<void> logout() async {
     SharedPreferences localStorage = await SharedPreferences.getInstance();
     await localStorage.remove('token');
   }

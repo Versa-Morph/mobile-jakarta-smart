@@ -85,7 +85,6 @@ class _SignUpPageState extends State<SignUpPage> {
             const SizedBox(height: 20),
             // Textfield Email
             CustomTextfield(
-              controller: null, // TODO: ASSIGN CONTROLLER
               hintText: isEmailSelected ? 'Email' : 'Phone number',
               prefixImgPath: isEmailSelected
                   ? 'assets/icons/email_icon.png'
@@ -99,7 +98,6 @@ class _SignUpPageState extends State<SignUpPage> {
                     children: [
                       // Textfield Password
                       CustomTextfield(
-                        controller: null, // TODO: ASSIGN CONTROLLER
                         hintText: 'Password',
                         prefixImgPath: 'assets/icons/pass_icon.png',
                         obscureText: true,
@@ -109,7 +107,6 @@ class _SignUpPageState extends State<SignUpPage> {
 
                       // Textfield Password
                       CustomTextfield(
-                        controller: null, // TODO: ASSIGN CONTROLLER
                         hintText: 'Re-Type Password',
                         prefixImgPath: 'assets/icons/pass_icon.png',
                         obscureText: true,

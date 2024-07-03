@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:smart_jakarta/cubit/authenticaion_cubit/authentication_cubit.dart';
 import 'package:smart_jakarta/cubit/emergency_cubit/emergency_situation_cubit.dart';
 import 'package:smart_jakarta/cubit/location_cubit/location_cubit.dart';
 import 'package:smart_jakarta/cubit/theme_cubit/theme_cubit.dart';
@@ -19,6 +20,9 @@ class MyApp extends StatelessWidget {
       providers: [
         BlocProvider(
           create: (context) => ThemeCubit(),
+        ),
+        BlocProvider(
+          create: (context) => AuthenticationCubit()..checkAuthStatus(),
         ),
         BlocProvider(
           create: (context) => EmergencySituationCubit(),

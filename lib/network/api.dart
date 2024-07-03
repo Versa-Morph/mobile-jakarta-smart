@@ -6,7 +6,7 @@ import 'package:smart_jakarta/local_env.dart';
 class Network {
   String? token;
 
-  static void storeToken(String token, int expiresIn) async {
+  void storeToken(String token, int expiresIn) async {
     SharedPreferences localStorage = await SharedPreferences.getInstance();
     int currentTime = DateTime.now().millisecondsSinceEpoch ~/
         1000; // Current time in seconds

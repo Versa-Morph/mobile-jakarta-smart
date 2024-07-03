@@ -94,7 +94,7 @@ class _TypewriterTextState extends State<TypewriterText> {
   @override
   void dispose() {
     super.dispose();
-    _timer?.cancel();
+    // _timer?.cancel();
   }
 
   // Start the animation loop for typewriter animation
