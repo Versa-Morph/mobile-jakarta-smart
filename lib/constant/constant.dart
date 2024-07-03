@@ -1,6 +1,5 @@
 const String MAPS_API_KEY = 'AIzaSyCuwl0w-B0XTUTRTngBrYlANeLlNzRS2Bw';
 const String PLACES_URL = 'https://places.googleapis.com/v1/places:';
-const String API_URL = 'http://restapi-smartjakarta.test/api';
 
 const String AGGREMENT_MESSAGE = '''
 Syarat dan Ketentuan Penggunaan Aplikasi Jakarta Smart

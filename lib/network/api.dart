@@ -1,7 +1,7 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
-import 'package:smart_jakarta/constant/constant.dart' as constant;
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:smart_jakarta/local_env.dart';
 
 class Network {
   String? token;
@@ -19,15 +19,16 @@ class Network {
         }));
   }
 
-  Future<String?> _getToken() async {
+  Future<void> _getToken() async {
     SharedPreferences localStorage = await SharedPreferences.getInstance();
     // Mengambil string JSON dari local storage
     String? jsonString = localStorage.getString('token');
 
     if (jsonString != null) {
       Map<String, dynamic> jsonData = jsonDecode(jsonString);
-      String token =
-          jsonData['data']['access_token']['token']; // Mengambil nilai token
+
+      // Mengambil nilai token
+      token = jsonData['data']['access_token']['token'];
       print(token);
     } else {
       print("Token not found in local storage.");
@@ -35,7 +36,7 @@ class Network {
   }
 
   Future<http.Response> auth(Map<String, String> data, String endPoint) async {
-    final fullUrl = '${constant.API_URL}$endPoint';
+    final fullUrl = '$API_URL$endPoint';
     return await http.post(
       Uri.parse(fullUrl),
       body: jsonEncode(data),
@@ -44,7 +45,7 @@ class Network {
   }
 
   Future<http.Response> getData(String endPoint) async {
-    final fullUrl = '${constant.API_URL}$endPoint';
+    final fullUrl = '$API_URL$endPoint';
     await _getToken();
     return await http.get(Uri.parse(fullUrl), headers: _setHeaders());
   }
