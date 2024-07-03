@@ -135,7 +135,6 @@ class _MapsPageState extends State<MapsPage>
         onPressed: () {
           context.read<MapsCubit>().goToUserLocation();
           context.read<HomePageCubit>().nearbyPlaces();
-          print(context.read<HomePageCubit>().state.markers);
         },
         child: const Icon(
           Icons.location_searching_outlined,

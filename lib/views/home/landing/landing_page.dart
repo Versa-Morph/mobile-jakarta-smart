@@ -8,15 +8,13 @@ import 'package:smart_jakarta/views/home/landing/widgets/emergency_button.dart';
 import 'package:smart_jakarta/views/home/landing/widgets/service_type_button.dart';
 
 class LandingPage extends StatefulWidget {
-  const LandingPage({super.key, this.navigateToMaps});
-  final Function(int)? navigateToMaps;
+  const LandingPage({super.key});
 
   @override
   State<LandingPage> createState() => _LandingPageState();
 }
 
 class _LandingPageState extends State<LandingPage> {
-  int _serviceIndex = 0;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -96,7 +94,7 @@ class _LandingPageState extends State<LandingPage> {
             const SizedBox(height: 10),
 
             Text(
-              'Just press the button to call',
+              'Just hold the button to call',
               style: TextStyle(
                 fontSize: 14,
                 fontWeight: FontWeight.w400,
@@ -123,7 +121,7 @@ class _LandingPageState extends State<LandingPage> {
 
                               context
                                   .read<EmergencySituationCubit>()
-                                  .stopEmergency(_serviceIndex);
+                                  .stopEmergency();
                             },
                           ),
                         )
@@ -131,12 +129,7 @@ class _LandingPageState extends State<LandingPage> {
                           onTap: () {
                             context
                                 .read<EmergencySituationCubit>()
-                                .emergencyOccured(_serviceIndex);
-
-                            context.read<HomePageCubit>().nearbyPlaces();
-
-                            Future.delayed(const Duration(seconds: 2),
-                                () => widget.navigateToMaps!(1));
+                                .emergencyOccured();
                           },
                         ),
                 );
@@ -158,47 +151,20 @@ class _LandingPageState extends State<LandingPage> {
             // Service Type
             BlocBuilder<EmergencySituationCubit, EmergencySituationState>(
               builder: (context, state) {
-                return Row(
+                return const Row(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
                     ServiceTypeButton(
-                      index: _serviceIndex,
                       title: 'There\'s a fire',
                       serviceImagePath: 'assets/icons/service_icon.png',
-                      isActive: _serviceIndex == 0,
-                      onTap: state is EmergencyState
-                          ? null
-                          : () {
-                              return setState(() {
-                                _serviceIndex = 0;
-                              });
-                            },
                     ),
                     ServiceTypeButton(
-                      index: _serviceIndex,
                       title: 'There\'s an accident',
                       serviceImagePath: 'assets/icons/service_icon2.png',
-                      isActive: _serviceIndex == 1,
-                      onTap: state is EmergencyState
-                          ? null
-                          : () {
-                              return setState(() {
-                                _serviceIndex = 1;
-                              });
-                            },
                     ),
                     ServiceTypeButton(
-                      index: _serviceIndex,
                       title: 'There\'s a crime',
                       serviceImagePath: 'assets/icons/service_icon3.png',
-                      isActive: _serviceIndex == 2,
-                      onTap: state is EmergencyState
-                          ? null
-                          : () {
-                              return setState(() {
-                                _serviceIndex = 2;
-                              });
-                            },
                     )
                   ],
                 );

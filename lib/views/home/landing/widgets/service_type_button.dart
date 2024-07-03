@@ -3,16 +3,13 @@ import 'package:flutter/material.dart';
 class ServiceTypeButton extends StatelessWidget {
   const ServiceTypeButton({
     super.key,
-    required this.index,
     required this.title,
     required this.serviceImagePath,
-    required this.isActive,
     this.onTap,
   });
-  final int index;
+
   final String title;
   final String serviceImagePath;
-  final bool isActive;
   final Function()? onTap;
 
   @override
@@ -24,7 +21,7 @@ class ServiceTypeButton extends StatelessWidget {
         height: 100,
         decoration: BoxDecoration(
           border: Border.all(
-            color: isActive ? const Color(0xffD99022) : Colors.white,
+            color: const Color(0xffD99022),
           ),
           borderRadius: BorderRadius.circular(8),
         ),
