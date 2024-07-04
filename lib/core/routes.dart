@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:smart_jakarta/views/home/home_page.dart';
 import 'package:smart_jakarta/views/login/sign_in/sign_in_page.dart';
-import 'package:smart_jakarta/views/login/sign_up_page.dart';
+import 'package:smart_jakarta/views/login/sign_up/sign_up_page.dart';
 import 'package:smart_jakarta/views/login/term_of_use.dart';
 import 'package:smart_jakarta/views/missing/missing_page.dart';
 import 'package:smart_jakarta/views/root_page.dart';
@@ -24,7 +24,7 @@ class AppRoutes {
         );
       case '/signUp':
         return MaterialPageRoute(
-          builder: (context) => const SignUpPage(),
+          builder: (context) => const SignUpPageProvider(),
         );
       case '/termOfUse':
         return MaterialPageRoute(
