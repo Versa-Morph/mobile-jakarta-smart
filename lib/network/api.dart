@@ -37,11 +37,13 @@ class Network {
 
   Future<http.Response> auth(Map<String, String> data, String endPoint) async {
     final fullUrl = '$API_URL$endPoint';
-    return await http.post(
-      Uri.parse(fullUrl),
-      body: jsonEncode(data),
-      headers: _setHeaders(),
-    );
+    return await http
+        .post(
+          Uri.parse(fullUrl),
+          body: jsonEncode(data),
+          headers: _setHeaders(),
+        )
+        .timeout(const Duration(seconds: 10));
   }
 
   Future<http.Response> getData(String endPoint) async {

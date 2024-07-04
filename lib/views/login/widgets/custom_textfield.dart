@@ -5,22 +5,22 @@ class CustomTextfield extends StatelessWidget {
     super.key,
     required this.hintText,
     required this.prefixImgPath,
+    this.textController,
     this.obscureText,
     this.validator,
-    this.onChanged,
   });
   final String prefixImgPath;
   final String hintText;
   final bool? obscureText;
+  final TextEditingController? textController;
   final String? Function(String? value)? validator;
-  final Function(String value)? onChanged;
 
   @override
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 45),
       child: TextFormField(
-        onChanged: onChanged,
+        controller: textController,
         validator: validator,
         obscureText: obscureText ?? false,
         decoration: InputDecoration(

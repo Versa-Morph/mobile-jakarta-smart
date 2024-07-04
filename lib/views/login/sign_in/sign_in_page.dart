@@ -28,25 +28,33 @@ class SignInPage extends StatefulWidget {
 
 class _SignInPageState extends State<SignInPage> {
   final _formKey = GlobalKey<FormState>();
+  final _emailController = TextEditingController();
+  final _passwordController = TextEditingController();
+
+  @override
+  void dispose() {
+    super.dispose();
+    _emailController.dispose();
+    _passwordController.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: BlocListener<SignInCubit, SignInState>(
         listener: (context, state) {
-          if (state.isSuccess == true) {
+          if (state is SignInSucces) {
             // TODO: CHANGE TO PUSHREMOVE
             Navigator.pushNamed(
               context,
               '/home',
             );
-          } else if (state.isError == true) {
+          } else if (state is SignInError) {
             final snackBar = SnackBar(
               content: Text(state.errorMsg),
-              duration:
-                  const Duration(seconds: 2), // Adjust the duration as needed
+              duration: const Duration(seconds: 1),
             );
             ScaffoldMessenger.of(context).showSnackBar(snackBar);
-            context.read<SignInCubit>().resetError();
           }
         },
         child: SingleChildScrollView(
@@ -83,6 +91,7 @@ class _SignInPageState extends State<SignInPage> {
                 CustomTextfield(
                   hintText: 'Username/Email',
                   prefixImgPath: 'assets/icons/email_icon.png',
+                  textController: _emailController,
                   validator: (value) {
                     if (value == null || value.isEmpty) {
                       return 'Please Enter An Email';
@@ -91,9 +100,6 @@ class _SignInPageState extends State<SignInPage> {
                     }
                     return null;
                   },
-                  onChanged: (value) {
-                    context.read<SignInCubit>().emailChanged(value);
-                  },
                 ),
 
                 const SizedBox(height: 15),
@@ -101,10 +107,8 @@ class _SignInPageState extends State<SignInPage> {
                 CustomTextfield(
                   hintText: 'Password',
                   prefixImgPath: 'assets/icons/pass_icon.png',
+                  textController: _passwordController,
                   obscureText: true,
-                  onChanged: (value) {
-                    context.read<SignInCubit>().passwordChanged(value);
-                  },
                   validator: (value) {
                     if (value == null || value.isEmpty) {
                       return 'Please Enter The Password';
@@ -141,19 +145,33 @@ class _SignInPageState extends State<SignInPage> {
                 const SizedBox(height: 15),
 
                 // Button Signin
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 50),
-                  child: CustomButton(
-                    text: 'Sign In',
-                    textColor: Colors.white,
-                    bgColor: const Color(0xFFD99022),
-                    onTap: () async {
-                      final isValid = _formKey.currentState?.validate();
-                      if (isValid == true) {
-                        context.read<SignInCubit>().signIn();
-                      }
-                    },
-                  ),
+                BlocBuilder<SignInCubit, SignInState>(
+                  builder: (context, state) {
+                    if (state is SignInLoading) {
+                      return const CircularProgressIndicator(
+                        color: Color(0xFFD99022),
+                      );
+                    } else {
+                      return Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 50),
+                        child: CustomButton(
+                          text: 'Sign In',
+                          textColor: Colors.white,
+                          bgColor: const Color(0xFFD99022),
+                          onTap: () {
+                            final isValid = _formKey.currentState?.validate();
+                            final email = _emailController.text.trim();
+                            final password = _passwordController.text.trim();
+                            if (isValid == true) {
+                              context
+                                  .read<SignInCubit>()
+                                  .signIn(email, password);
+                            }
+                          },
+                        ),
+                      );
+                    }
+                  },
                 ),
 
                 const SizedBox(height: 15),

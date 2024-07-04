@@ -1,34 +1,22 @@
 part of 'sign_in_cubit.dart';
 
-class SignInState extends Equatable {
-  const SignInState({
-    this.email,
-    this.password,
-    this.isSuccess = false,
-    this.isError = false,
-    this.errorMsg = '',
-  });
-  final String? email;
-  final String? password;
-  final bool isSuccess;
-  final bool isError;
-  final String errorMsg;
-
-  SignInState copyWith({
-    String? email,
-    String? password,
-    bool? isSuccess,
-    bool? isError,
-    String? errorMsg,
-  }) {
-    return SignInState(
-        email: email ?? this.email,
-        password: password ?? this.password,
-        isSuccess: isSuccess ?? this.isSuccess,
-        isError: isError ?? this.isError,
-        errorMsg: errorMsg ?? this.errorMsg);
-  }
+abstract class SignInState extends Equatable {
+  const SignInState();
 
   @override
-  List<Object?> get props => [email, password, isSuccess, isError, errorMsg];
+  List<Object?> get props => [];
+}
+
+class SignInInitial extends SignInState {}
+
+class SignInLoading extends SignInState {}
+
+class SignInSucces extends SignInState {}
+
+class SignInError extends SignInState {
+  final String errorMsg;
+  const SignInError(this.errorMsg);
+
+  @override
+  List<Object?> get props => [errorMsg];
 }
