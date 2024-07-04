@@ -5,6 +5,7 @@ import 'package:shimmer/shimmer.dart';
 import 'package:smart_jakarta/components/home_appbar.dart';
 import 'package:smart_jakarta/cubit/emergency_cubit/emergency_situation_cubit.dart';
 import 'package:smart_jakarta/cubit/location_cubit/location_cubit.dart';
+import 'package:smart_jakarta/views/home/cubit/home_page_cubit.dart';
 import 'package:smart_jakarta/views/home/landing/widgets/emergency_button.dart';
 import 'package:smart_jakarta/views/home/landing/widgets/service_type_button.dart';
 
@@ -41,14 +42,32 @@ class _LandingPageState extends State<LandingPage> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Expanded(
-                    child: Text(
-                      'Hello, ',
-                      style: TextStyle(
-                        fontWeight: FontWeight.w500,
-                        color: Theme.of(context).brightness == Brightness.dark
-                            ? const Color(0xff2C2828)
-                            : const Color(0xff2C2828),
-                      ),
+                    child: BlocBuilder<HomePageCubit, HomePageState>(
+                      builder: (context, state) {
+                        if (state is HomePageLoaded) {
+                          return Text(
+                            'Hello, ${state.user.name}',
+                            style: TextStyle(
+                              fontWeight: FontWeight.w500,
+                              color: Theme.of(context).brightness ==
+                                      Brightness.dark
+                                  ? const Color(0xff2C2828)
+                                  : const Color(0xff2C2828),
+                            ),
+                          );
+                        } else {
+                          return Text(
+                            'Hello, User',
+                            style: TextStyle(
+                              fontWeight: FontWeight.w500,
+                              color: Theme.of(context).brightness ==
+                                      Brightness.dark
+                                  ? const Color(0xff2C2828)
+                                  : const Color(0xff2C2828),
+                            ),
+                          );
+                        }
+                      },
                     ),
                   ),
                   Column(

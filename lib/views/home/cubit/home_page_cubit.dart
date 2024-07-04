@@ -1,19 +1,24 @@
 import 'package:equatable/equatable.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:smart_jakarta/cubit/location_cubit/location_cubit.dart';
+import 'package:smart_jakarta/models/user_model.dart';
+import 'package:smart_jakarta/services/auth_services.dart';
 
 part 'home_page_state.dart';
 
 class HomePageCubit extends Cubit<HomePageState> {
-  HomePageCubit({required this.locationCubit}) : super(HomePageState.initial());
-  final LocationCubit locationCubit;
-  LocationState get locationState => locationCubit.state;
+  HomePageCubit() : super(const HomePageState());
 
-  final PageController pageController = PageController();
+  Future<void> fetchUserCredential() async {
+    try {
+      final userCredential = await AuthServices().fetchUserCredential();
 
-  /// Navigating the page
-  void changeTab(int tabIndex) {
-    emit(state.copyWith(tabIndex: tabIndex));
+      if (userCredential != null) {
+        emit(HomePageLoaded(userCredential));
+      } else {
+        emit(const HomePageError('No user detected'));
+      }
+    } catch (e) {
+      emit(HomePageError(e.toString()));
+    }
   }
 }

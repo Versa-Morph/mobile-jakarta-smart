@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:smart_jakarta/cubit/location_cubit/location_cubit.dart';
 import 'package:smart_jakarta/views/home/contact/contact_page.dart';
 import 'package:smart_jakarta/views/home/cubit/home_page_cubit.dart';
 import 'package:smart_jakarta/views/home/landing/landing_page.dart';
@@ -56,9 +55,7 @@ class HomePageProvider extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => HomePageCubit(
-        locationCubit: context.read<LocationCubit>(),
-      ),
+      create: (context) => HomePageCubit()..fetchUserCredential(),
       child: const HomePage(),
     );
   }
@@ -72,6 +69,8 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  final PageController _pageController = PageController();
+  int _currentIndex = 0;
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<HomePageCubit, HomePageState>(
@@ -79,20 +78,22 @@ class _HomePageState extends State<HomePage> {
         return Scaffold(
           resizeToAvoidBottomInset: false,
           body: PageView(
-              controller: context.read<HomePageCubit>().pageController,
+              controller: _pageController,
               onPageChanged: (value) {
-                context.read<HomePageCubit>().changeTab(value);
+                setState(() {
+                  _currentIndex = value;
+                });
               },
               children: _screenList),
           bottomNavigationBar: BottomNavigationBar(
             items: _bottomNavItem,
-            currentIndex: state.tabIndex,
+            currentIndex: _currentIndex,
             showSelectedLabels: false,
             showUnselectedLabels: false,
             selectedItemColor: const Color(0xffD99022),
             unselectedItemColor: const Color(0xffA39E9E),
             onTap: (value) {
-              context.read<HomePageCubit>().pageController.jumpToPage(value);
+              _pageController.jumpToPage(value);
             },
           ),
         );

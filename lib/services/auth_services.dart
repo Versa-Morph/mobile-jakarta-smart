@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:http/http.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:smart_jakarta/exception/exception.dart';
+import 'package:smart_jakarta/models/user_model.dart';
 import 'package:smart_jakarta/network/api.dart';
 
 class AuthServices {
@@ -24,7 +25,7 @@ class AuthServices {
         final token = resBody['data']['access_token']['token'];
         final expiresIn = resBody['data']['access_token']['expires_in'];
 
-        _network.storeToken(token, expiresIn);
+        await _network.storeToken(token, expiresIn);
 
         return true;
       }
@@ -61,7 +62,7 @@ class AuthServices {
         final token = resBody['data']['access_token']['token'];
         final expiresIn = resBody['data']['access_token']['expires_in'];
 
-        _network.storeToken(token, expiresIn);
+        await _network.storeToken(token, expiresIn);
 
         return true;
       } else if (resBody['data']['email'] != null) {
@@ -87,6 +88,26 @@ class AuthServices {
       return true;
     }
     return false;
+  }
+
+  Future<UserModel?> fetchUserCredential() async {
+    try {
+      final response = await _network.getData('/me');
+
+      if (response.statusCode == 200) {
+        final resBody = jsonDecode(response.body);
+        final data = resBody['data'] as Map<String, dynamic>;
+
+        return UserModel.fromJson(data);
+      }
+    } on TimeoutException catch (_) {
+      throw AuthException('Error Connecting to Server, Request Timed Out');
+    } on ClientException catch (_) {
+      throw AuthException('Error Connecting to Server');
+    } catch (e) {
+      throw AuthException(e.toString());
+    }
+    return null;
   }
 
   /// Log user out, remove token from local storage
