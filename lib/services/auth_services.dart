@@ -46,7 +46,7 @@ class AuthServices {
     String confirmPassword,
   ) async {
     try {
-      final response = await Network().auth(
+      final response = await _network.auth(
         {
           'name': username,
           'email': email,

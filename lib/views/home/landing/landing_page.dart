@@ -77,9 +77,9 @@ class _LandingPageState extends State<LandingPage> {
                               );
                             } else {
                               return Shimmer.fromColors(
-                                baseColor: Colors.red,
+                                baseColor: Colors.white,
                                 highlightColor: Colors.black,
-                                child: const Text('           '),
+                                child: const Text('Locating . . '),
                               );
                             }
                           },
