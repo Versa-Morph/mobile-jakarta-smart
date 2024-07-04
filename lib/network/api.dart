@@ -8,9 +8,8 @@ class Network {
 
   void storeToken(String token, int expiresIn) async {
     SharedPreferences localStorage = await SharedPreferences.getInstance();
-    int currentTime = DateTime.now().millisecondsSinceEpoch ~/
-        1000; // Current time in seconds
-    int expirationTime = currentTime + expiresIn; // Expiration time in seconds
+
+    int expirationTime = expiresIn; // Expiration time in seconds
     localStorage.setString(
         'token',
         jsonEncode({

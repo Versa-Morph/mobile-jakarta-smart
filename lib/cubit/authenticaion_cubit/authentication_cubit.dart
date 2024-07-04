@@ -14,8 +14,9 @@ class AuthenticationCubit extends Cubit<AuthenticationState> {
 
     if (result == true) {
       emit(Authenticated());
+    } else {
+      emit(Unauthenticated());
     }
-    emit(Unauthenticated());
   }
 
   Future<void> logout() async {

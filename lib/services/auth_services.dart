@@ -85,15 +85,7 @@ class AuthServices {
     String? tokenString = localStorage.getString('token');
 
     if (tokenString != null) {
-      final Map<String, dynamic> tokenData = jsonDecode(tokenString);
-      int expirationTime = tokenData['expires_in'];
-      int currentTime = DateTime.now().millisecondsSinceEpoch ~/ 1000;
-
-      if (currentTime < expirationTime) {
-        return true;
-      } else {
-        await logout(); // remove the token
-      }
+      return true;
     }
     return false;
   }

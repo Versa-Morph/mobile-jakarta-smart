@@ -44,11 +44,8 @@ class _SignInPageState extends State<SignInPage> {
       body: BlocListener<SignInCubit, SignInState>(
         listener: (context, state) {
           if (state is SignInSucces) {
-            // TODO: CHANGE TO PUSHREMOVE
-            Navigator.pushNamed(
-              context,
-              '/home',
-            );
+            Navigator.pushNamedAndRemoveUntil(
+                context, '/home', (route) => false);
           } else if (state is SignInError) {
             final snackBar = SnackBar(
               content: Text(state.errorMsg),

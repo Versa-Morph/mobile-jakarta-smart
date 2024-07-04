@@ -9,7 +9,6 @@ class TypewriterText extends StatefulWidget {
 }
 
 class _TypewriterTextState extends State<TypewriterText> {
-  // List of text
   final List<RichText> texts = [
     RichText(
       text: const TextSpan(
@@ -93,14 +92,16 @@ class _TypewriterTextState extends State<TypewriterText> {
 
   @override
   void dispose() {
+    _timer?.cancel();
     super.dispose();
-    // _timer?.cancel();
   }
 
   // Start the animation loop for typewriter animation
   void _startAnimationLoop() {
     //! Edit animation duration here
     _timer = Timer.periodic(const Duration(milliseconds: 100), (timer) {
+      if (!mounted) return; // Check if the widget is still mounted
+
       setState(() {
         if (_isPaused) {
           return;
@@ -111,6 +112,7 @@ class _TypewriterTextState extends State<TypewriterText> {
         if (_textLength > currentTextPlain.length) {
           _isPaused = true;
           Future.delayed(const Duration(seconds: 1), () {
+            if (!mounted) return; // Check if the widget is still mounted
             setState(() {
               _isPaused = false;
               _textLength = 0;
@@ -177,6 +179,7 @@ class _TypewriterTextState extends State<TypewriterText> {
     );
   }
 }
+
 
 
 //!/ Typewriter text animation with Erased animation
