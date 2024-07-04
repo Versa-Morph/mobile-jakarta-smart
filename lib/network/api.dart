@@ -6,15 +6,15 @@ import 'package:smart_jakarta/local_env.dart';
 class Network {
   String? token;
 
-  void storeToken(String token, int expiresIn) async {
+  Future<void> storeToken(String token, int expiresIn) async {
     SharedPreferences localStorage = await SharedPreferences.getInstance();
 
-    int expirationTime = expiresIn; // Expiration time in seconds
+    final expirationTime = DateTime.now().add(Duration(seconds: expiresIn));
     localStorage.setString(
         'token',
         jsonEncode({
           'token': token,
-          'expires_in': expirationTime,
+          'expires_in': expirationTime.toIso8601String(),
         }));
   }
 
@@ -25,10 +25,19 @@ class Network {
 
     if (jsonString != null) {
       Map<String, dynamic> jsonData = jsonDecode(jsonString);
-
-      // Mengambil nilai token
-      token = jsonData['data']['access_token']['token'];
-      print(token);
+      final token = jsonData['token'];
+      final expiresIn = jsonData['expires_in'];
+      if (token != null &&
+          DateTime.parse(
+            expiresIn,
+          ).isAfter(
+            DateTime.now(),
+          )) {
+        this.token = token;
+      } else {
+        // TODO:IMPLEMENT REFRESH TOKEN
+        localStorage.remove(token);
+      }
     } else {
       print("Token not found in local storage.");
     }
@@ -48,7 +57,9 @@ class Network {
   Future<http.Response> getData(String endPoint) async {
     final fullUrl = '$API_URL$endPoint';
     await _getToken();
-    return await http.get(Uri.parse(fullUrl), headers: _setHeaders());
+    return await http
+        .get(Uri.parse(fullUrl), headers: _setHeaders())
+        .timeout(const Duration(seconds: 10));
   }
 
   Map<String, String> _setHeaders() => {
