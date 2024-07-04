@@ -1,8 +1,8 @@
 class UserBio {
-  final String id;
-  final String userId;
+  final int id;
+  final int userId;
   final String nik;
-  final String? profilePictPath;
+  final String profilePictPath;
   final String fullName;
   final String nickname;
   final String city;
@@ -16,7 +16,7 @@ class UserBio {
     required this.id,
     required this.userId,
     required this.nik,
-    this.profilePictPath,
+    required this.profilePictPath,
     required this.fullName,
     required this.nickname,
     required this.city,
@@ -26,4 +26,34 @@ class UserBio {
     required this.height,
     required this.weight,
   });
+
+  factory UserBio.fromJson(Map<String, dynamic> json) => UserBio(
+        id: json["id"],
+        userId: json["user_id"],
+        nik: json["nik"],
+        profilePictPath: json["profile_pict_path"],
+        fullName: json["full_name"],
+        nickname: json["nickname"],
+        city: json["city"],
+        address: json["address"],
+        age: json["age"],
+        bloodType: json["blood_type"],
+        height: json["height"],
+        weight: json["weight"],
+      );
+
+  Map<String, dynamic> toJson() => {
+        "id": id,
+        "user_id": userId,
+        "nik": nik,
+        "profile_pict_path": profilePictPath,
+        "full_name": fullName,
+        "nickname": nickname,
+        "city": city,
+        "address": address,
+        "age": age,
+        "blood_type": bloodType,
+        "height": height,
+        "weight": weight,
+      };
 }

@@ -5,7 +5,7 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:smart_jakarta/cubit/location_cubit/location_cubit.dart';
 import 'package:smart_jakarta/models/nearby_places.dart';
 import 'package:smart_jakarta/models/place_autocomplete.dart';
-import 'package:smart_jakarta/services/api_service.dart';
+import 'package:smart_jakarta/services/maps_api_service.dart';
 
 part 'maps_state.dart';
 

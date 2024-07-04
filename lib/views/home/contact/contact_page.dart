@@ -4,6 +4,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:smart_jakarta/components/home_appbar.dart';
 import 'package:smart_jakarta/cubit/authenticaion_cubit/authentication_cubit.dart';
 import 'package:smart_jakarta/cubit/location_cubit/location_cubit.dart';
+import 'package:smart_jakarta/services/user_data_service.dart';
 
 class ContactPage extends StatelessWidget {
   const ContactPage({super.key});
@@ -39,7 +40,13 @@ class ContactPage extends StatelessWidget {
                   final token = localStorage.getString('token');
                   print(token);
                 },
-                child: const Text('TEST'))
+                child: const Text('TEST')),
+            ElevatedButton(
+                onPressed: () async {
+                  final user = await UserDataService().fetchUserBio();
+                  print(user!.fullName);
+                },
+                child: const Text('tosst'))
           ],
         ),
       ),
