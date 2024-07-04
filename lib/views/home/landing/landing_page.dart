@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pulsator/pulsator.dart';
+import 'package:shimmer/shimmer.dart';
 import 'package:smart_jakarta/components/home_appbar.dart';
 import 'package:smart_jakarta/cubit/emergency_cubit/emergency_situation_cubit.dart';
+import 'package:smart_jakarta/cubit/location_cubit/location_cubit.dart';
 import 'package:smart_jakarta/views/home/landing/widgets/emergency_button.dart';
 import 'package:smart_jakarta/views/home/landing/widgets/service_type_button.dart';
 
@@ -63,12 +65,24 @@ class _LandingPageState extends State<LandingPage> {
                                     ? const Color(0xff2C2828)
                                     : const Color(0xff2C2828)),
                       )),
-                      const Expanded(
-                        child: Text(
-                          'Senayan, Jakarta Selatan',
-                          style: TextStyle(
-                              color: Color(0xffD99022),
-                              fontWeight: FontWeight.w400),
+                      Expanded(
+                        child: BlocBuilder<LocationCubit, LocationState>(
+                          builder: (context, state) {
+                            if (state is LocationAcquired) {
+                              return Text(
+                                '${state.placemarks[0].subLocality}, ${state.placemarks[0].subAdministrativeArea}',
+                                style: const TextStyle(
+                                    color: Color(0xffD99022),
+                                    fontWeight: FontWeight.w400),
+                              );
+                            } else {
+                              return Shimmer.fromColors(
+                                baseColor: Colors.red,
+                                highlightColor: Colors.black,
+                                child: const Text('           '),
+                              );
+                            }
+                          },
                         ),
                       ),
                     ],
