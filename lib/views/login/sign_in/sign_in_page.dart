@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:smart_jakarta/utility/validators.dart';
 import 'package:smart_jakarta/views/login/sign_in/cubit/sign_in_cubit.dart';
 import 'package:smart_jakarta/views/login/widgets/content_header.dart';
 import 'package:smart_jakarta/views/login/widgets/custom_button.dart';
@@ -89,14 +90,7 @@ class _SignInPageState extends State<SignInPage> {
                   hintText: 'Username/Email',
                   prefixImgPath: 'assets/icons/email_icon.png',
                   textController: _emailController,
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'Please Enter An Email';
-                    } else if (!value.contains('@')) {
-                      return 'Email is not correct';
-                    }
-                    return null;
-                  },
+                  validator: (value) => Validators.validateEmail(value),
                 ),
 
                 const SizedBox(height: 15),
@@ -106,12 +100,7 @@ class _SignInPageState extends State<SignInPage> {
                   prefixImgPath: 'assets/icons/pass_icon.png',
                   textController: _passwordController,
                   obscureText: true,
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'Please Enter The Password';
-                    }
-                    return null;
-                  },
+                  validator: (value) => Validators.validatePassword(value),
                 ),
 
                 const SizedBox(height: 18),
