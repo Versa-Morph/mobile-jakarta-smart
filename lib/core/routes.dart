@@ -32,7 +32,7 @@ class AppRoutes {
         );
       case '/home':
         return MaterialPageRoute(
-          builder: (context) => const HomePageWrapper(),
+          builder: (context) => const HomePageProvider(),
         );
       default:
         return MaterialPageRoute(

@@ -45,13 +45,13 @@ final List<BottomNavigationBarItem> _bottomNavItem = [
 // Screen List
 final List<Widget> _screenList = [
   const LandingPage(),
-  const MapsPageWrapper(),
+  const MapsPageProvider(),
   const ContactPage(),
   const UserProfilePage(),
 ];
 
-class HomePageWrapper extends StatelessWidget {
-  const HomePageWrapper({super.key});
+class HomePageProvider extends StatelessWidget {
+  const HomePageProvider({super.key});
 
   @override
   Widget build(BuildContext context) {

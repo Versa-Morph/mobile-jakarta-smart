@@ -5,13 +5,12 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:smart_jakarta/components/home_appbar.dart';
 import 'package:smart_jakarta/cubit/location_cubit/location_cubit.dart';
-import 'package:smart_jakarta/views/home/cubit/home_page_cubit.dart';
 import 'package:smart_jakarta/views/home/maps/cubit/maps_cubit.dart';
 import 'package:smart_jakarta/views/home/maps/widgets/custom_search_bar.dart';
 import 'package:smart_jakarta/views/home/maps/widgets/search_result.dart';
 
-class MapsPageWrapper extends StatelessWidget {
-  const MapsPageWrapper({
+class MapsPageProvider extends StatelessWidget {
+  const MapsPageProvider({
     super.key,
   });
 
@@ -50,7 +49,7 @@ class _MapsPageState extends State<MapsPage>
       body: Stack(
         children: [
           Builder(builder: (context) {
-            final homePageState = context.watch<HomePageCubit>().state;
+            final mapsPageState = context.watch<MapsCubit>().state;
             final locationState = context.watch<LocationCubit>().state;
 
             if (locationState is LocationLoading) {
@@ -65,14 +64,14 @@ class _MapsPageState extends State<MapsPage>
                       locationState.userLocation.longitude,
                     ),
                     zoom: 18),
-                markers: Set<Marker>.of(homePageState.markers),
+                markers: Set<Marker>.of(mapsPageState.markers),
                 gestureRecognizers: {
                   /// to make the swipe only in maps
                   Factory<EagerGestureRecognizer>(
                       () => EagerGestureRecognizer()),
                 },
                 onMapCreated: (controller) {
-                  context.read<HomePageCubit>().setController(controller);
+                  context.read<MapsCubit>().setController(controller);
                 },
                 myLocationEnabled: true,
                 compassEnabled: true,
@@ -134,7 +133,7 @@ class _MapsPageState extends State<MapsPage>
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           context.read<MapsCubit>().goToUserLocation();
-          context.read<HomePageCubit>().nearbyPlaces();
+          context.read<MapsCubit>().nearbyPlaces();
         },
         child: const Icon(
           Icons.location_searching_outlined,
