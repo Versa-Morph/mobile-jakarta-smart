@@ -1,10 +1,8 @@
 import 'dart:async';
-
 import 'package:geolocator/geolocator.dart';
+import 'package:smart_jakarta/exception/exception.dart';
 
 class LocationService {
-  static Function(bool) locationPermissionHandler = (permission) {};
-
   Future<bool> _handleLocationPermission() async {
     bool serviceEnabled;
     LocationPermission locationPermission;
@@ -12,7 +10,6 @@ class LocationService {
     // Check if the gps is on or of
     serviceEnabled = await Geolocator.isLocationServiceEnabled();
     if (!serviceEnabled) {
-      locationPermissionHandler(false);
       return false;
     }
 
@@ -20,11 +17,9 @@ class LocationService {
     await Geolocator.requestPermission();
     locationPermission = await Geolocator.checkPermission();
     if (locationPermission == LocationPermission.denied) {
-      locationPermissionHandler(false);
       return false;
     }
     if (locationPermission == LocationPermission.deniedForever) {
-      locationPermissionHandler(false);
       return false;
     }
 
@@ -42,13 +37,12 @@ class LocationService {
       final Position userPosition = await Geolocator.getCurrentPosition(
           desiredAccuracy: LocationAccuracy.high);
       return userPosition;
-    } on TimeoutException catch (e) {
-      // TODO: IMPLEMENT EXCEPTION
-      print(e.message);
-      return null;
+    } on TimeoutException catch (_) {
+      throw TimeoutException('Request Timed Out');
+    } on LocationServiceDisabledException catch (_) {
+      throw BaseException('GPS Service Disabled');
     } catch (e) {
-      print(e);
-      return null;
+      throw BaseException('Somethings Wrong, Please Reload The App');
     }
   }
 
@@ -60,10 +54,12 @@ class LocationService {
     try {
       final userPosition = Geolocator.getPositionStream();
       return userPosition;
+    } on TimeoutException catch (_) {
+      throw TimeoutException('Request Timed Out');
+    } on LocationServiceDisabledException catch (_) {
+      throw BaseException('GPS Service Disabled');
     } catch (e) {
-      // TODO: IMPLEMENT EXCEPTION
-      print(e);
-      return null;
+      throw BaseException('Somethings Wrong, Please Reload The App');
     }
   }
 }

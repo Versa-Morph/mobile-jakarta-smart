@@ -1,4 +1,4 @@
-import 'package:smart_jakarta/exception/auth_exception.dart';
+import 'package:smart_jakarta/exception/exception.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class LaunchCall {
@@ -12,7 +12,7 @@ class LaunchCall {
         await launchUrl(url);
       }
     } catch (e) {
-      throw const AuthException('Somethings wrong, couldn\'t make a call');
+      throw BaseException('Somethings wrong, couldn\'t make a call');
     }
   }
 }
