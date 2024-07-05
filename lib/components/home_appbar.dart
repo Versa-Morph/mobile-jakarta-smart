@@ -67,11 +67,8 @@ class HomeAppBar extends StatelessWidget implements PreferredSizeWidget {
               )
             : Padding(
                 padding: const EdgeInsets.only(right: 25),
-                child: Hero(
-                  tag: 'userPict',
-                  child: CircleAvatar(
-                    backgroundImage: AssetImage(userPictPath),
-                  ),
+                child: CircleAvatar(
+                  backgroundImage: AssetImage(userPictPath),
                 ),
               ),
       ],
