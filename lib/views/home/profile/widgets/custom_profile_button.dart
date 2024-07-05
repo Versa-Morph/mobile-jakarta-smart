@@ -22,6 +22,7 @@ class CustomProfileButton extends StatelessWidget {
           ),
           side: const BorderSide(
             color: Color(0xffDD9D3F),
+            width: 2,
           )),
       child: Text(
         btnText,
