@@ -20,7 +20,8 @@ class UserDataService {
         return UserBio.fromJson(userData);
       }
     } on TimeoutException catch (_) {
-      throw AuthException('Error Connecting to Server, Request Timed Out');
+      throw ReqTimeoutException(
+          'Error Connecting to Server, Request Timed Out');
     } on ClientException catch (_) {
       throw AuthException('Error Connecting to Server');
     } catch (e) {
