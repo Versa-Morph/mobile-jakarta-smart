@@ -86,8 +86,21 @@ class AuthServices {
     String? tokenString = localStorage.getString('token');
 
     if (tokenString != null) {
-      return true;
+      Map<String, dynamic> jsonData = jsonDecode(tokenString);
+      final token = jsonData['token'];
+      final expiresIn = jsonData['expires_in'];
+      if (token != null &&
+          DateTime.parse(
+            expiresIn,
+          ).isAfter(
+            DateTime.now(),
+          )) {
+        return true;
+      } else {
+        return false;
+      }
     }
+
     return false;
   }
 
