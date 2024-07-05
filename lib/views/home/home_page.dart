@@ -4,7 +4,7 @@ import 'package:smart_jakarta/views/home/contact/contact_page.dart';
 import 'package:smart_jakarta/views/home/cubit/home_page_cubit.dart';
 import 'package:smart_jakarta/views/home/landing/landing_page.dart';
 import 'package:smart_jakarta/views/home/maps/maps_page.dart';
-import 'package:smart_jakarta/views/home/profile/user_profile_page.dart';
+import 'package:smart_jakarta/views/home/profile/profile_page.dart';
 
 final List<BottomNavigationBarItem> _bottomNavItem = [
   const BottomNavigationBarItem(
@@ -46,7 +46,7 @@ final List<Widget> _screenList = [
   const LandingPage(),
   const MapsPageProvider(),
   const ContactPage(),
-  const UserProfilePage(),
+  const ProfilePageProvider(),
 ];
 
 class HomePageProvider extends StatelessWidget {
