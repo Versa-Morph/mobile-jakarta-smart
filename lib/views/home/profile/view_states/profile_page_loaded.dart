@@ -1,9 +1,11 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:smart_jakarta/models/user_bio.dart';
 import 'package:smart_jakarta/utility/string_capitalize.dart';
 import 'package:smart_jakarta/views/home/profile/widgets/custom_profile_button.dart';
 import 'package:smart_jakarta/views/home/profile/widgets/custom_profile_text.dart';
+import 'package:smart_jakarta/views/home/profile/widgets/user_card.dart';
 
 class ProfilePageLoaded extends StatelessWidget {
   const ProfilePageLoaded({super.key, required this.userBio});
@@ -26,6 +28,7 @@ class ProfilePageLoaded extends StatelessWidget {
               backgroundImage: const AssetImage(
                 'assets/images/placeholder_image_large.png',
               ),
+              onForegroundImageError: (exception, stackTrace) {},
               backgroundColor: Colors.black12,
             ),
           ),
@@ -57,22 +60,64 @@ class ProfilePageLoaded extends StatelessWidget {
 
           const SizedBox(height: 20),
 
-          // User Information Grid
-
+          // User Information Card
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 30),
             child: SizedBox(
-              width: MediaQuery.of(context).size.width,
-              height: MediaQuery.of(context).size.height / 4,
-              child: GridView.count(
-                crossAxisCount: 2,
-                crossAxisSpacing: 14,
-                mainAxisSpacing: 14,
-                children: [
-                  Text(userBio.fullName),
-                ],
-              ),
-            ),
+                width: MediaQuery.of(context).size.width,
+                height: MediaQuery.of(context).size.height / 5,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Expanded(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Expanded(
+                            child: UserCard(
+                              title: 'Age',
+                              userData: userBio.age.toString(),
+                              subtitle: ' Years',
+                              iconPath: 'assets/icons/user_age_icon.png',
+                            ),
+                          ),
+                          const SizedBox(height: 14),
+                          Expanded(
+                            child: UserCard(
+                              title: 'Height',
+                              userData: userBio.height.toString(),
+                              subtitle: ' cm',
+                              iconPath: 'assets/icons/heigth_icon.png',
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    const SizedBox(width: 14),
+                    Expanded(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Expanded(
+                            child: UserCard(
+                                title: 'Blood Type',
+                                userData: userBio.bloodType,
+                                subtitle: ' group',
+                                iconPath: 'assets/icons/blood_icon.png'),
+                          ),
+                          const SizedBox(height: 14),
+                          Expanded(
+                            child: UserCard(
+                                title: 'Weigth',
+                                userData: userBio.weight.toString(),
+                                subtitle: ' kg',
+                                iconPath: 'assets/icons/weigth_icon.png'),
+                          ),
+                        ],
+                      ),
+                    )
+                  ],
+                )),
           ),
 
           const SizedBox(height: 20),
