@@ -6,20 +6,19 @@ import 'package:smart_jakarta/services/user_data_service.dart';
 part 'profile_page_state.dart';
 
 class ProfilePageCubit extends Cubit<ProfilePageState> {
-  ProfilePageCubit() : super(ProfilePageInitial());
+  ProfilePageCubit() : super(ProfilePageLoadingState());
 
   Future<void> fetchUserBio() async {
-    emit(ProfilePageLoading());
     try {
       final userBio = await UserDataService().fetchUserBio();
 
       if (userBio != null) {
-        emit(ProfilePageLoaded(userBio));
+        emit(ProfilePageLoadedState(userBio));
       } else {
-        emit(ProfilePageEmpty());
+        emit(ProfilePageEmptyState());
       }
     } catch (e) {
-      emit(ProfilePageError(e.toString()));
+      emit(ProfilePageErrorState(e.toString()));
     }
   }
 }
