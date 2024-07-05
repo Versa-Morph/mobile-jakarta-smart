@@ -30,7 +30,8 @@ class AuthServices {
         return true;
       }
     } on TimeoutException catch (_) {
-      throw AuthException('Error Connecting to Server, Request Timed Out');
+      throw ReqTimeoutException(
+          'Error Connecting to Server, Request Timed Out');
     } on ClientException catch (_) {
       throw AuthException('Error Connecting to Server');
     } catch (e) {
@@ -101,7 +102,8 @@ class AuthServices {
         return UserModel.fromJson(data);
       }
     } on TimeoutException catch (_) {
-      throw AuthException('Error Connecting to Server, Request Timed Out');
+      throw ReqTimeoutException(
+          'Error Connecting to Server, Request Timed Out');
     } on ClientException catch (_) {
       throw AuthException('Error Connecting to Server');
     } catch (e) {

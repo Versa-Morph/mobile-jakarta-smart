@@ -9,6 +9,6 @@ class AuthException extends BaseException {
   AuthException(super.errorMsg);
 }
 
-class TimeoutException extends BaseException {
-  TimeoutException(super.errorMsg);
+class ReqTimeoutException extends BaseException {
+  ReqTimeoutException(super.errorMsg);
 }
