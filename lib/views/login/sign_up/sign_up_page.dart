@@ -132,7 +132,7 @@ class _SignUpPageState extends State<SignUpPage> {
                 CustomTextfield(
                   hintText: 'Username',
                   textController: _usernameController,
-                  prefixImgPath: 'assets/icons/email_icon.png',
+                  prefixImgPath: 'assets/icons/profile_icon.png',
                   validator: (value) {
                     if (value == null || value.isEmpty) {
                       return 'Please Enter Your Username';
