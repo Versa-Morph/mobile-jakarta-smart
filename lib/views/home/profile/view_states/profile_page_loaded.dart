@@ -1,6 +1,4 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:smart_jakarta/models/user_bio.dart';
 import 'package:smart_jakarta/utility/string_capitalize.dart';
 import 'package:smart_jakarta/views/home/profile/widgets/custom_profile_button.dart';
