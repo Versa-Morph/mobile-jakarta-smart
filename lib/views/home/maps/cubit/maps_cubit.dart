@@ -20,6 +20,8 @@ class MapsCubit extends Cubit<MapsState> {
     _mapsController.complete(controller);
   }
 
+  Future<void> markPlaces(LatLng latLng) async {}
+
   /// Autocomplete search places
   Future<void> searchPlacesAutoComplete(String? query) async {
     final response = await MapsApiService.placesAutocomplete(query);

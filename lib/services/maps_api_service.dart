@@ -1,10 +1,22 @@
 import 'dart:convert';
-
 import 'package:geolocator/geolocator.dart';
 import 'package:http/http.dart' as http;
 import 'package:smart_jakarta/constant/constant.dart' as constant;
 
 class MapsApiService {
+  Future<http.Response> placeLocation(String placesId) async {
+    final url = Uri.parse(
+      '${constant.PLACE_LOCATION_URL}$placesId?fields=location&key=${constant.MAPS_API_KEY}',
+    );
+    final response = await http.get(url, headers: {
+      "X-Android-Package": "com.smartjkt.smart_jakarta",
+      "X-Android-Cert": "ED7C244053751E346B05BD4C02C9E4DC876407C2",
+      'Content-Type': 'application/json',
+    });
+
+    return response;
+  }
+
   static Future<http.Response> placesAutocomplete(String? query) async {
     final url = Uri.parse('${constant.PLACES_URL}autocomplete');
     final response = await http.post(

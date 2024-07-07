@@ -105,18 +105,18 @@ class _MapsPageState extends State<MapsPage>
                       shrinkWrap: true,
                       itemCount: state.placesSuggestions.length,
                       itemBuilder: (context, index) {
-                        final placesTitle = state.placesSuggestions[index]
-                            .placePrediction.structuredFormat.mainText.text;
-                        final placesSubTitle = state
-                            .placesSuggestions[index]
-                            .placePrediction
-                            .structuredFormat
-                            .secondaryText
-                            ?.text;
+                        final placePrediction =
+                            state.placesSuggestions[index].placePrediction;
+
+                        final placeId = placePrediction.placeId;
+                        final placesTitle =
+                            placePrediction.structuredFormat.mainText.text;
+                        final placesSubTitle = placePrediction
+                            .structuredFormat.secondaryText?.text;
 
                         return ListTile(
                           onTap: () {
-                            print(placesTitle);
+                            print(placeId);
                           },
                           title: Text(placesTitle),
                           subtitle: Text(placesSubTitle ?? ''),
