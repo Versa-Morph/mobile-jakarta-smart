@@ -48,15 +48,17 @@ class MapsCubit extends Cubit<MapsState> {
       final response = await _mapsApiService.placeLocation(placesId);
       if (response != null) {
         final result = jsonDecode(response.body);
-        final data = result['location'];
-        final Location location = Location.fromJson(data);
+        final locationData = result['location'];
+        final displayNameData = result['displayName'];
+        final Location location = Location.fromJson(locationData);
+        final DisplayName displayName = DisplayName.fromJson(displayNameData);
 
         // add marker
         final markers = [
           Marker(
             markerId: const MarkerId('newPlaces'),
             position: LatLng(location.latitude!, location.longitude!),
-            infoWindow: InfoWindow.noText,
+            infoWindow: InfoWindow(title: displayName.text),
           )
         ];
         // Unfocus the searchbar

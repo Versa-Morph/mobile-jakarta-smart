@@ -9,7 +9,7 @@ class MapsApiService {
   Future<http.Response?> placeLocation(String placesId) async {
     try {
       final url = Uri.parse(
-        '${constant.PLACE_LOCATION_URL}$placesId?fields=location&key=${constant.MAPS_API_KEY}',
+        '${constant.PLACE_LOCATION_URL}$placesId?fields=displayName,location&key=${constant.MAPS_API_KEY}',
       );
       final response = await http.get(url, headers: {
         "X-Android-Package": "com.smartjkt.smart_jakarta",
