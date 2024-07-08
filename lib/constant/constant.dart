@@ -3,7 +3,12 @@ const String MAPS_API_KEY = 'AIzaSyCuwl0w-B0XTUTRTngBrYlANeLlNzRS2Bw';
 // ignore: constant_identifier_names
 const String PLACES_URL = 'https://places.googleapis.com/v1/places:';
 
+// ignore: constant_identifier_names
 const String PLACE_LOCATION_URL = 'https://places.googleapis.com/v1/places/';
+
+// ignore: constant_identifier_names
+const String MAPS_DIRECTIONS_URL =
+    'https://maps.googleapis.com/maps/api/directions/json?';
 // ignore: constant_identifier_names
 const String AGGREMENT_MESSAGE = '''
 Syarat dan Ketentuan Penggunaan Aplikasi Jakarta Smart

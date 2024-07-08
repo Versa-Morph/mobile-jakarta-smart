@@ -1,11 +1,9 @@
 import 'dart:async';
-import 'dart:convert';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:smart_jakarta/cubit/location_cubit/location_cubit.dart';
-import 'package:smart_jakarta/models/location.dart';
 import 'package:smart_jakarta/models/nearby_places.dart';
 import 'package:smart_jakarta/models/place_autocomplete.dart';
 import 'package:smart_jakarta/services/maps_api_service.dart';
@@ -47,18 +45,15 @@ class MapsCubit extends Cubit<MapsState> {
     try {
       final response = await _mapsApiService.placeLocation(placesId);
       if (response != null) {
-        final result = jsonDecode(response.body);
-        final locationData = result['location'];
-        final displayNameData = result['displayName'];
-        final Location location = Location.fromJson(locationData);
-        final DisplayName displayName = DisplayName.fromJson(displayNameData);
+        final displayName = response.displayName.text;
+        final location = response.location;
 
         // add marker
         final markers = [
           Marker(
             markerId: const MarkerId('newPlaces'),
             position: LatLng(location.latitude!, location.longitude!),
-            infoWindow: InfoWindow(title: displayName.text),
+            infoWindow: InfoWindow(title: displayName),
           )
         ];
         // Unfocus the searchbar
@@ -86,12 +81,12 @@ class MapsCubit extends Cubit<MapsState> {
 
   /// Autocomplete search places
   Future<void> searchPlacesAutoComplete(String? query) async {
-    final response = await _mapsApiService.placesAutocomplete(query);
+    final result = await _mapsApiService.placesAutocomplete(query);
 
-    if (response != null) {
-      final result = placesAutocompleteFromJson(response.body);
+    if (result != null) {
+      final placeSuggestion = result.suggestions;
       emit(state.copyWith(
-        placesSuggestions: result.suggestions,
+        placesSuggestions: placeSuggestion,
         isSearchResultVisible: true,
       ));
     } else {
@@ -134,12 +129,11 @@ class MapsCubit extends Cubit<MapsState> {
       ];
 
       final userLocation = currentState.userLocation;
-      final response = await _mapsApiService.placesNearby(userLocation);
+      final nearbyPlaces = await _mapsApiService.placesNearby(userLocation);
 
-      if (response != null) {
-        final result = nearbyPlacesFromJson(response.body);
-        if (result.places != null) {
-          for (Place place in result.places!) {
+      if (nearbyPlaces != null) {
+        if (nearbyPlaces.places != null) {
+          for (Place place in nearbyPlaces.places!) {
             if (place.location != null) {
               markerList.add(
                 Marker(

@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:smart_jakarta/components/home_appbar.dart';
 import 'package:smart_jakarta/cubit/authenticaion_cubit/authentication_cubit.dart';
 import 'package:smart_jakarta/cubit/location_cubit/location_cubit.dart';
+import 'package:smart_jakarta/services/maps_api_service.dart';
 
 class ContactPage extends StatelessWidget {
   const ContactPage({super.key});
@@ -40,7 +42,14 @@ class ContactPage extends StatelessWidget {
                   print(token);
                 },
                 child: const Text('TEST')),
-            ElevatedButton(onPressed: () async {}, child: const Text('tosst'))
+            ElevatedButton(
+                onPressed: () async {
+                  final response = await MapsApiService().getDirection(
+                      origin: LatLng(-6.203890878541474, 107.00424867191408),
+                      destination:
+                          LatLng(-6.184626513395576, 106.97906471489249));
+                },
+                child: const Text('tosst'))
           ],
         ),
       ),
