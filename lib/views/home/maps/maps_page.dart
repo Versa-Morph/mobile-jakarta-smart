@@ -40,103 +40,118 @@ class _MapsPageState extends State<MapsPage>
   @override
   Widget build(BuildContext context) {
     super.build(context);
-    return Scaffold(
-      resizeToAvoidBottomInset: false,
-      appBar: const HomeAppBar(
-        appBarTitle: 'Maps',
-        userPictPath: 'assets/images/user_img_placeholder.png',
-      ),
-      body: Stack(
-        children: [
-          Builder(builder: (context) {
-            final mapsPageState = context.watch<MapsCubit>().state;
-            final locationState = context.watch<LocationCubit>().state;
+    return BlocListener<MapsCubit, MapsState>(
+      listener: (context, state) {
+        if (state.errorMsg.isNotEmpty) {
+          final snackBar = SnackBar(
+            content: Text(state.errorMsg),
+            duration: const Duration(seconds: 1),
+          );
+          ScaffoldMessenger.of(context).showSnackBar(snackBar);
+          context.read<MapsCubit>().clearMsg();
+        }
+      },
+      child: Scaffold(
+        resizeToAvoidBottomInset: false,
+        appBar: const HomeAppBar(
+          appBarTitle: 'Maps',
+          userPictPath: 'assets/images/user_img_placeholder.png',
+        ),
+        body: Stack(
+          children: [
+            Builder(builder: (context) {
+              final mapsPageState = context.watch<MapsCubit>().state;
+              final locationState = context.watch<LocationCubit>().state;
 
-            if (locationState is LocationLoading) {
-              return const Center(
-                child: CircularProgressIndicator(),
-              );
-            } else if (locationState is LocationAcquired) {
-              return GoogleMap(
-                initialCameraPosition: CameraPosition(
-                    target: LatLng(
-                      locationState.userLocation.latitude,
-                      locationState.userLocation.longitude,
-                    ),
-                    zoom: 18),
-                markers: Set<Marker>.of(mapsPageState.markers),
-                gestureRecognizers: {
-                  /// to make the swipe only in maps
-                  Factory<EagerGestureRecognizer>(
-                      () => EagerGestureRecognizer()),
-                },
-                onMapCreated: (controller) {
-                  context.read<MapsCubit>().setController(controller);
-                },
-                myLocationEnabled: true,
-                compassEnabled: true,
-                zoomControlsEnabled: false,
-                trafficEnabled: true,
-              );
-            } else {
-              return const SizedBox();
-            }
-          }),
-          Positioned(
-            top: 10,
-            right: 15,
-            left: 15,
-            child: CustomSearchBar(
-              onChanged: (query) =>
-                  context.read<MapsCubit>().searchPlacesAutoComplete(query),
-            ),
-          ),
-          Positioned(
-            top: 48,
-            right: 15,
-            left: 15,
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 10),
-              child: BlocBuilder<MapsCubit, MapsState>(
-                builder: (context, state) {
-                  return SearchResult(
-                    isVisible: state.isSearchResultVisible,
-                    child: ListView.builder(
-                      shrinkWrap: true,
-                      itemCount: state.placesSuggestions.length,
-                      itemBuilder: (context, index) {
-                        final placePrediction =
-                            state.placesSuggestions[index].placePrediction;
-
-                        final placeId = placePrediction.placeId;
-                        final placesTitle =
-                            placePrediction.structuredFormat.mainText.text;
-                        final placesSubTitle = placePrediction
-                            .structuredFormat.secondaryText?.text;
-
-                        return ListTile(
-                          onTap: () {
-                            print(placeId);
-                          },
-                          title: Text(placesTitle),
-                          subtitle: Text(placesSubTitle ?? ''),
-                        );
-                      },
-                    ),
-                  );
-                },
+              if (locationState is LocationLoading) {
+                return const Center(
+                  child: Center(child: CircularProgressIndicator()),
+                );
+              } else if (locationState is LocationAcquired) {
+                return GoogleMap(
+                  initialCameraPosition: CameraPosition(
+                      target: LatLng(
+                        locationState.userLocation.latitude,
+                        locationState.userLocation.longitude,
+                      ),
+                      zoom: 18),
+                  markers: Set<Marker>.of(mapsPageState.markers),
+                  gestureRecognizers: {
+                    /// to make the swipe only in maps
+                    Factory<EagerGestureRecognizer>(
+                        () => EagerGestureRecognizer()),
+                  },
+                  onMapCreated: (controller) {
+                    context.read<MapsCubit>().setController(controller);
+                  },
+                  myLocationEnabled: true,
+                  myLocationButtonEnabled: false,
+                  compassEnabled: true,
+                  zoomControlsEnabled: false,
+                  trafficEnabled: true,
+                );
+              } else {
+                return const SizedBox();
+              }
+            }),
+            Positioned(
+              top: 10,
+              right: 15,
+              left: 15,
+              child: CustomSearchBar(
+                focusNode: context.read<MapsCubit>().focusNode,
+                onChanged: (query) =>
+                    context.read<MapsCubit>().searchPlacesAutoComplete(query),
               ),
             ),
+            Positioned(
+              top: 48,
+              right: 15,
+              left: 15,
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 10),
+                child: BlocBuilder<MapsCubit, MapsState>(
+                  builder: (context, state) {
+                    return SearchResult(
+                      isVisible: state.isSearchResultVisible,
+                      child: ListView.builder(
+                        shrinkWrap: true,
+                        itemCount: state.placesSuggestions.length,
+                        itemBuilder: (context, index) {
+                          final placePrediction =
+                              state.placesSuggestions[index].placePrediction;
+
+                          final placeId = placePrediction.placeId;
+                          final placesTitle =
+                              placePrediction.structuredFormat.mainText.text;
+                          final placesSubTitle = placePrediction
+                              .structuredFormat.secondaryText?.text;
+
+                          return ListTile(
+                            onTap: () {
+                              // print(placeId);
+                              context.read<MapsCubit>().markPlaces(placeId);
+                            },
+                            title: Text(placesTitle),
+                            subtitle: Text(placesSubTitle ?? ''),
+                          );
+                        },
+                      ),
+                    );
+                  },
+                ),
+              ),
+            ),
+          ],
+        ),
+        floatingActionButton: FloatingActionButton(
+          onPressed: () {
+            context.read<MapsCubit>().goToUserLocation();
+            context.read<MapsCubit>().nearbyPlaces();
+          },
+          child: const Icon(
+            Icons.location_searching_outlined,
           ),
-        ],
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          context.read<MapsCubit>().goToUserLocation();
-          context.read<MapsCubit>().nearbyPlaces();
-        },
-        child: const Icon(
-          Icons.location_searching_outlined,
         ),
       ),
     );
