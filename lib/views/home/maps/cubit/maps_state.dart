@@ -6,12 +6,14 @@ class MapsState extends Equatable {
     required this.placesSuggestions,
     required this.isSearchResultVisible,
     required this.errorMsg,
+    this.directions,
   });
 
   final List<Marker> markers;
   final List<Suggestion> placesSuggestions;
   final bool isSearchResultVisible;
   final String errorMsg;
+  final Directions? directions;
 
   @override
   List<Object?> get props => [
@@ -26,6 +28,7 @@ class MapsState extends Equatable {
     List<Suggestion>? placesSuggestions,
     bool? isSearchResultVisible,
     String? errorMsg,
+    Directions? directions,
   }) {
     return MapsState(
       markers: markers ?? this.markers,
@@ -33,6 +36,7 @@ class MapsState extends Equatable {
       isSearchResultVisible:
           isSearchResultVisible ?? this.isSearchResultVisible,
       errorMsg: errorMsg ?? this.errorMsg,
+      directions: directions ?? this.directions,
     );
   }
 

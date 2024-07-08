@@ -4,13 +4,14 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:http/http.dart' as http;
 import 'package:smart_jakarta/constant/constant.dart' as constant;
 import 'package:smart_jakarta/exception/exception.dart';
+import 'package:smart_jakarta/models/directions.dart';
 import 'package:smart_jakarta/models/nearby_places.dart';
 import 'package:smart_jakarta/models/place_autocomplete.dart';
 import 'package:smart_jakarta/models/place_details.dart';
 
 class MapsApiService {
   /// Get direction to places from user location
-  Future<http.Response> getDirection({
+  Future<Directions?> getDirection({
     required LatLng origin,
     required LatLng destination,
   }) async {
@@ -24,7 +25,11 @@ class MapsApiService {
       'Content-Type': 'application/json',
     });
 
-    return response;
+    if (response.statusCode == 200) {
+      final resBody = jsonDecode(response.body) as Map<String, dynamic>;
+      return Directions.fromMap(resBody);
+    }
+    return null;
   }
 
   /// Search places detail based on placeId from google maps

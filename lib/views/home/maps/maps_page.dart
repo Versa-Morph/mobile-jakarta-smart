@@ -76,6 +76,12 @@ class _MapsPageState extends State<MapsPage>
                       ),
                       zoom: 18),
                   markers: Set<Marker>.of(mapsPageState.markers),
+                  myLocationEnabled: true,
+                  myLocationButtonEnabled: false,
+                  compassEnabled: true,
+                  zoomControlsEnabled: false,
+                  trafficEnabled: true,
+                  mapToolbarEnabled: false,
                   gestureRecognizers: {
                     /// to make the swipe only in maps
                     Factory<EagerGestureRecognizer>(
@@ -84,11 +90,6 @@ class _MapsPageState extends State<MapsPage>
                   onMapCreated: (controller) {
                     context.read<MapsCubit>().setController(controller);
                   },
-                  myLocationEnabled: true,
-                  myLocationButtonEnabled: false,
-                  compassEnabled: true,
-                  zoomControlsEnabled: false,
-                  trafficEnabled: true,
                 );
               } else {
                 return const SizedBox();
