@@ -25,7 +25,7 @@ class Directions {
 
     // bound
     final northeast = data['bounds']['northeast'];
-    final southwest = data['routes']['southwest'];
+    final southwest = data['bounds']['southwest'];
     final bounds = LatLngBounds(
       southwest: LatLng(
         southwest['lat'],
