@@ -5,9 +5,11 @@ import 'package:smart_jakarta/cubit/theme_cubit/theme_cubit.dart';
 class CustomSearchBar extends StatelessWidget {
   const CustomSearchBar({
     super.key,
+    this.focusNode,
     this.controller,
     this.onChanged,
   });
+  final FocusNode? focusNode;
   final TextEditingController? controller;
   final Function(String query)? onChanged;
 
@@ -20,6 +22,7 @@ class CustomSearchBar extends StatelessWidget {
           color: Color(0xffffffff),
         ),
         child: TextField(
+          focusNode: focusNode,
           controller: controller,
           onChanged: onChanged,
           style: TextStyle(
