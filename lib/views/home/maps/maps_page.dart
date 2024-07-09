@@ -3,9 +3,11 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:sliding_up_panel/sliding_up_panel.dart';
 import 'package:smart_jakarta/components/home_appbar.dart';
 import 'package:smart_jakarta/cubit/location_cubit/location_cubit.dart';
 import 'package:smart_jakarta/views/home/maps/cubit/maps_cubit.dart';
+import 'package:smart_jakarta/views/home/maps/widgets/bottom_menu_panel.dart';
 import 'package:smart_jakarta/views/home/maps/widgets/custom_search_bar.dart';
 import 'package:smart_jakarta/views/home/maps/widgets/search_result.dart';
 
@@ -59,6 +61,7 @@ class _MapsPageState extends State<MapsPage>
         ),
         body: Stack(
           children: [
+            // Google Maps Widget
             Builder(builder: (context) {
               final mapsPageState = context.watch<MapsCubit>().state;
               final locationState = context.watch<LocationCubit>().state;
@@ -95,6 +98,44 @@ class _MapsPageState extends State<MapsPage>
                 return const SizedBox();
               }
             }),
+
+            // FAB
+            Positioned(
+              right: 15,
+              bottom: 60,
+              child: FloatingActionButton.small(
+                onPressed: () {
+                  context.read<MapsCubit>().goToUserLocation();
+                  context.read<MapsCubit>().nearbyPlaces();
+                },
+                backgroundColor: const Color.fromARGB(255, 242, 152, 17),
+                child: const Icon(
+                  Icons.location_searching_outlined,
+                ),
+              ),
+            ),
+
+            // Bottom Menu
+            BlocBuilder<MapsCubit, MapsState>(
+              builder: (context, state) {
+                if (state.markers.isNotEmpty) {
+                  return SlidingUpPanel(
+                    minHeight: 55,
+                    maxHeight: 250,
+                    borderRadius: const BorderRadius.vertical(
+                      top: Radius.circular(20),
+                    ),
+                    panel: BottomMenuPanel(
+                      marker: state.markers[0],
+                    ),
+                  );
+                } else {
+                  return SizedBox();
+                }
+              },
+            ),
+
+            // SearchBar
             Positioned(
               top: 10,
               right: 15,
@@ -105,6 +146,8 @@ class _MapsPageState extends State<MapsPage>
                     context.read<MapsCubit>().searchPlacesAutoComplete(query),
               ),
             ),
+
+            // Search Result
             Positioned(
               top: 48,
               right: 15,
@@ -144,15 +187,6 @@ class _MapsPageState extends State<MapsPage>
               ),
             ),
           ],
-        ),
-        floatingActionButton: FloatingActionButton(
-          onPressed: () {
-            context.read<MapsCubit>().goToUserLocation();
-            context.read<MapsCubit>().nearbyPlaces();
-          },
-          child: const Icon(
-            Icons.location_searching_outlined,
-          ),
         ),
       ),
     );

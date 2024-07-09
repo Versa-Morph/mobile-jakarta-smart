@@ -48,13 +48,15 @@ class MapsCubit extends Cubit<MapsState> {
       if (response != null) {
         final displayName = response.displayName.text;
         final location = response.location;
+        final formattedAddress = response.formattedAddress;
 
         // add marker
         final markers = [
           Marker(
             markerId: const MarkerId('newPlaces'),
             position: LatLng(location.latitude!, location.longitude!),
-            infoWindow: InfoWindow(title: displayName),
+            infoWindow:
+                InfoWindow(title: displayName, snippet: formattedAddress),
           )
         ];
         // Unfocus the searchbar
