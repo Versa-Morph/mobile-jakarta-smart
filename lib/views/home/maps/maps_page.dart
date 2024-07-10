@@ -105,7 +105,7 @@ class _MapsPageState extends State<MapsPage>
               bottom: 60,
               child: FloatingActionButton.small(
                 onPressed: () {
-                  // context.read<MapsCubit>().nearbyPlaces();
+                  context.read<MapsCubit>().nearbyPlaces();
                   print(context.read<MapsCubit>().state.markerIndex);
                   print(context.read<MapsCubit>().state.markers);
                 },

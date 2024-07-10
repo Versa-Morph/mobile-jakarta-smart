@@ -47,16 +47,18 @@ class MapsCubit extends Cubit<MapsState> {
       final List<Marker> markers = [];
       markers.add(
         Marker(
-          markerId: MarkerId(state.markerIndex.toString()),
+          markerId: const MarkerId('0'),
           position: LatLng(userLocation.latitude, userLocation.longitude),
+          onTap: () {
+            emit(state.copyWith(markerIndex: 0));
+          },
           infoWindow: const InfoWindow(
             title: 'MyLocation',
           ),
         ),
       );
 
-      emit(
-          state.copyWith(markers: markers, markerIndex: state.markerIndex + 1));
+      emit(state.copyWith(markers: markers));
     }
   }
 
@@ -70,7 +72,6 @@ class MapsCubit extends Cubit<MapsState> {
       emit(
         state.copyWith(
           markers: markers,
-          markerIndex: state.markerIndex - 1,
         ),
       );
     }
@@ -84,8 +85,11 @@ class MapsCubit extends Cubit<MapsState> {
         final markers = state.markers;
         markers.add(
           Marker(
-            markerId: MarkerId(state.markerIndex.toString()),
+            markerId: const MarkerId('1'),
             position: LatLng(location.latitude!, location.longitude!),
+            onTap: () {
+              emit(state.copyWith(markerIndex: 1));
+            },
             infoWindow:
                 InfoWindow(title: displayName, snippet: formattedAddress),
           ),
@@ -94,7 +98,6 @@ class MapsCubit extends Cubit<MapsState> {
         unfocusSearchBar();
         emit(state.copyWith(
           markers: markers,
-          markerIndex: state.markerIndex + 1,
           isSearchResultVisible: false,
         ));
 
@@ -135,56 +138,65 @@ class MapsCubit extends Cubit<MapsState> {
   /// Search Police Station and Fire Station Nearby
   Future<void> nearbyPlaces() async {
     if (state.markers.length > 1) {
-      final markers = state.markers;
-      const markerIndex = 1;
-      markers.removeRange(1, state.markers.length);
+      final markers = List<Marker>.from(state.markers)
+        ..removeRange(1, state.markers.length);
 
       emit(
         state.copyWith(
           markers: markers,
-          markerIndex: markerIndex,
         ),
       );
     }
-    final currentState = locationState;
 
-    if (currentState is LocationAcquired) {
-      final userLocation = currentState.userLocation;
-      final nearbyPlaces = await _mapsApiService.placesNearby(userLocation);
+    try {
+      final currentState = locationState;
 
-      final markerList = state.markers;
+      if (currentState is LocationAcquired) {
+        final userLocation = currentState.userLocation;
+        final nearbyPlaces = await _mapsApiService.placesNearby(userLocation);
 
-      if (nearbyPlaces != null) {
-        if (nearbyPlaces.places != null) {
-          for (Place place in nearbyPlaces.places!) {
-            if (place.location != null) {
-              markerList.add(
-                Marker(
-                  markerId: MarkerId(state.markerIndex.toString()),
-                  position: LatLng(
-                    place.location!.latitude!,
-                    place.location!.longitude!,
+        final markerList = List<Marker>.from(state.markers);
+
+        if (nearbyPlaces != null) {
+          if (nearbyPlaces.places != null) {
+            int i = 1;
+            for (Place place in nearbyPlaces.places!) {
+              if (place.location != null) {
+                markerList.add(
+                  Marker(
+                    markerId: MarkerId(i.toString()),
+                    position: LatLng(
+                      place.location!.latitude!,
+                      place.location!.longitude!,
+                    ),
+                    onTap: () {
+                      emit(state.copyWith(markerIndex: i));
+                    },
+                    infoWindow: InfoWindow(title: place.displayName!.text!),
                   ),
-                  infoWindow: InfoWindow(title: place.displayName!.text!),
-                ),
-              );
-              emit(state.copyWith(markerIndex: state.markerIndex + 1));
+                );
+
+                i++;
+              }
             }
           }
         }
+
+        emit(state.copyWith(
+          markers: markerList,
+        ));
+
+        final cameraPosition = CameraPosition(
+          target: LatLng(userLocation.latitude, userLocation.longitude),
+          zoom: 15,
+        );
+
+        final GoogleMapController controller = await _mapsController.future;
+        controller
+            .animateCamera(CameraUpdate.newCameraPosition(cameraPosition));
       }
-
-      emit(state.copyWith(
-        markers: markerList,
-      ));
-
-      final cameraPosition = CameraPosition(
-        target: LatLng(userLocation.latitude, userLocation.longitude),
-        zoom: 15,
-      );
-
-      final GoogleMapController controller = await _mapsController.future;
-      controller.animateCamera(CameraUpdate.newCameraPosition(cameraPosition));
+    } catch (e) {
+      emit(state.copyWith(errorMsg: e.toString()));
     }
   }
 }

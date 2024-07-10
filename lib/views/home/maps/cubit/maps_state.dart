@@ -23,7 +23,7 @@ class MapsState extends Equatable {
         placesSuggestions,
         isSearchResultVisible,
         errorMsg,
-        markerIndex
+        markerIndex,
       ];
 
   MapsState copyWith({

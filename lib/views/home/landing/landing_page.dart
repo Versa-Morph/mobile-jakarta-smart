@@ -48,6 +48,7 @@ class _LandingPageState extends State<LandingPage> {
                           return Text(
                             'Hello, ${state.user.name}',
                             style: TextStyle(
+                              fontSize: 12,
                               fontWeight: FontWeight.w500,
                               color: Theme.of(context).brightness ==
                                       Brightness.dark
@@ -78,6 +79,7 @@ class _LandingPageState extends State<LandingPage> {
                           child: Text(
                         'Your Location',
                         style: TextStyle(
+                            fontSize: 12,
                             fontWeight: FontWeight.w500,
                             color:
                                 Theme.of(context).brightness == Brightness.dark
@@ -91,6 +93,7 @@ class _LandingPageState extends State<LandingPage> {
                               return Text(
                                 '${state.placemarks[0].subLocality}, ${state.placemarks[0].subAdministrativeArea}',
                                 style: const TextStyle(
+                                    fontSize: 12,
                                     color: Color(0xffD99022),
                                     fontWeight: FontWeight.w400),
                               );
