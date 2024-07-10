@@ -39,10 +39,41 @@ class MapsCubit extends Cubit<MapsState> {
     _mapsController.complete(controller);
   }
 
+  /// Mark user location
+  Future<void> markUserLocation() async {
+    final currentState = locationState;
+    if (currentState is LocationAcquired) {
+      final userLocation = currentState.userLocation;
+      final List<Marker> markers = [];
+      markers.add(
+        Marker(
+          markerId: MarkerId(state.markerIndex.toString()),
+          position: LatLng(userLocation.latitude, userLocation.longitude),
+          infoWindow: const InfoWindow(
+            title: 'MyLocation',
+          ),
+        ),
+      );
+
+      emit(
+          state.copyWith(markers: markers, markerIndex: state.markerIndex + 1));
+    }
+  }
+
   /// Place marker to map from place id when user search places
   Future<void> markPlaces(String placesId) async {
-    emit(state.copyWith(markers: []));
+    // remove other markers except user marker
+    if (state.markers.length > 1) {
+      final markers = state.markers;
+      markers.removeRange(1, state.markers.length);
 
+      emit(
+        state.copyWith(
+          markers: markers,
+          markerIndex: state.markerIndex - 1,
+        ),
+      );
+    }
     try {
       final response = await _mapsApiService.placeLocation(placesId);
       if (response != null) {
@@ -50,19 +81,20 @@ class MapsCubit extends Cubit<MapsState> {
         final location = response.location;
         final formattedAddress = response.formattedAddress;
 
-        // add marker
-        final markers = [
+        final markers = state.markers;
+        markers.add(
           Marker(
-            markerId: const MarkerId('newPlaces'),
+            markerId: MarkerId(state.markerIndex.toString()),
             position: LatLng(location.latitude!, location.longitude!),
             infoWindow:
                 InfoWindow(title: displayName, snippet: formattedAddress),
-          )
-        ];
+          ),
+        );
         // Unfocus the searchbar
         unfocusSearchBar();
         emit(state.copyWith(
           markers: markers,
+          markerIndex: state.markerIndex + 1,
           isSearchResultVisible: false,
         ));
 
@@ -100,39 +132,27 @@ class MapsCubit extends Cubit<MapsState> {
     }
   }
 
-  /// Go to user location
-  Future<void> goToUserLocation() async {
-    final currentState = locationState;
-    if (currentState is LocationAcquired) {
-      final userLocation = currentState.userLocation;
-      final cameraPosition = CameraPosition(
-        target: LatLng(userLocation.latitude, userLocation.longitude),
-        zoom: 15,
-      );
-
-      final GoogleMapController controller = await _mapsController.future;
-      controller.animateCamera(CameraUpdate.newCameraPosition(cameraPosition));
-    }
-  }
-
   /// Search Police Station and Fire Station Nearby
   Future<void> nearbyPlaces() async {
-    final currentState = locationState;
-    if (currentState is LocationAcquired) {
-      // Add marker for user location
-      final List<Marker> markerList = [
-        Marker(
-          markerId: const MarkerId('UserMark'),
-          position: LatLng(
-            currentState.userLocation.latitude,
-            currentState.userLocation.longitude,
-          ),
-          infoWindow: const InfoWindow(title: 'Location'),
-        ),
-      ];
+    if (state.markers.length > 1) {
+      final markers = state.markers;
+      const markerIndex = 1;
+      markers.removeRange(1, state.markers.length);
 
+      emit(
+        state.copyWith(
+          markers: markers,
+          markerIndex: markerIndex,
+        ),
+      );
+    }
+    final currentState = locationState;
+
+    if (currentState is LocationAcquired) {
       final userLocation = currentState.userLocation;
       final nearbyPlaces = await _mapsApiService.placesNearby(userLocation);
+
+      final markerList = state.markers;
 
       if (nearbyPlaces != null) {
         if (nearbyPlaces.places != null) {
@@ -140,7 +160,7 @@ class MapsCubit extends Cubit<MapsState> {
             if (place.location != null) {
               markerList.add(
                 Marker(
-                  markerId: MarkerId(place.displayName!.text!),
+                  markerId: MarkerId(state.markerIndex.toString()),
                   position: LatLng(
                     place.location!.latitude!,
                     place.location!.longitude!,
@@ -148,20 +168,23 @@ class MapsCubit extends Cubit<MapsState> {
                   infoWindow: InfoWindow(title: place.displayName!.text!),
                 ),
               );
-
-              emit(state.copyWith(markers: markerList));
+              emit(state.copyWith(markerIndex: state.markerIndex + 1));
             }
           }
         }
-        final cameraPosition = CameraPosition(
-          target: LatLng(userLocation.latitude, userLocation.longitude),
-          zoom: 15,
-        );
-
-        final GoogleMapController controller = await _mapsController.future;
-        controller
-            .animateCamera(CameraUpdate.newCameraPosition(cameraPosition));
       }
+
+      emit(state.copyWith(
+        markers: markerList,
+      ));
+
+      final cameraPosition = CameraPosition(
+        target: LatLng(userLocation.latitude, userLocation.longitude),
+        zoom: 15,
+      );
+
+      final GoogleMapController controller = await _mapsController.future;
+      controller.animateCamera(CameraUpdate.newCameraPosition(cameraPosition));
     }
   }
 }

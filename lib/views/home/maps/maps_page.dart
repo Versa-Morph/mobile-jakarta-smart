@@ -21,7 +21,7 @@ class MapsPageProvider extends StatelessWidget {
     return BlocProvider(
       create: (context) => MapsCubit(
         locationCubit: context.read<LocationCubit>(),
-      ),
+      )..markUserLocation(),
       child: const MapsPage(),
     );
   }
@@ -105,8 +105,9 @@ class _MapsPageState extends State<MapsPage>
               bottom: 60,
               child: FloatingActionButton.small(
                 onPressed: () {
-                  context.read<MapsCubit>().goToUserLocation();
-                  context.read<MapsCubit>().nearbyPlaces();
+                  // context.read<MapsCubit>().nearbyPlaces();
+                  print(context.read<MapsCubit>().state.markerIndex);
+                  print(context.read<MapsCubit>().state.markers);
                 },
                 backgroundColor: const Color.fromARGB(255, 242, 152, 17),
                 child: const Icon(
@@ -174,6 +175,7 @@ class _MapsPageState extends State<MapsPage>
                           return ListTile(
                             onTap: () {
                               // print(placeId);
+
                               context.read<MapsCubit>().markPlaces(placeId);
                             },
                             title: Text(placesTitle),

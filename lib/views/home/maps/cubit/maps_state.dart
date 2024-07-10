@@ -6,7 +6,7 @@ class MapsState extends Equatable {
     required this.placesSuggestions,
     required this.isSearchResultVisible,
     required this.errorMsg,
-    this.selectedMarkerIndex,
+    required this.markerIndex,
     this.directions,
   });
 
@@ -14,7 +14,7 @@ class MapsState extends Equatable {
   final List<Suggestion> placesSuggestions;
   final bool isSearchResultVisible;
   final String errorMsg;
-  final int? selectedMarkerIndex;
+  final int markerIndex;
   final Directions? directions;
 
   @override
@@ -23,6 +23,7 @@ class MapsState extends Equatable {
         placesSuggestions,
         isSearchResultVisible,
         errorMsg,
+        markerIndex
       ];
 
   MapsState copyWith({
@@ -30,7 +31,7 @@ class MapsState extends Equatable {
     List<Suggestion>? placesSuggestions,
     bool? isSearchResultVisible,
     String? errorMsg,
-    int? selectedMarkerIndex,
+    int? markerIndex,
     Directions? directions,
   }) {
     return MapsState(
@@ -39,7 +40,7 @@ class MapsState extends Equatable {
       isSearchResultVisible:
           isSearchResultVisible ?? this.isSearchResultVisible,
       errorMsg: errorMsg ?? this.errorMsg,
-      selectedMarkerIndex: selectedMarkerIndex ?? this.selectedMarkerIndex,
+      markerIndex: markerIndex ?? this.markerIndex,
       directions: directions ?? this.directions,
     );
   }
@@ -50,6 +51,7 @@ class MapsState extends Equatable {
       placesSuggestions: [],
       isSearchResultVisible: false,
       errorMsg: '',
+      markerIndex: 0,
     );
   }
 }
