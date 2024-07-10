@@ -24,6 +24,7 @@ class MapsState extends Equatable {
         isSearchResultVisible,
         errorMsg,
         markerIndex,
+        directions,
       ];
 
   MapsState copyWith({
@@ -32,7 +33,7 @@ class MapsState extends Equatable {
     bool? isSearchResultVisible,
     String? errorMsg,
     int? markerIndex,
-    Directions? directions,
+    Directions? Function()? directions,
   }) {
     return MapsState(
       markers: markers ?? this.markers,
@@ -41,7 +42,7 @@ class MapsState extends Equatable {
           isSearchResultVisible ?? this.isSearchResultVisible,
       errorMsg: errorMsg ?? this.errorMsg,
       markerIndex: markerIndex ?? this.markerIndex,
-      directions: directions ?? this.directions,
+      directions: directions != null ? directions() : this.directions,
     );
   }
 

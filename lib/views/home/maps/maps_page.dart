@@ -36,6 +36,8 @@ class MapsPage extends StatefulWidget {
 
 class _MapsPageState extends State<MapsPage>
     with AutomaticKeepAliveClientMixin {
+  final PanelController _panelController = PanelController();
+
   @override
   bool get wantKeepAlive => true;
 
@@ -79,6 +81,18 @@ class _MapsPageState extends State<MapsPage>
                       ),
                       zoom: 18),
                   markers: Set<Marker>.of(mapsPageState.markers),
+                  polylines: (mapsPageState.directions != null)
+                      ? {
+                          Polyline(
+                            polylineId: const PolylineId('overview_pl'),
+                            color: const Color(0xff0f53ff),
+                            width: 5,
+                            points: mapsPageState.directions!.polyLinePoints
+                                .map((e) => LatLng(e.latitude, e.longitude))
+                                .toList(),
+                          )
+                        }
+                      : {},
                   myLocationEnabled: true,
                   myLocationButtonEnabled: false,
                   compassEnabled: true,
@@ -99,7 +113,37 @@ class _MapsPageState extends State<MapsPage>
               }
             }),
 
-            // FAB
+            // FAB 1
+            BlocBuilder<MapsCubit, MapsState>(
+              builder: (context, state) {
+                if (state.directions != null) {
+                  return Positioned(
+                    bottom: 60,
+                    left: 0,
+                    right: 0,
+                    child: SizedBox(
+                      child: Center(
+                        child: FloatingActionButton.small(
+                          onPressed: () {
+                            context.read<MapsCubit>().clearDirections();
+                            _panelController.close();
+                          },
+                          backgroundColor:
+                              const Color.fromARGB(255, 242, 152, 17),
+                          child: const Icon(
+                            Icons.close,
+                          ),
+                        ),
+                      ),
+                    ),
+                  );
+                } else {
+                  return const SizedBox();
+                }
+              },
+            ),
+
+            // FAB 2
             Positioned(
               right: 15,
               bottom: 60,
@@ -119,20 +163,25 @@ class _MapsPageState extends State<MapsPage>
             // Bottom Menu
             BlocBuilder<MapsCubit, MapsState>(
               builder: (context, state) {
-                if (state.markers.isNotEmpty) {
-                  return SlidingUpPanel(
-                    minHeight: 55,
-                    maxHeight: 250,
-                    borderRadius: const BorderRadius.vertical(
-                      top: Radius.circular(20),
-                    ),
-                    panel: BottomMenuPanel(
-                      marker: state.markers[0],
-                    ),
-                  );
-                } else {
-                  return SizedBox();
-                }
+                final markerIndex = state.markerIndex;
+                return SlidingUpPanel(
+                  minHeight: 55,
+                  controller: _panelController,
+                  maxHeight: 350,
+                  borderRadius: const BorderRadius.vertical(
+                    top: Radius.circular(20),
+                  ),
+                  panel: BottomMenuPanel(
+                    marker: state.markers[markerIndex],
+                    onTap: () {
+                      context.read<MapsCubit>().getDirections(
+                            origin: state.markers[0].position,
+                            destination: state.markers[markerIndex].position,
+                          );
+                      _panelController.close();
+                    },
+                  ),
+                );
               },
             ),
 

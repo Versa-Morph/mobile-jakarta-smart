@@ -66,12 +66,13 @@ class MapsCubit extends Cubit<MapsState> {
   Future<void> markPlaces(String placesId) async {
     // remove other markers except user marker
     if (state.markers.length > 1) {
-      final markers = state.markers;
-      markers.removeRange(1, state.markers.length);
+      final markers = List<Marker>.from(state.markers)
+        ..removeRange(1, state.markers.length);
 
       emit(
         state.copyWith(
           markers: markers,
+          markerIndex: 0,
         ),
       );
     }
@@ -144,6 +145,7 @@ class MapsCubit extends Cubit<MapsState> {
       emit(
         state.copyWith(
           markers: markers,
+          markerIndex: 0,
         ),
       );
     }
@@ -162,17 +164,20 @@ class MapsCubit extends Cubit<MapsState> {
             int i = 1;
             for (Place place in nearbyPlaces.places!) {
               if (place.location != null) {
+                final index = i;
                 markerList.add(
                   Marker(
-                    markerId: MarkerId(i.toString()),
+                    markerId: MarkerId(index.toString()),
                     position: LatLng(
                       place.location!.latitude!,
                       place.location!.longitude!,
                     ),
                     onTap: () {
-                      emit(state.copyWith(markerIndex: i));
+                      emit(state.copyWith(markerIndex: index));
                     },
-                    infoWindow: InfoWindow(title: place.displayName!.text!),
+                    infoWindow: InfoWindow(
+                        title: place.displayName!.text!,
+                        snippet: place.formattedAddress),
                   ),
                 );
 
@@ -197,6 +202,48 @@ class MapsCubit extends Cubit<MapsState> {
       }
     } catch (e) {
       emit(state.copyWith(errorMsg: e.toString()));
+    }
+  }
+
+  Future<void> getDirections({
+    required LatLng origin,
+    required LatLng destination,
+  }) async {
+    try {
+      final directions = await _mapsApiService.getDirection(
+        origin: origin,
+        destination: destination,
+      );
+
+      if (directions != null) {
+        emit(state.copyWith(directions: () => directions));
+        final desCameraPosition = CameraPosition(
+          target: LatLng(destination.latitude, destination.longitude),
+          zoom: 15,
+        );
+
+        final GoogleMapController controller = await _mapsController.future;
+        controller
+            .animateCamera(CameraUpdate.newCameraPosition(desCameraPosition));
+      }
+    } catch (e) {
+      emit(state.copyWith(errorMsg: e.toString()));
+    }
+  }
+
+  Future<void> clearDirections() async {
+    final currentState = locationState;
+    if (currentState is LocationAcquired) {
+      final userLocation = currentState.userLocation;
+      emit(state.copyWith(directions: () => null));
+      final desCameraPosition = CameraPosition(
+        target: LatLng(userLocation.latitude, userLocation.longitude),
+        zoom: 18,
+      );
+
+      final GoogleMapController controller = await _mapsController.future;
+      controller
+          .animateCamera(CameraUpdate.newCameraPosition(desCameraPosition));
     }
   }
 }
