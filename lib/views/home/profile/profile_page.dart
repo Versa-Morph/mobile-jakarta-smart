@@ -48,6 +48,7 @@ class ProfilePage extends StatelessWidget {
       ),
       floatingActionButton: FloatingActionButton(
         backgroundColor: const Color(0xffD99022),
+        heroTag: null,
         onPressed: () {
           context.read<AuthenticationCubit>().logout();
           Navigator.pushNamedAndRemoveUntil(
