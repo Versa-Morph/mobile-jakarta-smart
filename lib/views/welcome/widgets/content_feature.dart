@@ -15,9 +15,7 @@ class ContentFeature extends StatelessWidget {
       height: 70,
       padding: const EdgeInsets.fromLTRB(15, 10, 15, 15),
       decoration: BoxDecoration(
-        color: Theme.of(context).brightness == Brightness.dark
-            ? const Color(0xffFFFFFF)
-            : Colors.black12,
+        color: const Color(0xffFFFFFF),
         borderRadius: BorderRadius.circular(35),
       ),
       child: ListTile(
