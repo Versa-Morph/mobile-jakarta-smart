@@ -235,7 +235,14 @@ class MapsCubit extends Cubit<MapsState> {
     final currentState = locationState;
     if (currentState is LocationAcquired) {
       final userLocation = currentState.userLocation;
-      emit(state.copyWith(directions: () => null));
+      // remove all marker except user marker
+      final markers = List<Marker>.from(state.markers)
+        ..removeRange(1, state.markers.length);
+      emit(state.copyWith(
+        directions: () => null,
+        markers: markers,
+        markerIndex: 0,
+      ));
       final desCameraPosition = CameraPosition(
         target: LatLng(userLocation.latitude, userLocation.longitude),
         zoom: 18,
