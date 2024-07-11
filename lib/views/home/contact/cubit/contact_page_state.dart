@@ -9,7 +9,13 @@ sealed class ContactPageState extends Equatable {
 
 final class ContactPageLoadingState extends ContactPageState {}
 
-final class ContactPageLoadedState extends ContactPageState {}
+final class ContactPageLoadedState extends ContactPageState {
+  final List<UserContact> userContact;
+  const ContactPageLoadedState(this.userContact);
+
+  @override
+  List<Object> get props => [userContact];
+}
 
 final class ContactPageEmptyState extends ContactPageState {}
 
