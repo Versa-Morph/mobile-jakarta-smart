@@ -11,6 +11,7 @@ class UserBio {
   final String bloodType;
   final int height;
   final int weight;
+  final String phoneNumber;
 
   UserBio({
     required this.id,
@@ -25,6 +26,7 @@ class UserBio {
     required this.bloodType,
     required this.height,
     required this.weight,
+    required this.phoneNumber,
   });
 
   factory UserBio.fromJson(Map<String, dynamic> json) => UserBio(
@@ -40,6 +42,7 @@ class UserBio {
         bloodType: json["blood_type"],
         height: json["height"],
         weight: json["weight"],
+        phoneNumber: json['phone_number'],
       );
 
   Map<String, dynamic> toJson() => {
@@ -55,5 +58,6 @@ class UserBio {
         "blood_type": bloodType,
         "height": height,
         "weight": weight,
+        "phone_number": phoneNumber,
       };
 }
