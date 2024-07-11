@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:smart_jakarta/components/home_appbar.dart';
+import 'package:smart_jakarta/cubit/authenticaion_cubit/authentication_cubit.dart';
 import 'package:smart_jakarta/views/home/profile/cubit/profile_page_cubit.dart';
 import 'package:smart_jakarta/views/home/profile/view_states/profile_page_empty.dart';
 import 'package:smart_jakarta/views/home/profile/view_states/profile_page_error.dart';
@@ -44,6 +45,17 @@ class ProfilePage extends StatelessWidget {
             return const ProfilePageError();
           }
         },
+      ),
+      floatingActionButton: FloatingActionButton(
+        backgroundColor: const Color(0xffD99022),
+        onPressed: () {
+          context.read<AuthenticationCubit>().logout();
+          Navigator.pushNamedAndRemoveUntil(
+              context, '/welcome', (route) => false);
+        },
+        child: const Icon(
+          Icons.logout,
+        ),
       ),
     );
   }
