@@ -18,12 +18,13 @@ class WelcomePage extends StatelessWidget {
             children: [
               // Header Text
               Container(
+                alignment: Alignment.topLeft,
                 padding: const EdgeInsets.symmetric(horizontal: 20),
-                height: 190,
+                height: 260,
                 child: const TypewriterText(),
               ),
 
-              const SizedBox(height: 45),
+              const SizedBox(height: 30),
 
               // Content feature 1
               const ContentFeature(
@@ -116,8 +117,7 @@ class WelcomePage extends StatelessWidget {
                 ],
               ),
 
-              SizedBox(height: MediaQuery.of(context).size.height / 4.4),
-              // SizedBox(height: 60),
+              SizedBox(height: MediaQuery.of(context).size.height / 5.8),
 
               // SignIn/Up Button
               Row(

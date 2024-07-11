@@ -14,13 +14,13 @@ class _TypewriterTextState extends State<TypewriterText> {
       text: const TextSpan(
         children: [
           TextSpan(
-            text: 'Smart ',
+            text: 'Smart\n',
             style: TextStyle(
               color: Color(0xffD99022),
             ),
           ),
           TextSpan(
-            text: 'every ',
+            text: 'every\n',
           ),
           TextSpan(
             text: 'Step ',
@@ -28,7 +28,7 @@ class _TypewriterTextState extends State<TypewriterText> {
               color: Color(0xffD99022),
             ),
           ),
-          TextSpan(text: 'of the way')
+          TextSpan(text: 'of \nthe way')
         ],
       ),
     ),
@@ -36,16 +36,16 @@ class _TypewriterTextState extends State<TypewriterText> {
       text: const TextSpan(
         children: [
           TextSpan(
-            text: 'Smart ',
+            text: 'Smart\n',
             style: TextStyle(
               color: Color(0xffD99022),
             ),
           ),
           TextSpan(
-            text: 'Solutions for ',
+            text: 'Solutions\nfor ',
           ),
           TextSpan(
-            text: 'Modern ',
+            text: 'Modern\n',
             style: TextStyle(
               color: Color(0xffD99022),
             ),
@@ -58,16 +58,16 @@ class _TypewriterTextState extends State<TypewriterText> {
       text: const TextSpan(
         children: [
           TextSpan(
-            text: 'Discover ',
+            text: 'Discover\n',
             style: TextStyle(
               color: Color(0xffD99022),
             ),
           ),
           TextSpan(
-            text: 'and ',
+            text: 'and\n',
           ),
           TextSpan(
-            text: 'Navigate ',
+            text: 'Navigate\n',
             style: TextStyle(
               color: Color(0xffD99022),
             ),
@@ -163,7 +163,7 @@ class _TypewriterTextState extends State<TypewriterText> {
       children: spanList,
       //! Edit this to style the whole text span
       style: TextStyle(
-        fontSize: 53,
+        fontSize: 55,
         fontWeight: FontWeight.w300,
         color: Theme.of(context).brightness == Brightness.dark
             ? Colors.white
