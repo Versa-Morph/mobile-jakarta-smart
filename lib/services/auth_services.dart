@@ -50,7 +50,7 @@ class AuthServices {
     try {
       final response = await _network.auth(
         {
-          'name': username,
+          'username': username,
           'email': email,
           'password': password,
           'password_confirmation': confirmPassword,
