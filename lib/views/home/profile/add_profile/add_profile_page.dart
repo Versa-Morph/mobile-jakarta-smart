@@ -1,5 +1,4 @@
 import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 
@@ -27,7 +26,7 @@ class _AddProfilePageState extends State<AddProfilePage> {
               Center(
                 child: GestureDetector(
                   onTap: () {
-                    _pickImageFromGallery();
+                    _showAlertDialog(context);
                   },
                   child: CircleAvatar(
                     radius: 55,
@@ -54,12 +53,44 @@ class _AddProfilePageState extends State<AddProfilePage> {
     );
   }
 
-  Future<void> _pickImageFromGallery() async {
-    final selectedImage =
-        await ImagePicker().pickImage(source: ImageSource.camera);
+  Future<void> _pickImage(ImageSource source) async {
+    final selectedImage = await ImagePicker().pickImage(source: source);
 
     setState(() {
       _selectedImage = selectedImage;
     });
+  }
+
+  void _showAlertDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+          title: const Text('Add Image'),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              ListTile(
+                title: const Text('Camera'),
+                leading: const Icon(Icons.camera_alt_rounded),
+                onTap: () {
+                  _pickImage(ImageSource.camera);
+                  Navigator.pop(context);
+                },
+              ),
+              ListTile(
+                title: const Text('Gallery'),
+                leading: const Icon(Icons.image),
+                onTap: () {
+                  _pickImage(ImageSource.gallery);
+                  Navigator.pop(context);
+                },
+              ),
+            ],
+          ),
+        );
+      },
+    );
   }
 }
