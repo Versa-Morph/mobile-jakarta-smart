@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:smart_jakarta/views/home/profile/add_profile/widgets/custom_profile_textfield.dart';
 
 class AddProfilePage extends StatefulWidget {
   const AddProfilePage({super.key});
@@ -14,7 +15,9 @@ class _AddProfilePageState extends State<AddProfilePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       appBar: AppBar(
+        scrolledUnderElevation: 0.0,
         title: const Text('Your Profile'),
         centerTitle: true,
       ),
@@ -23,6 +26,7 @@ class _AddProfilePageState extends State<AddProfilePage> {
           padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 8),
           child: Column(
             children: [
+              /// Profile picture section
               Center(
                 child: GestureDetector(
                   onTap: () {
@@ -45,7 +49,89 @@ class _AddProfilePageState extends State<AddProfilePage> {
                           ),
                   ),
                 ),
-              )
+              ),
+
+              const SizedBox(height: 40),
+
+              /// Form Phonenumber
+              CustomProfileTextfield(
+                hintText: 'Phone Number',
+                prefixImgPath: 'assets/icons/profile_icon.png',
+              ),
+
+              const SizedBox(height: 15),
+
+              /// Form NIK
+              CustomProfileTextfield(
+                hintText: 'nik',
+                prefixImgPath: 'assets/icons/profile_icon.png',
+              ),
+
+              const SizedBox(height: 15),
+
+              /// Form Fullname
+              CustomProfileTextfield(
+                hintText: 'Fullname',
+                prefixImgPath: 'assets/icons/profile_icon.png',
+              ),
+
+              const SizedBox(height: 15),
+
+              /// Form Nickname
+              CustomProfileTextfield(
+                hintText: 'Nickname',
+                prefixImgPath: 'assets/icons/profile_icon.png',
+              ),
+
+              const SizedBox(height: 15),
+
+              /// Form City
+              CustomProfileTextfield(
+                hintText: 'City',
+                prefixImgPath: 'assets/icons/profile_icon.png',
+              ),
+
+              const SizedBox(height: 15),
+
+              /// Form Age
+              CustomProfileTextfield(
+                hintText: 'Age',
+                prefixImgPath: 'assets/icons/profile_icon.png',
+              ),
+
+              const SizedBox(height: 15),
+
+              /// Form Bloodtype
+              CustomProfileTextfield(
+                hintText: 'Bloodtype',
+                prefixImgPath: 'assets/icons/profile_icon.png',
+              ),
+
+              const SizedBox(height: 15),
+
+              /// Form Height
+              CustomProfileTextfield(
+                hintText: 'Height',
+                prefixImgPath: 'assets/icons/profile_icon.png',
+              ),
+
+              const SizedBox(height: 15),
+
+              /// Form Weight
+              CustomProfileTextfield(
+                hintText: 'Weight',
+                prefixImgPath: 'assets/icons/profile_icon.png',
+              ),
+
+              const SizedBox(height: 15),
+
+              /// Form Address
+              CustomProfileTextfield(
+                hintText: 'Address',
+                prefixImgPath: 'assets/icons/profile_icon.png',
+              ),
+
+              const SizedBox(height: 15),
             ],
           ),
         ),
