@@ -36,7 +36,6 @@ class Network {
           )) {
         this.token = token;
       } else {
-        // TODO:IMPLEMENT REFRESH TOKEN
         localStorage.remove(token);
       }
     } else {

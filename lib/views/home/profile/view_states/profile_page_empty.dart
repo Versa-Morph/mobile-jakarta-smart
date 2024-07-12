@@ -42,7 +42,7 @@ class ProfilePageEmpty extends StatelessWidget {
           CustomProfileButton(
             btnText: 'Complete Profile',
             onTap: () {
-              // TODO: IMPLEMENT ONTAP
+              Navigator.pushNamed(context, '/add_profile');
             },
           ),
         ],

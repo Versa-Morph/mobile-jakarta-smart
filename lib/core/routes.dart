@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:smart_jakarta/views/home/home_page.dart';
+import 'package:smart_jakarta/views/home/profile/add_profile/add_profile_page.dart';
 import 'package:smart_jakarta/views/login/sign_in/sign_in_page.dart';
 import 'package:smart_jakarta/views/login/sign_up/sign_up_page.dart';
 import 'package:smart_jakarta/views/login/term_of_use.dart';
@@ -33,6 +34,10 @@ class AppRoutes {
       case '/home':
         return MaterialPageRoute(
           builder: (context) => const HomePageProvider(),
+        );
+      case '/add_profile':
+        return MaterialPageRoute(
+          builder: (context) => const AddProfilePage(),
         );
       default:
         return MaterialPageRoute(
