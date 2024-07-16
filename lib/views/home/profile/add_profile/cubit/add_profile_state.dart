@@ -7,9 +7,17 @@ abstract class AddProfileState extends Equatable {
   List<Object?> get props => [];
 }
 
-final class AddProfileInitial extends AddProfileState {}
-
 final class AddProfileLoading extends AddProfileState {}
+
+final class UpdateProfileState extends AddProfileState {
+  final UserBio userBio;
+  const UpdateProfileState(this.userBio);
+
+  @override
+  List<Object> get props => [userBio];
+}
+
+final class CreateProfileState extends AddProfileState {}
 
 final class AddProfileSuccess extends AddProfileState {}
 

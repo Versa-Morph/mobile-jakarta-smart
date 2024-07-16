@@ -56,69 +56,71 @@ class ProfilePageLoaded extends StatelessWidget {
           const SizedBox(height: 15),
 
           // Button Edit Profile
-          const CustomProfileButton(btnText: 'Edit Profile'),
+          CustomProfileButton(
+              btnText: 'Edit Profile',
+              onTap: () {
+                Navigator.pushNamed(context, '/add_profile');
+              }),
 
           const SizedBox(height: 20),
 
           // User Information Card
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 30),
-            child: SizedBox(
-                width: MediaQuery.of(context).size.width,
-                height: MediaQuery.of(context).size.height / 5,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Expanded(
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Expanded(
-                            child: UserCard(
-                              title: 'Age',
-                              userData: userBio.age.toString(),
-                              subtitle: ' Years',
-                              iconPath: 'assets/icons/user_age_icon.png',
-                            ),
+          Container(
+              width: MediaQuery.of(context).size.width,
+              height: MediaQuery.of(context).size.height / 5,
+              margin: const EdgeInsets.symmetric(horizontal: 30),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Expanded(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Expanded(
+                          child: UserCard(
+                            title: 'Age',
+                            userData: userBio.age.toString(),
+                            subtitle: ' Years',
+                            iconPath: 'assets/icons/user_age_icon.png',
                           ),
-                          const SizedBox(height: 14),
-                          Expanded(
-                            child: UserCard(
-                              title: 'Height',
-                              userData: userBio.height.toString(),
-                              subtitle: ' cm',
-                              iconPath: 'assets/icons/heigth_icon.png',
-                            ),
+                        ),
+                        const SizedBox(height: 14),
+                        Expanded(
+                          child: UserCard(
+                            title: 'Height',
+                            userData: userBio.height.toString(),
+                            subtitle: ' cm',
+                            iconPath: 'assets/icons/heigth_icon.png',
                           ),
-                        ],
-                      ),
+                        ),
+                      ],
                     ),
-                    const SizedBox(width: 14),
-                    Expanded(
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Expanded(
-                            child: UserCard(
-                                title: 'Blood Type',
-                                userData: userBio.bloodType,
-                                subtitle: ' group',
-                                iconPath: 'assets/icons/blood_icon.png'),
-                          ),
-                          const SizedBox(height: 14),
-                          Expanded(
-                            child: UserCard(
-                                title: 'Weigth',
-                                userData: userBio.weight.toString(),
-                                subtitle: ' kg',
-                                iconPath: 'assets/icons/weigth_icon.png'),
-                          ),
-                        ],
-                      ),
-                    )
-                  ],
-                )),
-          ),
+                  ),
+                  const SizedBox(width: 14),
+                  Expanded(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Expanded(
+                          child: UserCard(
+                              title: 'Blood Type',
+                              userData: userBio.bloodType,
+                              subtitle: ' group',
+                              iconPath: 'assets/icons/blood_icon.png'),
+                        ),
+                        const SizedBox(height: 14),
+                        Expanded(
+                          child: UserCard(
+                              title: 'Weigth',
+                              userData: userBio.weight.toString(),
+                              subtitle: ' kg',
+                              iconPath: 'assets/icons/weigth_icon.png'),
+                        ),
+                      ],
+                    ),
+                  )
+                ],
+              )),
 
           const SizedBox(height: 20),
         ],
