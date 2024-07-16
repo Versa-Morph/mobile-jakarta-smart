@@ -1,10 +1,23 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:smart_jakarta/components/custom_button.dart';
-import 'package:smart_jakarta/services/user_data_service.dart';
 import 'package:smart_jakarta/utility/validators.dart';
+import 'package:smart_jakarta/views/home/profile/add_profile/cubit/add_profile_cubit.dart';
 import 'package:smart_jakarta/views/home/profile/add_profile/widgets/custom_profile_textfield.dart';
+
+class AddProfilePageProvider extends StatelessWidget {
+  const AddProfilePageProvider({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocProvider(
+      create: (context) => AddProfileCubit(),
+      child: const AddProfilePage(),
+    );
+  }
+}
 
 class AddProfilePage extends StatefulWidget {
   const AddProfilePage({super.key});
@@ -45,166 +58,204 @@ class _AddProfilePageState extends State<AddProfilePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      resizeToAvoidBottomInset: false,
       appBar: AppBar(
         scrolledUnderElevation: 0.0,
         title: const Text('Your Profile'),
         centerTitle: true,
       ),
-      body: SingleChildScrollView(
-        child: Form(
-          key: _formKey,
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 8),
-            child: Column(
-              children: [
-                /// Profile picture section
-                Center(
-                  child: GestureDetector(
-                    onTap: () {
-                      _showAlertDialog(context);
-                    },
-                    child: CircleAvatar(
-                      radius: 55,
-                      foregroundImage: _selectedImage != null
-                          ? FileImage(File(_selectedImage!.path))
-                          : null,
-                      backgroundImage: const AssetImage(
-                        'assets/images/profile_img_placeholder.png',
+      body: BlocListener<AddProfileCubit, AddProfileState>(
+        listener: (context, state) {
+          if (state is AddProfileSuccess) {
+            Navigator.pop(context);
+          } else if (state is AddProfileError) {
+            final snackBar = SnackBar(
+              content: Text(state.errorMsg),
+              duration: const Duration(seconds: 1),
+            );
+            ScaffoldMessenger.of(context).showSnackBar(snackBar);
+          }
+        },
+        child: SingleChildScrollView(
+          child: Form(
+            key: _formKey,
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 8),
+              child: Column(
+                children: [
+                  /// Profile picture section
+                  Center(
+                    child: GestureDetector(
+                      onTap: () {
+                        _showAlertDialog(context);
+                      },
+                      child: CircleAvatar(
+                        radius: 55,
+                        foregroundImage: _selectedImage != null
+                            ? FileImage(File(_selectedImage!.path))
+                            : null,
+                        backgroundImage: const AssetImage(
+                          'assets/images/profile_img_placeholder.png',
+                        ),
+                        backgroundColor: Colors.black12,
+                        child: _selectedImage != null
+                            ? null
+                            : const Icon(
+                                Icons.camera_alt,
+                                color: Colors.black38,
+                              ),
                       ),
-                      backgroundColor: Colors.black12,
-                      child: _selectedImage != null
-                          ? null
-                          : const Icon(
-                              Icons.camera_alt,
-                              color: Colors.black38,
-                            ),
                     ),
                   ),
-                ),
 
-                const SizedBox(height: 40),
+                  const SizedBox(height: 40),
 
-                /// Form Phonenumber
-                CustomProfileTextfield(
-                  textController: _phoneController,
-                  hintText: 'Phone Number',
-                  prefixImgPath: 'assets/icons/phone_icon.png',
-                  validator: (value) => Validators.basicValidator(value),
-                ),
+                  /// Form Phonenumber
+                  CustomProfileTextfield(
+                    textController: _phoneController,
+                    hintText: 'Phone Number',
+                    prefixImgPath: 'assets/icons/phone_icon.png',
+                    validator: (value) => Validators.basicValidator(value),
+                  ),
 
-                const SizedBox(height: 15),
+                  const SizedBox(height: 15),
 
-                /// Form NIK
-                CustomProfileTextfield(
-                  textController: _nikController,
-                  hintText: 'nik',
-                  prefixImgPath: 'assets/icons/profile_icon.png',
-                  validator: (value) => Validators.basicValidator(value),
-                ),
+                  /// Form NIK
+                  CustomProfileTextfield(
+                    textController: _nikController,
+                    hintText: 'nik',
+                    prefixImgPath: 'assets/icons/profile_icon.png',
+                    validator: (value) => Validators.basicValidator(value),
+                  ),
 
-                const SizedBox(height: 15),
+                  const SizedBox(height: 15),
 
-                /// Form Fullname
-                CustomProfileTextfield(
-                  textController: _fullnameController,
-                  hintText: 'Fullname',
-                  prefixImgPath: 'assets/icons/profile_icon.png',
-                  validator: (value) => Validators.basicValidator(value),
-                ),
+                  /// Form Fullname
+                  CustomProfileTextfield(
+                    textController: _fullnameController,
+                    hintText: 'Fullname',
+                    prefixImgPath: 'assets/icons/profile_icon.png',
+                    validator: (value) => Validators.basicValidator(value),
+                  ),
 
-                const SizedBox(height: 15),
+                  const SizedBox(height: 15),
 
-                /// Form Nickname
-                CustomProfileTextfield(
-                  textController: _nicknameController,
-                  hintText: 'Nickname',
-                  prefixImgPath: 'assets/icons/profile_icon.png',
-                  validator: (value) => Validators.basicValidator(value),
-                ),
+                  /// Form Nickname
+                  CustomProfileTextfield(
+                    textController: _nicknameController,
+                    hintText: 'Nickname',
+                    prefixImgPath: 'assets/icons/profile_icon.png',
+                    validator: (value) => Validators.basicValidator(value),
+                  ),
 
-                const SizedBox(height: 15),
+                  const SizedBox(height: 15),
 
-                /// Form City
-                CustomProfileTextfield(
-                  textController: _cityController,
-                  hintText: 'City',
-                  prefixImgPath: 'assets/icons/city_icon.png',
-                  validator: (value) => Validators.basicValidator(value),
-                ),
+                  /// Form City
+                  CustomProfileTextfield(
+                    textController: _cityController,
+                    hintText: 'City',
+                    prefixImgPath: 'assets/icons/city_icon.png',
+                    validator: (value) => Validators.basicValidator(value),
+                  ),
 
-                const SizedBox(height: 15),
+                  const SizedBox(height: 15),
 
-                /// Form Age
-                CustomProfileTextfield(
-                  textController: _ageController,
-                  hintText: 'Age',
-                  prefixImgPath: 'assets/icons/user_age_icon.png',
-                  validator: (value) => Validators.basicValidator(value),
-                ),
+                  /// Form Age
+                  CustomProfileTextfield(
+                    textController: _ageController,
+                    hintText: 'Age',
+                    prefixImgPath: 'assets/icons/user_age_icon.png',
+                    validator: (value) => Validators.basicValidator(value),
+                  ),
 
-                const SizedBox(height: 15),
+                  const SizedBox(height: 15),
 
-                /// Form Bloodtype
-                CustomProfileTextfield(
-                  textController: _bloodTypeController,
-                  hintText: 'Bloodtype',
-                  prefixImgPath: 'assets/icons/blood_icon.png',
-                  validator: (value) => Validators.basicValidator(value),
-                ),
+                  /// Form Bloodtype
+                  CustomProfileTextfield(
+                    textController: _bloodTypeController,
+                    hintText: 'Bloodtype',
+                    prefixImgPath: 'assets/icons/blood_icon.png',
+                    validator: (value) => Validators.basicValidator(value),
+                  ),
 
-                const SizedBox(height: 15),
+                  const SizedBox(height: 15),
 
-                /// Form Height
-                CustomProfileTextfield(
-                  textController: _heightController,
-                  hintText: 'Height',
-                  prefixImgPath: 'assets/icons/heigth_icon.png',
-                  validator: (value) => Validators.basicValidator(value),
-                ),
+                  /// Form Height
+                  CustomProfileTextfield(
+                    textController: _heightController,
+                    hintText: 'Height',
+                    prefixImgPath: 'assets/icons/heigth_icon.png',
+                    validator: (value) => Validators.basicValidator(value),
+                  ),
 
-                const SizedBox(height: 15),
+                  const SizedBox(height: 15),
 
-                /// Form Weight
-                CustomProfileTextfield(
-                  textController: _weightController,
-                  hintText: 'Weight',
-                  prefixImgPath: 'assets/icons/weigth_icon.png',
-                  validator: (value) => Validators.basicValidator(value),
-                ),
+                  /// Form Weight
+                  CustomProfileTextfield(
+                    textController: _weightController,
+                    hintText: 'Weight',
+                    prefixImgPath: 'assets/icons/weigth_icon.png',
+                    validator: (value) => Validators.basicValidator(value),
+                  ),
 
-                const SizedBox(height: 15),
+                  const SizedBox(height: 15),
 
-                /// Form Address
-                CustomProfileTextfield(
-                  textController: _addressController,
-                  hintText: 'Address',
-                  prefixImgPath: 'assets/icons/address_icon.png',
-                  validator: (value) => Validators.basicValidator(value),
-                ),
+                  /// Form Address
+                  CustomProfileTextfield(
+                    textController: _addressController,
+                    hintText: 'Address',
+                    prefixImgPath: 'assets/icons/address_icon.png',
+                    validator: (value) => Validators.basicValidator(value),
+                  ),
 
-                const SizedBox(height: 15),
+                  const SizedBox(height: 15),
 
-                CustomButton(
-                  text: 'Save',
-                  textColor: Colors.white,
-                  bgColor: const Color(0xFFD99022),
-                  onTap: () {
-                    UserDataService().storeUserBio(
-                        '0899991111111',
-                        '1231122334567',
-                        _selectedImage!,
-                        'diodio dio diodio',
-                        'dio12345',
-                        'jakarta selatan',
-                        26,
-                        'O',
-                        170,
-                        60,
-                        'jl jakarta selatan 2 no5 jkt utara');
-                  },
-                )
-              ],
+                  // Save Button
+                  BlocBuilder<AddProfileCubit, AddProfileState>(
+                    builder: (context, state) {
+                      if (state is AddProfileLoading) {
+                        return const CircularProgressIndicator(
+                          color: Color(0xFFD99022),
+                        );
+                      } else {
+                        return CustomButton(
+                          text: 'Save',
+                          textColor: Colors.white,
+                          bgColor: const Color(0xFFD99022),
+                          onTap: () {
+                            final isValid = _formKey.currentState?.validate();
+                            final nik = _nikController.text.trim();
+                            final phoneNumber = _phoneController.text.trim();
+                            final fullname = _fullnameController.text.trim();
+                            final nickname = _nicknameController.text.trim();
+                            final age = _ageController.text.trim();
+                            final city = _cityController.text.trim();
+                            final address = _addressController.text.trim();
+                            final weight = _weightController.text.trim();
+                            final height = _heightController.text.trim();
+                            final bloodtype = _bloodTypeController.text.trim();
+
+                            if (isValid == true) {
+                              context.read<AddProfileCubit>().saveProfile(
+                                    nik: nik,
+                                    phoneNumber: phoneNumber,
+                                    fullName: fullname,
+                                    nickname: nickname,
+                                    age: int.parse(age),
+                                    city: city,
+                                    address: address,
+                                    weight: int.parse(weight),
+                                    height: int.parse(height),
+                                    bloodtype: bloodtype,
+                                    profilePict: _selectedImage,
+                                  );
+                            }
+                          },
+                        );
+                      }
+                    },
+                  )
+                ],
+              ),
             ),
           ),
         ),
@@ -254,3 +305,16 @@ class _AddProfilePageState extends State<AddProfilePage> {
     );
   }
 }
+        // UserDataService().storeUserBio(
+                      //   '08998991232',
+                      //   '3172051002281198',
+                      //   _selectedImage!,
+                      //   'Alnino Dio Putera',
+                      //   'Dio',
+                      //   'Bekasi Utara',
+                      //   25,
+                      //   'A',
+                      //   183,
+                      //   110,
+                      //   'jl Bunga Harum 3 no 5, Bekasi, Bekasi Utara, 17125',
+                      // );

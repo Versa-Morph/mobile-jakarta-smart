@@ -59,21 +59,21 @@ class UserDataService {
   }
 
   /// Store user bio to the server
-  Future<bool> storeUserBio(
-    String phoneNumber,
-    String nik,
-    XFile profilePict,
-    String fullName,
-    String nickname,
-    String city,
-    int age,
-    String bloodtype,
-    int height,
-    int weight,
-    String address,
-  ) async {
+  Future<bool> storeUserBio({
+    required String phoneNumber,
+    required String nik,
+    required XFile profilePict,
+    required String fullName,
+    required String nickname,
+    required String city,
+    required int age,
+    required String bloodtype,
+    required int height,
+    required int weight,
+    required String address,
+  }) async {
     try {
-      final response = await _network.store(
+      final response = await _network.storeUserBio(
         {
           'phone_number': phoneNumber,
           'nik': nik,
@@ -93,6 +93,11 @@ class UserDataService {
       if (response.statusCode == 200) {
         return true;
       }
+    } on TimeoutException catch (_) {
+      throw ReqTimeoutException(
+          'Error Connecting to Server, Request Timed Out');
+    } on ClientException catch (_) {
+      throw AuthException('Error Connecting to Server');
     } catch (e) {
       throw BaseException(e.toString());
     }

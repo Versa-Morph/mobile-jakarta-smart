@@ -37,7 +37,7 @@ class AppRoutes {
         );
       case '/add_profile':
         return MaterialPageRoute(
-          builder: (context) => const AddProfilePage(),
+          builder: (context) => const AddProfilePageProvider(),
         );
       default:
         return MaterialPageRoute(

@@ -56,25 +56,30 @@ class Network {
         .timeout(const Duration(seconds: 10));
   }
 
-  Future<http.StreamedResponse> store(
+  Future<http.StreamedResponse> storeUserBio(
       Map<String, String> data, XFile imageFile, String endPoint) async {
     final fullUrl = '$API_URL/api$endPoint';
     await _getToken();
+
+    // Send file image with multipart request
     final request = http.MultipartRequest('POST', Uri.parse(fullUrl))
       ..headers.addAll(_setHeaders());
 
+    // defining all field for user bio
     data.forEach(
       (key, value) {
         request.fields[key] = value;
       },
     );
 
+    // defining image file
     final file =
         await http.MultipartFile.fromPath('profile_pict', imageFile.path,
             filename: path.basename(
               imageFile.path,
             ));
 
+    // add the file
     request.files.add(file);
 
     final response = await request.send();
