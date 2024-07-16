@@ -66,11 +66,23 @@ class _AddProfilePageState extends State<AddProfilePage> {
       body: BlocListener<AddProfileCubit, AddProfileState>(
         listener: (context, state) {
           if (state is AddProfileSuccess) {
-            Navigator.pop(context);
+            Navigator.pushNamedAndRemoveUntil(
+                context, '/home', (route) => false);
+            const snackBar = SnackBar(
+              content: Text('Profile Successfully Saved'),
+              duration: Duration(seconds: 2),
+            );
+            ScaffoldMessenger.of(context).showSnackBar(snackBar);
           } else if (state is AddProfileError) {
             final snackBar = SnackBar(
               content: Text(state.errorMsg),
               duration: const Duration(seconds: 1),
+              behavior: SnackBarBehavior.floating,
+              margin: EdgeInsets.only(
+                bottom: MediaQuery.of(context).size.height - 140,
+                left: 10,
+                right: 10,
+              ),
             );
             ScaffoldMessenger.of(context).showSnackBar(snackBar);
           }
