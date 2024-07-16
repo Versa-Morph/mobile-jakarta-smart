@@ -90,10 +90,7 @@ class UserDataService {
         '/user-bio',
       );
 
-      print(response.body);
-
       if (response.statusCode == 200) {
-        print(response.body);
         return true;
       }
     } catch (e) {

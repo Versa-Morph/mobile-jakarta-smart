@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:convert';
+import 'package:path/path.dart' as path;
 import 'package:http/http.dart' as http;
 import 'package:image_picker/image_picker.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -55,11 +56,12 @@ class Network {
         .timeout(const Duration(seconds: 10));
   }
 
-  Future<http.Response> store(
+  Future<http.StreamedResponse> store(
       Map<String, String> data, XFile imageFile, String endPoint) async {
     final fullUrl = '$API_URL/api$endPoint';
     await _getToken();
-    final request = http.MultipartRequest('POST', Uri.parse(fullUrl));
+    final request = http.MultipartRequest('POST', Uri.parse(fullUrl))
+      ..headers.addAll(_setHeaders());
 
     data.forEach(
       (key, value) {
@@ -67,16 +69,17 @@ class Network {
       },
     );
 
-    // add image file
-    request.files.add(
-        await http.MultipartFile.fromPath('profile_pict_path', imageFile.path));
+    final file =
+        await http.MultipartFile.fromPath('profile_pict', imageFile.path,
+            filename: path.basename(
+              imageFile.path,
+            ));
 
-    // set headers
-    request.headers.addAll(_setHeaders());
+    request.files.add(file);
 
-    final streamedResponse = await request.send();
-    return await http.Response.fromStream(streamedResponse)
-        .timeout(const Duration(seconds: 10));
+    final response = await request.send();
+
+    return response;
   }
 
   Future<http.Response> getData(String endPoint) async {

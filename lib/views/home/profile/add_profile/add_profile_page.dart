@@ -38,7 +38,6 @@ class _AddProfilePageState extends State<AddProfilePage> {
     _ageController.dispose();
     _bloodTypeController.dispose();
     _heightController.dispose();
-    _heightController.dispose();
     _weightController.dispose();
     _addressController.dispose();
   }
@@ -192,17 +191,17 @@ class _AddProfilePageState extends State<AddProfilePage> {
                   bgColor: const Color(0xFFD99022),
                   onTap: () {
                     UserDataService().storeUserBio(
-                        '089798769666',
-                        '111122223333',
+                        '0899991111111',
+                        '1231122334567',
                         _selectedImage!,
-                        'dio123 123asd',
-                        'dio11',
-                        'jakarta',
-                        23,
-                        'B',
-                        155,
-                        50,
-                        'jl jakarta 2 no5 jkt utara');
+                        'diodio dio diodio',
+                        'dio12345',
+                        'jakarta selatan',
+                        26,
+                        'O',
+                        170,
+                        60,
+                        'jl jakarta selatan 2 no5 jkt utara');
                   },
                 )
               ],
@@ -214,7 +213,8 @@ class _AddProfilePageState extends State<AddProfilePage> {
   }
 
   Future<void> _pickImage(ImageSource source) async {
-    final selectedImage = await ImagePicker().pickImage(source: source);
+    final selectedImage =
+        await ImagePicker().pickImage(source: source, imageQuality: 50);
 
     setState(() {
       _selectedImage = selectedImage;
