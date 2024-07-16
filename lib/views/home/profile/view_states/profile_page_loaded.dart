@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:smart_jakarta/local_env.dart';
 import 'package:smart_jakarta/models/user_bio.dart';
 import 'package:smart_jakarta/utility/string_capitalize.dart';
 import 'package:smart_jakarta/views/home/profile/widgets/custom_profile_button.dart';
@@ -21,7 +22,7 @@ class ProfilePageLoaded extends StatelessWidget {
             child: CircleAvatar(
               radius: 50,
               foregroundImage: NetworkImage(
-                userBio.profilePictPath,
+                '$API_URL/${userBio.profilePictPath}',
               ),
               backgroundImage: const AssetImage(
                 'assets/images/placeholder_image_large.png',

@@ -44,7 +44,7 @@ class Network {
   }
 
   Future<http.Response> auth(Map<String, String> data, String endPoint) async {
-    final fullUrl = '$API_URL$endPoint';
+    final fullUrl = '$API_URL/api$endPoint';
     return await http
         .post(
           Uri.parse(fullUrl),
@@ -55,7 +55,7 @@ class Network {
   }
 
   Future<http.Response> getData(String endPoint) async {
-    final fullUrl = '$API_URL$endPoint';
+    final fullUrl = '$API_URL/api$endPoint';
     await _getToken();
     return await http
         .get(Uri.parse(fullUrl), headers: _setHeaders())
