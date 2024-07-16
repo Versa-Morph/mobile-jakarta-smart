@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:smart_jakarta/utility/validators.dart';
 import 'package:smart_jakarta/views/login/sign_up/cubit/sign_up_cubit.dart';
 import 'package:smart_jakarta/views/login/widgets/content_header.dart';
-import 'package:smart_jakarta/views/login/widgets/custom_button.dart';
+import 'package:smart_jakarta/components/custom_button.dart';
 import 'package:smart_jakarta/views/login/widgets/custom_divider.dart';
 import 'package:smart_jakarta/views/login/widgets/custom_textfield.dart';
 import 'package:smart_jakarta/views/login/widgets/sign_up_menu_button.dart';

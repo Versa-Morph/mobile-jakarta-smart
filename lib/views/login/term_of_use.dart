@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:smart_jakarta/views/login/widgets/content_header.dart';
 import 'package:smart_jakarta/constant/constant.dart' as constant;
-import 'package:smart_jakarta/views/login/widgets/custom_button.dart';
+import 'package:smart_jakarta/components/custom_button.dart';
 
 class TermOfUsePage extends StatefulWidget {
   const TermOfUsePage({super.key});

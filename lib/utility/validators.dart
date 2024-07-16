@@ -18,4 +18,11 @@ class Validators {
     }
     return null;
   }
+
+  static String? basicValidator(String? value) {
+    if (value == null || value.isEmpty) {
+      return 'This form cannot be empty';
+    }
+    return null;
+  }
 }
