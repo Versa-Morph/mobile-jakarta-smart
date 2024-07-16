@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
+import 'package:image_picker/image_picker.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:smart_jakarta/local_env.dart';
 
@@ -51,6 +52,30 @@ class Network {
           body: jsonEncode(data),
           headers: _setHeaders(),
         )
+        .timeout(const Duration(seconds: 10));
+  }
+
+  Future<http.Response> store(
+      Map<String, String> data, XFile imageFile, String endPoint) async {
+    final fullUrl = '$API_URL/api$endPoint';
+    await _getToken();
+    final request = http.MultipartRequest('POST', Uri.parse(fullUrl));
+
+    data.forEach(
+      (key, value) {
+        request.fields[key] = value;
+      },
+    );
+
+    // add image file
+    request.files.add(
+        await http.MultipartFile.fromPath('profile_pict_path', imageFile.path));
+
+    // set headers
+    request.headers.addAll(_setHeaders());
+
+    final streamedResponse = await request.send();
+    return await http.Response.fromStream(streamedResponse)
         .timeout(const Duration(seconds: 10));
   }
 

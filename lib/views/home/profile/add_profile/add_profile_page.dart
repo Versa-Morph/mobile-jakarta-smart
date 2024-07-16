@@ -1,6 +1,9 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:smart_jakarta/components/custom_button.dart';
+import 'package:smart_jakarta/services/user_data_service.dart';
+import 'package:smart_jakarta/utility/validators.dart';
 import 'package:smart_jakarta/views/home/profile/add_profile/widgets/custom_profile_textfield.dart';
 
 class AddProfilePage extends StatefulWidget {
@@ -12,6 +15,34 @@ class AddProfilePage extends StatefulWidget {
 
 class _AddProfilePageState extends State<AddProfilePage> {
   XFile? _selectedImage;
+  final _formKey = GlobalKey<FormState>();
+  final TextEditingController _phoneController = TextEditingController();
+  final TextEditingController _nikController = TextEditingController();
+  final TextEditingController _fullnameController = TextEditingController();
+  final TextEditingController _nicknameController = TextEditingController();
+  final TextEditingController _cityController = TextEditingController();
+  final TextEditingController _ageController = TextEditingController();
+  final TextEditingController _bloodTypeController = TextEditingController();
+  final TextEditingController _heightController = TextEditingController();
+  final TextEditingController _weightController = TextEditingController();
+  final TextEditingController _addressController = TextEditingController();
+
+  @override
+  void dispose() {
+    super.dispose();
+    _phoneController.dispose();
+    _nikController.dispose();
+    _fullnameController.dispose();
+    _nicknameController.dispose();
+    _cityController.dispose();
+    _ageController.dispose();
+    _bloodTypeController.dispose();
+    _heightController.dispose();
+    _heightController.dispose();
+    _weightController.dispose();
+    _addressController.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -22,117 +53,160 @@ class _AddProfilePageState extends State<AddProfilePage> {
         centerTitle: true,
       ),
       body: SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 8),
-          child: Column(
-            children: [
-              /// Profile picture section
-              Center(
-                child: GestureDetector(
-                  onTap: () {
-                    _showAlertDialog(context);
-                  },
-                  child: CircleAvatar(
-                    radius: 55,
-                    foregroundImage: _selectedImage != null
-                        ? FileImage(File(_selectedImage!.path))
-                        : null,
-                    backgroundImage: const AssetImage(
-                      'assets/images/profile_img_placeholder.png',
+        child: Form(
+          key: _formKey,
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 8),
+            child: Column(
+              children: [
+                /// Profile picture section
+                Center(
+                  child: GestureDetector(
+                    onTap: () {
+                      _showAlertDialog(context);
+                    },
+                    child: CircleAvatar(
+                      radius: 55,
+                      foregroundImage: _selectedImage != null
+                          ? FileImage(File(_selectedImage!.path))
+                          : null,
+                      backgroundImage: const AssetImage(
+                        'assets/images/profile_img_placeholder.png',
+                      ),
+                      backgroundColor: Colors.black12,
+                      child: _selectedImage != null
+                          ? null
+                          : const Icon(
+                              Icons.camera_alt,
+                              color: Colors.black38,
+                            ),
                     ),
-                    backgroundColor: Colors.black12,
-                    child: _selectedImage != null
-                        ? null
-                        : const Icon(
-                            Icons.camera_alt,
-                            color: Colors.black38,
-                          ),
                   ),
                 ),
-              ),
 
-              const SizedBox(height: 40),
+                const SizedBox(height: 40),
 
-              /// Form Phonenumber
-              CustomProfileTextfield(
-                hintText: 'Phone Number',
-                prefixImgPath: 'assets/icons/profile_icon.png',
-              ),
+                /// Form Phonenumber
+                CustomProfileTextfield(
+                  textController: _phoneController,
+                  hintText: 'Phone Number',
+                  prefixImgPath: 'assets/icons/phone_icon.png',
+                  validator: (value) => Validators.basicValidator(value),
+                ),
 
-              const SizedBox(height: 15),
+                const SizedBox(height: 15),
 
-              /// Form NIK
-              CustomProfileTextfield(
-                hintText: 'nik',
-                prefixImgPath: 'assets/icons/profile_icon.png',
-              ),
+                /// Form NIK
+                CustomProfileTextfield(
+                  textController: _nikController,
+                  hintText: 'nik',
+                  prefixImgPath: 'assets/icons/profile_icon.png',
+                  validator: (value) => Validators.basicValidator(value),
+                ),
 
-              const SizedBox(height: 15),
+                const SizedBox(height: 15),
 
-              /// Form Fullname
-              CustomProfileTextfield(
-                hintText: 'Fullname',
-                prefixImgPath: 'assets/icons/profile_icon.png',
-              ),
+                /// Form Fullname
+                CustomProfileTextfield(
+                  textController: _fullnameController,
+                  hintText: 'Fullname',
+                  prefixImgPath: 'assets/icons/profile_icon.png',
+                  validator: (value) => Validators.basicValidator(value),
+                ),
 
-              const SizedBox(height: 15),
+                const SizedBox(height: 15),
 
-              /// Form Nickname
-              CustomProfileTextfield(
-                hintText: 'Nickname',
-                prefixImgPath: 'assets/icons/profile_icon.png',
-              ),
+                /// Form Nickname
+                CustomProfileTextfield(
+                  textController: _nicknameController,
+                  hintText: 'Nickname',
+                  prefixImgPath: 'assets/icons/profile_icon.png',
+                  validator: (value) => Validators.basicValidator(value),
+                ),
 
-              const SizedBox(height: 15),
+                const SizedBox(height: 15),
 
-              /// Form City
-              CustomProfileTextfield(
-                hintText: 'City',
-                prefixImgPath: 'assets/icons/profile_icon.png',
-              ),
+                /// Form City
+                CustomProfileTextfield(
+                  textController: _cityController,
+                  hintText: 'City',
+                  prefixImgPath: 'assets/icons/city_icon.png',
+                  validator: (value) => Validators.basicValidator(value),
+                ),
 
-              const SizedBox(height: 15),
+                const SizedBox(height: 15),
 
-              /// Form Age
-              CustomProfileTextfield(
-                hintText: 'Age',
-                prefixImgPath: 'assets/icons/profile_icon.png',
-              ),
+                /// Form Age
+                CustomProfileTextfield(
+                  textController: _ageController,
+                  hintText: 'Age',
+                  prefixImgPath: 'assets/icons/user_age_icon.png',
+                  validator: (value) => Validators.basicValidator(value),
+                ),
 
-              const SizedBox(height: 15),
+                const SizedBox(height: 15),
 
-              /// Form Bloodtype
-              CustomProfileTextfield(
-                hintText: 'Bloodtype',
-                prefixImgPath: 'assets/icons/profile_icon.png',
-              ),
+                /// Form Bloodtype
+                CustomProfileTextfield(
+                  textController: _bloodTypeController,
+                  hintText: 'Bloodtype',
+                  prefixImgPath: 'assets/icons/blood_icon.png',
+                  validator: (value) => Validators.basicValidator(value),
+                ),
 
-              const SizedBox(height: 15),
+                const SizedBox(height: 15),
 
-              /// Form Height
-              CustomProfileTextfield(
-                hintText: 'Height',
-                prefixImgPath: 'assets/icons/profile_icon.png',
-              ),
+                /// Form Height
+                CustomProfileTextfield(
+                  textController: _heightController,
+                  hintText: 'Height',
+                  prefixImgPath: 'assets/icons/heigth_icon.png',
+                  validator: (value) => Validators.basicValidator(value),
+                ),
 
-              const SizedBox(height: 15),
+                const SizedBox(height: 15),
 
-              /// Form Weight
-              CustomProfileTextfield(
-                hintText: 'Weight',
-                prefixImgPath: 'assets/icons/profile_icon.png',
-              ),
+                /// Form Weight
+                CustomProfileTextfield(
+                  textController: _weightController,
+                  hintText: 'Weight',
+                  prefixImgPath: 'assets/icons/weigth_icon.png',
+                  validator: (value) => Validators.basicValidator(value),
+                ),
 
-              const SizedBox(height: 15),
+                const SizedBox(height: 15),
 
-              /// Form Address
-              CustomProfileTextfield(
-                hintText: 'Address',
-                prefixImgPath: 'assets/icons/profile_icon.png',
-              ),
+                /// Form Address
+                CustomProfileTextfield(
+                  textController: _addressController,
+                  hintText: 'Address',
+                  prefixImgPath: 'assets/icons/address_icon.png',
+                  validator: (value) => Validators.basicValidator(value),
+                ),
 
-              const SizedBox(height: 15),
-            ],
+                const SizedBox(height: 15),
+
+                CustomButton(
+                  text: 'Save',
+                  textColor: Colors.white,
+                  bgColor: const Color(0xFFD99022),
+                  onTap: () {
+                    UserDataService().storeUserBio(
+                        '089798769666',
+                        '111122223333',
+                        _selectedImage!,
+                        'dio123 123asd',
+                        'dio11',
+                        'jakarta',
+                        23,
+                        'B',
+                        155,
+                        50,
+                        'jl jakarta 2 no5 jkt utara');
+                  },
+                )
+              ],
+            ),
           ),
         ),
       ),
