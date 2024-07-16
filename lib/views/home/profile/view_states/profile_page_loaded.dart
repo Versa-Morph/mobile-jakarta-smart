@@ -45,10 +45,11 @@ class ProfilePageLoaded extends StatelessWidget {
 
           const SizedBox(height: 5),
 
-          CustomProfileText(text: userBio.nik),
           CustomProfileText(
-            text:
-                '${userBio.nickname.capitalize()} | ${userBio.city.capitalize()}',
+              text:
+                  '${userBio.nickname.capitalize()} | ${userBio.phoneNumber}'),
+          CustomProfileText(
+            text: '  ${userBio.nik} | ${userBio.city.capitalize()}',
           ),
           CustomProfileText(text: userBio.address.capitalize()),
 
