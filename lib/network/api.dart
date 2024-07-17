@@ -53,7 +53,7 @@ class Network {
           body: jsonEncode(data),
           headers: _setHeaders(),
         )
-        .timeout(const Duration(seconds: 10));
+        .timeout(const Duration(seconds: 15));
   }
 
   Future<http.Response> store(Map<String, String> data, String endPoint) async {
@@ -65,7 +65,7 @@ class Network {
           body: jsonEncode(data),
           headers: _setHeaders(),
         )
-        .timeout(const Duration(seconds: 10));
+        .timeout(const Duration(seconds: 15));
   }
 
   Future<http.StreamedResponse> storeUserBio(
@@ -104,7 +104,7 @@ class Network {
     await _getToken();
     return await http
         .get(Uri.parse(fullUrl), headers: _setHeaders())
-        .timeout(const Duration(seconds: 10));
+        .timeout(const Duration(seconds: 15));
   }
 
   Map<String, String> _setHeaders() => {
