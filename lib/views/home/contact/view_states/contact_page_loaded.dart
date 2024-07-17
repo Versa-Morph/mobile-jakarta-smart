@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:smart_jakarta/cubit/theme_cubit/theme_cubit.dart';
+import 'package:smart_jakarta/local_env.dart';
 import 'package:smart_jakarta/models/user_contact.dart';
 import 'package:smart_jakarta/utility/string_capitalize.dart';
+import 'package:smart_jakarta/views/home/contact/cubit/contact_page_cubit.dart';
 import 'package:smart_jakarta/views/home/contact/widgets/add_contact_button.dart';
 import 'package:smart_jakarta/views/home/contact/widgets/contact_condition.dart';
 
@@ -32,12 +34,8 @@ class ContactPageLoaded extends StatelessWidget {
                     tileColor: Colors.black12,
                     title: Text(
                       item.fullName.capitalize(),
-                      style: TextStyle(
+                      style: const TextStyle(
                         fontWeight: FontWeight.w500,
-                        color: context.read<ThemeCubit>().state.themeData ==
-                                ThemeData.dark()
-                            ? Colors.white
-                            : const Color(0xff2C2828),
                       ),
                     ),
                     subtitle: Text(
@@ -53,22 +51,19 @@ class ContactPageLoaded extends StatelessWidget {
                     leading: CircleAvatar(
                       radius: 40,
                       foregroundImage: NetworkImage(
-                        item.profilePictPath,
-                      ),
-                      backgroundImage: const AssetImage(
-                        'assets/images/placeholder_image_large.png',
+                        '$API_URL/${item.profilePictPath}',
                       ),
                       onForegroundImageError: (exception, stackTrace) {},
                       backgroundColor: Colors.black12,
                     ),
                     trailing: item.isDanger == true
-                        ? ContactCondition(
+                        ? const ContactCondition(
                             text: 'In Danger',
-                            isDanger: item.isDanger,
+                            isDanger: true,
                           )
-                        : ContactCondition(
+                        : const ContactCondition(
                             text: 'Safe',
-                            isDanger: item.isDanger,
+                            isDanger: false,
                           ),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(16),
@@ -77,6 +72,9 @@ class ContactPageLoaded extends StatelessWidget {
                       vertical: 5,
                       horizontal: 16,
                     ),
+                    onTap: () {
+                      print(item.isDanger);
+                    },
                   ),
                 );
               },
@@ -85,7 +83,7 @@ class ContactPageLoaded extends StatelessWidget {
             // add more button
             AddContactButton(
               onTap: () {
-                // TODO: IMPLEMENT ONTAP
+                context.read<ContactPageCubit>().goToContactPage();
               },
             ),
           ],

@@ -56,6 +56,18 @@ class Network {
         .timeout(const Duration(seconds: 10));
   }
 
+  Future<http.Response> store(Map<String, String> data, String endPoint) async {
+    final fullUrl = '$API_URL/api$endPoint';
+    await _getToken();
+    return await http
+        .post(
+          Uri.parse(fullUrl),
+          body: jsonEncode(data),
+          headers: _setHeaders(),
+        )
+        .timeout(const Duration(seconds: 10));
+  }
+
   Future<http.StreamedResponse> storeUserBio(
       Map<String, String> data, XFile imageFile, String endPoint) async {
     final fullUrl = '$API_URL/api$endPoint';

@@ -103,4 +103,33 @@ class UserDataService {
     }
     return false;
   }
+
+  Future<bool> addContact(
+      {required String phoneNumber, int isDanger = 1}) async {
+    try {
+      final response = await _network.store(
+        {
+          'phone_number': phoneNumber,
+          'is_danger': isDanger.toString(),
+        },
+        '/user-contacts',
+      );
+
+      if (response.statusCode == 200) {
+        return true;
+      } else if (response.statusCode == 400) {
+        throw BaseException('Contact Not Found');
+      } else if (response.statusCode == 404) {
+        throw BaseException('Contact Not Found');
+      }
+    } on TimeoutException catch (_) {
+      throw ReqTimeoutException(
+          'Error Connecting to Server, Request Timed Out');
+    } on ClientException catch (_) {
+      throw AuthException('Error Connecting to Server');
+    } catch (e) {
+      throw BaseException(e.toString());
+    }
+    return false;
+  }
 }

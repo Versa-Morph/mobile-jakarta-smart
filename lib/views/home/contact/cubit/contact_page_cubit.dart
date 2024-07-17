@@ -9,6 +9,7 @@ class ContactPageCubit extends Cubit<ContactPageState> {
   ContactPageCubit() : super(ContactPageLoadingState());
 
   Future<void> fetchUserContact() async {
+    emit(ContactPageLoadingState());
     try {
       final userContact = await UserDataService().fetchUserContact();
 
@@ -19,6 +20,26 @@ class ContactPageCubit extends Cubit<ContactPageState> {
       }
     } catch (e) {
       emit(ContactPageErrorState(e.toString()));
+    }
+  }
+
+  void goToContactPage() {
+    emit(const AddContactPageState());
+  }
+
+  Future<void> addContact(String phoneNumber) async {
+    emit(ContactPageLoadingState());
+    try {
+      final result =
+          await UserDataService().addContact(phoneNumber: phoneNumber);
+
+      if (result == true) {
+        fetchUserContact();
+      } else {
+        emit(const AddContactPageState(errorMsg: 'Contact Not Found'));
+      }
+    } catch (e) {
+      emit(AddContactPageState(errorMsg: e.toString()));
     }
   }
 }
