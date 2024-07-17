@@ -41,13 +41,17 @@ final List<BottomNavigationBarItem> _bottomNavItem = [
   ),
 ];
 
-// Screen List
-final List<Widget> _screenList = [
-  const LandingPageProvider(),
-  const MapsPageProvider(),
-  const ContactPageProvider(),
-  const ProfilePageProvider(),
-];
+// // Screen List
+// final List<Widget> _screenList = [
+//   LandingPageProvider(
+//     onTap: () {
+
+//     },
+//   ),
+//   const MapsPageProvider(),
+//   const ContactPageProvider(),
+//   const ProfilePageProvider(),
+// ];
 
 class HomePageProvider extends StatelessWidget {
   const HomePageProvider({super.key});
@@ -78,13 +82,24 @@ class _HomePageState extends State<HomePage> {
         return Scaffold(
           resizeToAvoidBottomInset: false,
           body: PageView(
-              controller: _pageController,
-              onPageChanged: (value) {
-                setState(() {
-                  _currentIndex = value;
-                });
-              },
-              children: _screenList),
+            controller: _pageController,
+            onPageChanged: (value) {
+              setState(() {
+                _currentIndex = value;
+              });
+            },
+            children: [
+              LandingPageProvider(
+                onTap: () {
+                  print('asdasd');
+                  _pageController.jumpToPage(1);
+                },
+              ),
+              const MapsPageProvider(),
+              const ContactPageProvider(),
+              const ProfilePageProvider(),
+            ],
+          ),
           bottomNavigationBar: BottomNavigationBar(
             items: _bottomNavItem,
             currentIndex: _currentIndex,

@@ -11,8 +11,9 @@ import 'package:smart_jakarta/views/home/landing/widgets/emergency_button.dart';
 import 'package:smart_jakarta/views/home/landing/widgets/service_type_button.dart';
 
 class LandingPageLoaded extends StatefulWidget {
-  const LandingPageLoaded({super.key, required this.agencyList});
+  const LandingPageLoaded({super.key, required this.agencyList, this.onTap});
   final List<Agency> agencyList;
+  final Function()? onTap;
 
   @override
   State<LandingPageLoaded> createState() => _LandingPageLoadedState();
@@ -191,6 +192,7 @@ class _LandingPageLoadedState extends State<LandingPageLoaded> {
                 return ServiceTypeButton(
                   title: item.name,
                   serviceImagePath: '$API_URL/${item.iconPath}',
+                  onTap: widget.onTap,
                 );
               },
             ),

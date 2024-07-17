@@ -7,19 +7,23 @@ import 'package:smart_jakarta/views/home/landing/view_states/landing_page_loaded
 import 'package:smart_jakarta/views/home/landing/view_states/landing_page_loading.dart';
 
 class LandingPageProvider extends StatelessWidget {
-  const LandingPageProvider({super.key});
+  const LandingPageProvider({super.key, this.onTap});
+  final Function()? onTap;
 
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) => LandingPageCubit()..fetchAgencyData(),
-      child: const LandingPage(),
+      child: LandingPage(
+        onTap: onTap,
+      ),
     );
   }
 }
 
 class LandingPage extends StatefulWidget {
-  const LandingPage({super.key});
+  const LandingPage({super.key, this.onTap});
+  final Function()? onTap;
 
   @override
   State<LandingPage> createState() => _LandingPageState();
@@ -38,7 +42,10 @@ class _LandingPageState extends State<LandingPage> {
             if (state is LandingPageLoadingState) {
               return const LandingPageLoading();
             } else if (state is LandingPageLoadedState) {
-              return LandingPageLoaded(agencyList: state.agencyList);
+              return LandingPageLoaded(
+                agencyList: state.agencyList,
+                onTap: widget.onTap,
+              );
             } else if (state is LandingPageErrorState) {
               return LandingPageError(
                 errorMsg: state.errorMsg,
