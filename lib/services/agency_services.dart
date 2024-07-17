@@ -11,7 +11,7 @@ class AgencyServices {
 
   Future<List<Agency>?> fetchAgencyData() async {
     try {
-      final response = await _network.getData('/instances');
+      final response = await _network.getData('/instances/group-by-detail');
 
       if (response.statusCode == 200) {
         final resBody = jsonDecode(response.body);
