@@ -17,6 +17,7 @@ class ServiceTypeButton extends StatelessWidget {
     return GestureDetector(
       onTap: onTap ?? () {},
       child: Container(
+        margin: const EdgeInsets.symmetric(horizontal: 10),
         width: 100,
         height: 100,
         decoration: BoxDecoration(
@@ -37,24 +38,9 @@ class ServiceTypeButton extends StatelessWidget {
                       ? Colors.white
                       : const Color(0xff2C2828)),
             ),
-            const SizedBox(height: 20),
+            const SizedBox(height: 10),
             Expanded(
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: [
-                  const Icon(
-                    Icons.arrow_forward,
-                    color: Color(0xffD99022),
-                  ),
-                  ImageIcon(
-                    AssetImage(
-                      serviceImagePath,
-                    ),
-                    color: const Color(0xffA39E9E),
-                    size: 25,
-                  )
-                ],
-              ),
+              child: Center(child: Image.network(serviceImagePath)),
             ),
           ],
         ),

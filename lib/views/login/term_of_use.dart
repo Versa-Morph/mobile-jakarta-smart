@@ -117,7 +117,6 @@ class _TermOfUsePageState extends State<TermOfUsePage> {
                 borderColor: isChecked ? const Color(0xFFD99022) : Colors.white,
                 onTap: isChecked
                     ? () {
-                        // TODO: IMPLEMENT ONTAP
                         Navigator.pushNamed(context, '/home');
                       }
                     : null,

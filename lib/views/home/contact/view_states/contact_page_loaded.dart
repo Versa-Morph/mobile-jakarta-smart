@@ -72,9 +72,6 @@ class ContactPageLoaded extends StatelessWidget {
                       vertical: 5,
                       horizontal: 16,
                     ),
-                    onTap: () {
-                      print(item.isDanger);
-                    },
                   ),
                 );
               },
