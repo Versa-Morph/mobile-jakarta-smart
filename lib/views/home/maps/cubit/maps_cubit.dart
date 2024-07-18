@@ -177,8 +177,10 @@ class MapsCubit extends Cubit<MapsState> {
                       emit(state.copyWith(markerIndex: index));
                     },
                     infoWindow: InfoWindow(
-                        title: place.displayName!.text!,
-                        snippet: place.formattedAddress),
+                      title: place.displayName!.text!,
+                      snippet:
+                          '${place.plusCode?.compoundCode ?? ''}${place.formattedAddress}',
+                    ),
                   ),
                 );
 

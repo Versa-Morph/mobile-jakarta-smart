@@ -45,30 +45,67 @@ class BottomMenuPanel extends StatelessWidget {
           const SizedBox(height: 5),
 
           // Direction Button
-          (marker.mapsId.value == '0')
-              ? const SizedBox()
-              : ElevatedButton(
-                  onPressed: onTap,
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: const Color.fromARGB(255, 242, 152, 17),
-                  ),
-                  child: const Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Icon(
-                        Icons.directions,
-                        color: Colors.white,
+          Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              (marker.mapsId.value == '0')
+                  ? const SizedBox()
+                  : ElevatedButton(
+                      onPressed: () {
+                        Navigator.pushNamed(
+                          context,
+                          '/report',
+                          arguments: marker,
+                        );
+                      },
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.red,
                       ),
-                      SizedBox(width: 10),
-                      Text(
-                        'Directions',
-                        style: TextStyle(
-                          color: Colors.white,
-                        ),
+                      child: const Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Icon(
+                            Icons.warning_amber_rounded,
+                            color: Colors.white,
+                          ),
+                          SizedBox(width: 10),
+                          Text(
+                            'Report Incindent',
+                            style: TextStyle(
+                              color: Colors.white,
+                            ),
+                          ),
+                        ],
                       ),
-                    ],
-                  ),
-                ),
+                    ),
+              const SizedBox(width: 8),
+              (marker.mapsId.value == '0')
+                  ? const SizedBox()
+                  : ElevatedButton(
+                      onPressed: onTap,
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor:
+                            const Color.fromARGB(255, 242, 152, 17),
+                      ),
+                      child: const Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Icon(
+                            Icons.directions,
+                            color: Colors.white,
+                          ),
+                          SizedBox(width: 10),
+                          Text(
+                            'Directions',
+                            style: TextStyle(
+                              color: Colors.white,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+            ],
+          ),
 
           const SizedBox(height: 5),
 
