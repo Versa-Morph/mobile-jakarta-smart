@@ -44,7 +44,7 @@ class AppRoutes {
       case '/report':
         final args = settings.arguments as Marker;
         return MaterialPageRoute(
-          builder: (context) => ReportIncidentPage(marker: args),
+          builder: (context) => ReportIncidentPageProvider(marker: args),
         );
       default:
         return MaterialPageRoute(
