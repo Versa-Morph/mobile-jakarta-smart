@@ -23,11 +23,13 @@ class Place {
   final String? formattedAddress;
   final Location? location;
   final PlaceDisplayName? displayName;
+  final PlusCode? plusCode;
 
   Place({
     this.formattedAddress,
     this.location,
     this.displayName,
+    this.plusCode,
   });
 
   factory Place.fromJson(Map<String, dynamic> json) => Place(
@@ -38,5 +40,18 @@ class Place {
         displayName: json["displayName"] == null
             ? null
             : PlaceDisplayName.fromJson(json["displayName"]),
+        plusCode: json['plusCode'] == null
+            ? null
+            : PlusCode.fromJson(json['plusCode']),
       );
+}
+
+class PlusCode {
+  final String compoundCode;
+
+  PlusCode(this.compoundCode);
+
+  factory PlusCode.fromJson(Map<String, dynamic> json) {
+    return PlusCode(json['compoundCode']);
+  }
 }

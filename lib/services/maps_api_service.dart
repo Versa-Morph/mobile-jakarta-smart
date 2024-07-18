@@ -96,7 +96,7 @@ class MapsApiService {
             'Content-Type': 'application/json',
             'X-Goog-Api-Key': constant.MAPS_API_KEY,
             'X-Goog-FieldMask':
-                'places.formattedAddress,places.displayName,places.location',
+                'places.formattedAddress,places.displayName,places.location,places.plusCode',
           },
           body: jsonEncode(
             {
