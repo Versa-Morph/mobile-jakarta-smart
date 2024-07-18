@@ -68,7 +68,8 @@ class _HomePageState extends State<HomePage> {
   final List<List<String>> includedTypes = [
     ['police'],
     ['fire_station'],
-    ['fire_station', 'police'],
+    ['hospital'],
+    ['fire_station', 'police', 'hospital'],
   ];
 
   List<String> selectedList = [];
@@ -82,8 +83,11 @@ class _HomePageState extends State<HomePage> {
       case 2:
         selectedList = includedTypes[1];
         break;
-      default:
+      case 3:
         selectedList = includedTypes[2];
+        break;
+      default:
+        selectedList = includedTypes[3];
         break;
     }
     return BlocBuilder<HomePageCubit, HomePageState>(
