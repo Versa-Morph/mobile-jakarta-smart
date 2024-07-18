@@ -137,7 +137,7 @@ class MapsCubit extends Cubit<MapsState> {
   }
 
   /// Search Police Station and Fire Station Nearby
-  Future<void> nearbyPlaces() async {
+  Future<void> nearbyPlaces(List<String> includedTypes) async {
     if (state.markers.length > 1) {
       final markers = List<Marker>.from(state.markers)
         ..removeRange(1, state.markers.length);
@@ -155,7 +155,8 @@ class MapsCubit extends Cubit<MapsState> {
 
       if (currentState is LocationAcquired) {
         final userLocation = currentState.userLocation;
-        final nearbyPlaces = await _mapsApiService.placesNearby(userLocation);
+        final nearbyPlaces =
+            await _mapsApiService.placesNearby(userLocation, includedTypes);
 
         final markerList = List<Marker>.from(state.markers);
 

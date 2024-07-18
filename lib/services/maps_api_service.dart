@@ -84,7 +84,8 @@ class MapsApiService {
   }
 
   /// Search nearby police and fire station within 2000 radius of user location
-  Future<NearbyPlaces?> placesNearby(Position? currentPosition) async {
+  Future<NearbyPlaces?> placesNearby(
+      Position? currentPosition, List<String> includedTypes) async {
     final url = Uri.parse('${constant.PLACES_URL}searchNearby');
 
     try {
@@ -99,7 +100,8 @@ class MapsApiService {
           },
           body: jsonEncode(
             {
-              'includedPrimaryTypes': ['police', 'fire_station'],
+              // 'includedPrimaryTypes': ['police', 'fire_station'],
+              'includedPrimaryTypes': includedTypes,
               'locationRestriction': {
                 'circle': {
                   'center': {

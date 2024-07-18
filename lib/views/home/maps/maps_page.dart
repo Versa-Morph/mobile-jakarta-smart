@@ -14,7 +14,9 @@ import 'package:smart_jakarta/views/home/maps/widgets/search_result.dart';
 class MapsPageProvider extends StatelessWidget {
   const MapsPageProvider({
     super.key,
+    this.includedTypes,
   });
+  final List<String>? includedTypes;
 
   @override
   Widget build(BuildContext context) {
@@ -22,20 +24,26 @@ class MapsPageProvider extends StatelessWidget {
       create: (context) => MapsCubit(
         locationCubit: context.read<LocationCubit>(),
       ),
-      child: const MapsPage(),
+      child: MapsPage(
+        includedTypes: includedTypes,
+      ),
     );
   }
 }
 
 class MapsPage extends StatefulWidget {
-  const MapsPage({super.key});
-
+  const MapsPage({
+    super.key,
+    this.includedTypes,
+  });
+  final List<String>? includedTypes;
   @override
   State<MapsPage> createState() => _MapsPageState();
 }
 
 class _MapsPageState extends State<MapsPage>
     with AutomaticKeepAliveClientMixin {
+// class _MapsPageState extends State<MapsPage> {
   final PanelController _panelController = PanelController();
 
   @override
@@ -43,6 +51,10 @@ class _MapsPageState extends State<MapsPage>
 
   @override
   Widget build(BuildContext context) {
+    context
+        .read<MapsCubit>()
+        .nearbyPlaces(widget.includedTypes ?? ['fire_station', 'police']);
+
     super.build(context);
     return BlocListener<MapsCubit, MapsState>(
       listener: (context, state) {
@@ -116,6 +128,7 @@ class _MapsPageState extends State<MapsPage>
                         onMapCreated: (controller) {
                           context.read<MapsCubit>().setController(controller);
                           context.read<MapsCubit>().markUserLocation();
+                          // context.read<MapsCubit>().nearbyPlaces();
                         },
                       );
                     } else {
@@ -159,7 +172,7 @@ class _MapsPageState extends State<MapsPage>
                     bottom: 60,
                     child: FloatingActionButton.small(
                       onPressed: () {
-                        context.read<MapsCubit>().nearbyPlaces();
+                        // context.read<MapsCubit>().nearbyPlaces();
                       },
                       backgroundColor: const Color.fromARGB(255, 242, 152, 17),
                       child: const Icon(

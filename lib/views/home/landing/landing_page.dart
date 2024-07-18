@@ -7,8 +7,8 @@ import 'package:smart_jakarta/views/home/landing/view_states/landing_page_loaded
 import 'package:smart_jakarta/views/home/landing/view_states/landing_page_loading.dart';
 
 class LandingPageProvider extends StatelessWidget {
-  const LandingPageProvider({super.key, this.onTap});
-  final Function()? onTap;
+  const LandingPageProvider({super.key, required this.onTap});
+  final Function(int agencyId) onTap;
 
   @override
   Widget build(BuildContext context) {
@@ -22,8 +22,8 @@ class LandingPageProvider extends StatelessWidget {
 }
 
 class LandingPage extends StatefulWidget {
-  const LandingPage({super.key, this.onTap});
-  final Function()? onTap;
+  const LandingPage({super.key, required this.onTap});
+  final Function(int agencyId) onTap;
 
   @override
   State<LandingPage> createState() => _LandingPageState();
