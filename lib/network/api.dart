@@ -68,8 +68,8 @@ class Network {
         .timeout(const Duration(seconds: 15));
   }
 
-  Future<http.StreamedResponse> storeUserBio(
-      Map<String, String> data, XFile imageFile, String endPoint) async {
+  Future<http.StreamedResponse> postWithImage(Map<String, String> data,
+      XFile imageFile, String endPoint, String fieldImage) async {
     final fullUrl = '$API_URL/api$endPoint';
     await _getToken();
 
@@ -85,11 +85,10 @@ class Network {
     );
 
     // defining image file
-    final file =
-        await http.MultipartFile.fromPath('profile_pict', imageFile.path,
-            filename: path.basename(
-              imageFile.path,
-            ));
+    final file = await http.MultipartFile.fromPath(fieldImage, imageFile.path,
+        filename: path.basename(
+          imageFile.path,
+        ));
 
     // add the file
     request.files.add(file);

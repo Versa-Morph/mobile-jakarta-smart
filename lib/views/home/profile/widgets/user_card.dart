@@ -38,7 +38,7 @@ class UserCard extends StatelessWidget {
             children: [
               CustomProfileText(
                 text: title,
-                fontSize: 17,
+                fontSize: 16,
               ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.start,
@@ -61,11 +61,13 @@ class UserCard extends StatelessWidget {
               )
             ],
           ),
-          ImageIcon(
-            AssetImage(
-              iconPath,
+          Expanded(
+            child: ImageIcon(
+              AssetImage(
+                iconPath,
+              ),
+              color: const Color(0xffDD9E3E),
             ),
-            color: const Color(0xffDD9E3E),
           ),
         ],
       ),

@@ -73,7 +73,7 @@ class UserDataService {
     required String address,
   }) async {
     try {
-      final response = await _network.storeUserBio(
+      final response = await _network.postWithImage(
         {
           'phone_number': phoneNumber,
           'nik': nik,
@@ -88,6 +88,7 @@ class UserDataService {
         },
         profilePict,
         '/user-bio',
+        'profile_pict',
       );
 
       if (response.statusCode == 200) {

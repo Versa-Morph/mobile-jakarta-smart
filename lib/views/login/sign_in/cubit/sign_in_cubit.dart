@@ -18,7 +18,7 @@ class SignInCubit extends Cubit<SignInState> {
       if (result == true) {
         emit(SignInSucces());
       } else {
-        emit(const SignInError('Login Failed'));
+        emit(const SignInError('Username atau Password salah'));
       }
     } catch (e) {
       emit(SignInError(e.toString()));
