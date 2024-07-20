@@ -17,7 +17,7 @@ Untuk menginstal aplikasi ini secara lokal, ikuti langkah-langkah berikut:
 
 1. Clone repositori ini:
     ```sh
-    git clone https://github.com/username/smart-jakarta.git
+    git clone https://github.com/Versa-Morph/smart-jakarta.git
     ```
 
 2. Masuk ke direktori proyek:
