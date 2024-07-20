@@ -55,5 +55,5 @@ Aplikasi ini dilisensikan di bawah [MIT License](LICENSE).
 
 ## Kontak
 
-Untuk informasi lebih lanjut atau pertanyaan, silakan hubungi kami di [email@example.com](mailto:versamorph.dev@gmail.com).
+Untuk informasi lebih lanjut atau pertanyaan, silakan hubungi kami di [versamorph.dev@gmail.com](mailto:versamorph.dev@gmail.com).
 
